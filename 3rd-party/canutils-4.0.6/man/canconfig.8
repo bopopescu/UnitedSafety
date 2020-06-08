@@ -1,0 +1,61 @@
+.TH CANCONFIG 8 "13 March 2005" "canutils" "Linux Programmer's Manual"
+.SH NAME
+canconfig \- configure a CAN bus interface
+.SH SYNOPSIS
+.B "canconfig <interface>"
+.br
+.B "canconfig <interface> baudrate { BR | BTR }"
+.br
+.B "canconfig <interface> mode MODE"
+.br
+.B "canconfig <interface> state"
+.SH DESCRIPTION
+canconfig is used to configure the kernel-resident CAN (Controller Area Network)
+interfaces. As CAN cards are network devices the basic configuration
+options can be done with ifconfig. 
+
+.SH ARGUMENTS
+.TP
+.B interface
+The name of the interface. This is usually a driver name followed by
+a unit number, for example "can0". 
+.TP
+.B baudrate
+The baudrate of the CAN interface can be set with a simple and complex
+method, which are chosen by using BR or BTR with the "baudrate" command. 
+.br
+
+.B BR: 
+The baudrate of the interface can be set to one of the standard baud
+rates by setting a BR value. Example: 
+
+	canconfig can0 baudrate 125
+
+to set the interface can0 to 125 kBit/s. The standard baudrates are 10,
+20, 50, 100, 125, 250, 500, 800 and 1000 kBit/s.
+.br
+
+.B BTR: 
+The CAN standard defines a second way for setting the baudrate, which
+uses a set of Bit Timing Registers (BTR). The number of and exact
+meaning of the BTR registers is chip dependend, so this interface offers
+the possibility to handle three BTR registers directly to the driver: 
+
+	canconfig can0 baudrate btr <brt1> <btr2> <btr3>
+
+.TP
+.B mode
+This command sets the CAN controller into "start" mode. Example: 
+
+	canconfig can0 mode start
+
+.TP
+.B state
+This command lets you ask for the interface status. 
+.br
+.SH SEE ALSO
+- ifconfig(8)
+.br
+- http://www.pengutronix.de/software/socket-can/ (Socket-CAN Project)
+.SH AUTHORS
+Robert Schwebel <r.schwebel@pengutronix.de>

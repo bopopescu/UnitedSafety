@@ -1,0 +1,67 @@
+#!/bin/sh
+
+	if [ 'OFF' = "$FEATURE" ];then
+		exit 0
+	fi
+
+	. '/etc/rc.d/init.d/common'
+
+	db-config unset rtc-monitor task_low-battery
+
+	adc=`head -n1 /dev/battery|tr -d '\n'`
+	volt=`adc2volt "$adc"|head -n1|tr -d '\n'`
+
+	echo "$volt"|grep "\." &> /dev/null
+
+	if [ 0 = "$?" ];then
+	        volt=`echo $volt|sed 's/\.//'`
+	else
+	        volt="${volt}0"
+	fi
+
+	if [ "$volt" -eq 00 ];then
+		logger "$0: Unreasonable Voltage value of zero, ignoring (assuming good voltage)..."
+		exit 1
+	fi
+
+	low_battery_volt=`db-config get -v power-monitor low_battery_volt`
+	low_battery_next_wakeup=`db-config get -v power-monitor low_battery_next_wakeup`
+	low_battery_delay_before_sleep=`db-config get -v power-monitor low_battery_delay_before_sleep`
+
+	if [ '' = "$low_battery_volt" ];then
+		low_battery_volt=118
+	fi
+
+	if [ '' = "$low_battery_next_wakeup" ];then
+		low_battery_next_wakeup=86400
+	fi
+
+	if [ '' = "$low_battery_delay_before_sleep" ];then
+		low_battery_delay_before_sleep=300
+	fi
+
+	wait_sec=10
+
+	if [ "$volt" -lt $low_battery_volt ];then
+		logger "$0: Low battery voltage, waiting $wait_sec seconds for message-assembler to notify..."
+		wait_for_app 'message-assembler' 41103 $wait_sec 1000000
+
+		logger "$0: Low battery voltage ($volt < $low_battery_volt), will notify and schedule a wakeup for $low_battery_next_wakeup seconds"
+
+		killall rtc-monitor
+		db-config unset rtc-monitor
+
+		echo 'msg low_batt' | telnet localhost $message_assembler_port
+
+		sleep 3
+		echo "sched key=low-battery trigger_date=$low_battery_next_wakeup from_now=1 repeat_period=$low_battery_next_wakeup" | telnet localhost 41001
+
+		logger "$0: Low battery, waiting $low_battery_delay_before_sleep seconds before forcing sleep..."
+		sleep $low_battery_delay_before_sleep
+
+		logger "$0: Low battery, forcing sleep now..."
+		touch /tmp/flags/go-to-sleep
+		reboot
+	fi
+
+exit 0

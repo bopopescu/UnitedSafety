@@ -1,0 +1,16 @@
+*.swp
+*.o
+arp
+config.h
+config.make
+config.status
+hostname
+ifconfig
+lib/libnet-tools.a
+nameif
+netstat
+plipconfig
+rarp
+route
+slattach
+version.h

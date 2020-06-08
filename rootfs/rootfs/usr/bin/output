@@ -1,0 +1,65 @@
+#!/bin/sh
+
+#=====================================================
+# turn_on
+turn_on()
+{
+	p=$(( $1 - 1 ))
+  pin=$(( 1 << $p ))
+	i2cset -y 0 0x21 3 $(( `i2cget -y 0 0x21 3` | $pin ))
+}
+
+#=====================================================
+# turn_off_after_seconds [pin] [seconds]
+turn_off_after_seconds()
+{
+	sleep $2
+	turn_off $1
+}
+#=====================================================
+# turn_off [pin]
+turn_off()
+{
+	p=$(( $1 - 1 ))
+  pin=$(( 1 << $p ))
+	i2cset -y 0 0x21 3 $((`i2cget -y 0 0x21 3` & ~$pin))
+}
+
+#=====================================================
+print_usage()
+{
+    echo "output [pin] [on/off] <duration>"
+    echo " where pin=1-6"
+    echo "       on turns the output for pin on for duration seconds"
+    echo " If no duration is set the pin is set to on or off"
+    exit 1
+}
+
+if [ "$#" -lt "2" ]; then
+	print_usage
+fi
+
+if [ "$1" -lt "1" ] || [ "$1" -gt "6" ]; then
+	echo "pin must be 1 - 6"
+	print_usage
+fi
+if [ "$2" != "off" ] && [ "$2" != "on" ]; then
+	echo "Second argument must be 'on' or 'off'"
+	print_usage
+fi
+
+#=====================================================
+#enable the outputs  
+i2cset -y 0 0x21 7 0x00
+if [ "$2" == "off" ]; then
+	turn_off $1
+else
+	turn_on $1
+
+	if [ "$#" -eq 3 ]; then
+		turn_off_after_seconds $1 $3 &
+	fi
+fi
+exit
+
+

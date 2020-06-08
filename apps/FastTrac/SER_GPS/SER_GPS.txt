@@ -1,0 +1,1 @@
+./Release/main.o ./Release/SER_GPS.o

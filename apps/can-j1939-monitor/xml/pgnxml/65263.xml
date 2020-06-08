@@ -1,0 +1,60 @@
+<data>
+	<pgn>65263</pgn>
+	<spn>94</spn>
+	<value>
+		<name>"Engine Fuel Delivery Pressure"</name>
+		<size>8</size>
+		<scale>4</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>22</spn>
+	<value>
+		<name>"Engine Extended Crankcase Blow-by Pressure"</name>
+		<size>8</size>
+		<scale>0.05</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>98</spn>
+	<value>
+		<name>"Engine Oil Level"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+	<spn>100</spn>
+	<value>
+		<name>"Engine Oil Pressure"</name>
+		<size>8</size>
+		<scale>4</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>101</spn>
+	<value>
+		<name>"Engine Crankcase Pressure"</name>
+		<size>16</size>
+		<scale>0.0078125</scale>
+		<offset>-250</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>109</spn>
+	<value>
+		<name>"Engine Coolant Pressure"</name>
+		<size>8</size>
+		<scale>2</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>111</spn>
+	<value>
+		<name>"Engine Coolant Level"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+
+</data>

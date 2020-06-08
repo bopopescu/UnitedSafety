@@ -1,0 +1,58 @@
+#!/bin/sh
+
+g_sleep_pid=
+
+#===========================================================
+on_term()
+{
+	kill -9 $g_sleep_pid &> /dev/null
+	wait
+	kill -9 -$$
+	exit 0
+}
+
+#===========================================================
+on_check_update()
+{
+	kill -9 $g_sleep_pid &> /dev/null
+	wait
+}
+#===========================================================
+#main
+
+	trap on_term HUP QUIT TERM
+	trap on_check_update USR1
+
+	while true
+	do
+		lock='/tmp/.check-update'
+		remove_lock=0
+		mkdir "$lock" &> /dev/null
+
+		if [ 0 = $? ];then
+			remove_lock=1
+		fi
+
+		do-autoupdate
+
+		if [ 1 = "$remove_lock" ];then
+			rm -rf "$lock"
+		else
+			echo > "$lock/finished"
+		fi
+
+		period=`db-config get autoupdate check-period -v -n`
+
+		if [ '' = "$period" ];then
+			period=3600
+		fi
+
+		# put sleep into the background and then get the pid of the background process then wait on the procees to complete.
+    # this allows us to sleep for the specified time, then wakeup,  but if a check-update signals USR1 the sleep process
+		# will be terminated and the do-autoupdate will be run immediately
+		#
+		sleep $period&
+		g_sleep_pid=$!
+		wait
+	done
+	

@@ -1,0 +1,7 @@
+*.swp
+Makefile
+autossh
+autossh.o
+config.h
+config.log
+config.status

@@ -1,0 +1,485 @@
+#!/bin/sh
+
+# script that actually does go out to the server and gets the update.
+
+#============================================================================================================================
+echoerr()
+{
+	echo "$@" 1>&2
+}
+
+
+#============================================================================================================================
+exit_script()
+{
+	rmdir /tmp/flags/autoupdate-running
+
+	if [ ! -z "$AUTOUPDATE_NO_RESTART" ];then
+		exit 0
+	else
+		exit $1
+	fi
+
+}
+
+#============================================================================================================================
+override_versionfile()
+{
+
+	if [ '' = "$g_update_version" ];then
+		return
+	fi
+
+	full_version="$g_update_version"
+	version="$g_update_version"
+	echo "$version" > /tmp/.$versionfile
+
+	if [ '' = "$g_updater" ];then
+		tail -n +2 /tmp/$versionfile >> /tmp/.$versionfile
+	else
+		echo "$g_updater" >> /tmp/.$versionfile
+		tail -n +3 /tmp/$versionfile >> /tmp/.$versionfile
+	fi
+
+	mv /tmp/.$versionfile /tmp/$versionfile
+}
+
+parse_json()
+{
+	echo $1 | \
+	sed -e 's/[{}]/''/g' | \
+	sed -e 's/", "/'\",\"'/g' | \
+	sed -e 's/" ,"/'\",\"'/g' | \
+	sed -e 's/" , "/'\",\"'/g' | \
+	sed -e 's/","/'\"-S-\"'/g' | \
+	awk -F=':' -v RS='-S-' "\$1~/\"$2\"/ {print}" | \
+	sed -e "s/\"$2\"://" | \
+	tr -d "\n\t" | \
+	sed -e 's/\\"/"/g' | \
+	sed -e 's/\\\\/\\/g' | \
+	sed -e 's/^[ \t]*//g' | \
+	sed -e 's/^"//'  -e 's/"$//'
+}
+
+#============================================================================================================================
+start_work()
+{
+	echo "set_work key=autoupdate"|telnet localhost $PowerPort
+	echo -e -n 'blink kick name=autoupdate priority=10 led=gps,cell,wifi,sat,zigbee,inp6 script="1,125000;0,125000" priority=5\r'|socat - UNIX-CONNECT:$led_uds
+	echo -e -n 'blink kick name=autoupdater priority=10 led=gps.r,cell.r,wifi.r,sat.r,zigbee.r,inp6.r script="0,125000" priority=5\r'|socat - UNIX-CONNECT:$led_uds
+}
+
+#============================================================================================================================
+stop_work()
+{
+	echo "unset_work key=autoupdate"|telnet localhost $PowerPort
+	echo -e -n 'blink del autoupdate\r'|socat - UNIX-CONNECT:$led_uds
+	echo -e -n 'blink del autoupdater\r'|socat - UNIX-CONNECT:$led_uds
+}
+
+#============================================================================================================================
+wait_for_inet()
+{
+	i=0
+
+	while true
+	do
+		i=`expr $i + 1`
+		ping -c 1 www.google.ca &> /dev/null
+
+		if [ 0 = $? ];then
+			break
+		fi
+
+		if [ "$i" -gt 240 ];then
+			logger -t "$tag" "ERROR: No internet/network connection, will not update"
+			stop_work
+			exit_script 4
+		fi
+
+		sleep 1
+	done
+
+}
+
+#============================================================================================================================
+get_update_version()
+{
+	exit_on_fail=$1
+
+	if [ ! -s /tmp/$versionfile ]
+	then
+		logger -t "$tag" "No $versionfile file"
+
+		if [ 'exit_on_fail' = $exit_on_fail ];then
+			stop_work
+			exit_script 5
+		fi
+
+		unset version
+		unset full_version
+		result=1
+		return
+	else
+		full_version=`head -n1 /tmp/$versionfile|tr -d '\n'|tr -d '\r'`
+		version=`echo "$full_version"|sed 's/.*\.//'`
+	fi
+
+	result=0
+}
+
+#============================================================================================================================
+get_update_file()
+{
+	exit_on_fail=$1
+	updatefile=`tail -n +2 /tmp/$versionfile|head -n1|tr -d '\n'|tr -d '\r'`
+	updatepath='/updater'
+
+	if [ '' != "$g_updater" ];then
+		result=0
+		return
+	fi
+
+	if [ '' = "$updatefile" ];then
+
+		if [ '' = "$full_version" ];then
+			logger -t "$tag" "ERROR: No full version specified, cannot determine update file"
+
+			if [ 'exit_on_fail' = $exit_on_fail ];then
+				stop_work
+				exit_script 6
+			fi
+
+			result=1
+			return
+		fi
+
+		updatefile="${full_version}.bin"
+		logger -t "$tag" "No update file specified"
+	else
+
+		if [ 1 = "$use_sn_dir" ];then
+			updatepath="/$sn"
+		else
+			updatepath=''
+		fi
+
+	fi
+
+	logger -t "$tag" "Using update file \"$updatepath/$updatefile\""
+	result=0
+}
+
+#============================================================================================================================
+get_update_options()
+{
+
+	if [ -s /tmp/$versionfile ]; then
+		lines=`cat "/tmp/$versionfile"|wc -l`
+
+		if [ "$lines" -ge 3 ];then
+			options=`head -n3 /tmp/$versionfile|tail -n1|tr -d '\n'|tr -d '\r'`
+
+			if [ '' != "$options" ];then
+				echo "$options" | grep '[^a-zA-Z0-9=_/. :,@-]' > /dev/null
+
+				if [ 1 = $? ];then
+					echo "$options" | grep '\( [^o]\|^[^o ]\)' > /dev/null
+
+					if [ 1 = $? ];then
+						eval "export $options"
+					fi
+				fi
+			fi
+		fi
+	fi
+
+	result=0
+}
+
+#============================================================================================================================
+test_if_update_required()
+{
+
+	#	if [ 1 = "$o_force" ];then
+	if [ -e '/tmp/.force-update' ]; then
+		logger -t "$tag" "\"Force update\" option specified"
+		update_required=1
+		return
+	fi
+
+	if [ 1 = "$o_diff" ];then
+		logger -t "$tag" "\"Update if different\" option specified"
+
+		if [ '' = "$version" -o "$version" != "$localversion" ];then
+			update_required=1
+			logger -t "$tag" "Update needed (version=\"$version\", localversion=\"$localversion\")."
+			return
+		fi
+
+	fi
+
+	if [ 1 = "$o_new" ];then
+
+		if [ ! -e "$timestamp_flag" ];then
+			update_required=1
+			logger -t "$tag" "Update needed (empty timestamp)"
+			return
+		fi
+
+		ts=`head -n1 "$timestamp_flag"|tr -d '\n'`
+
+		if [ "$update_timestamp" -gt "$ts" ];then
+			update_required=1
+			logger -t "$tag" "Update needed (timestamp=$update_timestamp > $ts, for version=\"$version\")"
+			return
+		fi
+
+	fi
+
+	if [ '' = "$version" -o "$version" -gt "$localversion" ]
+	then
+		update_required=1
+		logger -t "$tag" "Update needed (version=\"$version\", localversion=\"$localversion\")."
+	else
+		update_required=0
+		logger -t "$tag" "Don't need update (version=\"$version\", localversion=\"$localversion\")."
+	fi
+
+}
+
+#============================================================================================================================
+do_update()
+{
+	update_complete=0
+	export REDSTONE_AUTOUPDATE=1
+	prepare-sw-update "$1" >/dev/null 2>&1
+	ret=$?
+
+	if [ 0 = "$ret" ];then
+
+		if [ -e /mnt/update/update-fw/start.sh ];then
+			cd /mnt/update/update-fw
+			./start.sh
+			ret=$?
+
+			if [ 0 = "$ret" ];then
+				logger -t "$tag" "start.sh completed OK"
+				echo -n "$update_timestamp" > "$timestamp_flag"
+				update_complete=1
+			else
+				logger -t "$tag" "ERROR: start.sh returned $ret"
+			fi
+
+		else
+			logger -t "$tag" "ERROR: No start script/app"
+		fi
+
+	else
+		logger -t "$tag" "ERROR: prepare-sw-update failed with value $ret"
+	fi
+
+}
+#============================================================================================================================
+# remove all but the database directory and the file autoupdate-ready-to-run from /mnt/update in preparation for downloading
+# the update
+
+clean_up_the_update_directory()
+{
+	for filename in /mnt/update/*; do
+		if [ "$filename" != "/mnt/update/database" ] && [ "$filename" != "/mnt/update/autoupdate-ready-to-run" ]; then
+			rm -rf $filename
+		fi
+	done
+}
+
+#============================================================================================================================
+# main
+
+# Process all command line options
+for ARG in $*
+do
+	echo "$ARG" | grep '^[a-zA-Z0-9_-]\+=[a-zA-Z0-9_.-]\+$' &> /dev/null
+
+	if [ 0 = $? ];then
+		eval "$ARG"
+	else
+		echoerr "Invalid argument: $ARG"
+		exit 9
+	fi
+
+done
+
+if [ 'OFF' = "$FEATURE" ];then
+	exit 1
+fi
+
+mkdir /tmp/flags/autoupdate-running
+
+if [ 0 != "$?" ];then
+	logger -t "do-autoupdate - update is already running"
+	exit 2
+fi
+
+if [ -e '/mnt/update/update-ready-to-run' ];then
+	logger -t "do-autoupdate - update is already downloaded and ready to run - reboot the system"
+	exit_script 3
+fi
+
+#remove any extra files in the update directory to maximize available space.
+clean_up_the_update_directory
+
+sn=`cat /mnt/nvram/rom/sn.txt`
+sn=`expr $sn + 51000`
+
+versionfile=update.txt
+updatefolder=redstone.atsplace.com:38025/autoupdate/$sn
+timestamp_flag='/mnt/nvram/config/autoupdate-applied'
+
+autoupdate_webfolder=`db-config get autoupdate webfolder -v -n`
+autoupdate_localfolder=`db-config get autoupdate localfolder -v -n`
+
+if [ '' = "$autoupdate_webfolder" ];then
+	autoupdate_webfolder='redstone.atsplace.com:38025/autoupdate'
+fi
+
+if [ '' = "$autoupdate_localfolder" ];then
+	autoupdate_localfolder='/tmp/usb/redstone/autoupdate'
+fi
+
+tag='do-autoupdate'
+
+rm -f /tmp/$versionfile
+
+PowerPort=41009
+led_uds='/var/run/redstone/i2c-gpio-monitor'
+
+if [ -e /version ]
+then
+	localversion=`head -n1 /version|tr -d '\n'|tr -d '\r'`
+else
+	logger -t "$tag" "ERROR: No local version file"
+	stop_work
+	exit_script 7
+fi
+
+if [ -e "$autoupdate_localfolder/$sn/$versionfile" -o -e "$autoupdate_localfolder/$versionfile" ];then
+	start_work
+	logger -t "$tag" "Local media update dir detected, checking for update..."
+
+	use_sn_dir=0
+
+	if [ -e "$autoupdate_localfolder/$sn/$versionfile" ];then
+		use_sn_dir=1
+		cp "$autoupdate_localfolder/$sn/$versionfile" "/tmp/$versionfile"
+	else
+		cp "$autoupdate_localfolder/$versionfile" "/tmp/$versionfile"
+	fi
+
+	override_versionfile
+	get_update_options
+	get_update_version
+
+	if [ 0 = "$result" ];then
+		test_if_update_required
+
+		if [ 1 = "$update_required" ];then
+			logger -t "$tag" "Will perform an update from local media..."
+
+			get_update_file
+
+			if [ 0 = "$result" ];then
+
+				do_update "${autoupdate_localfolder}${updatepath}/$updatefile"
+
+				if [ 1 = "$update_complete" ];then
+					stop_work
+					exit_script 0
+				fi
+
+			fi
+
+		fi
+
+	fi
+
+fi
+
+logger -t "$tag" 'No local media update was possible, will check web/internet (if available)...'
+
+wait_for_inet
+logger "$tag Internet detected - proceeding"
+sleep 30 # need this here to make the connection work properly - do not ask me why I do not know.
+
+if [ -e /tmp/remote-logging.tar.gz ];then
+	touch '/tmp/remote-logging.txt'
+	tmp="$sn"
+	sn=`head -n1 /mnt/nvram/rom/sn.txt|tr -d '\n'`
+
+	if [ '' = "$sn" ];then
+		sn='NONE'
+	fi
+
+	d=`date '+%g%m%d-%H%M%S'|tr -d '\n'`
+	fname="/tmp/$sn-$d-log.tar.gz"
+	ln -s /tmp/remote-logging.tar.gz "$fname"
+#	send-email.sh 'remote-logging' '/tmp/remote-logging.txt' "$fname"
+	rm -f "$fname"
+	rm -f /tmp/remote-logging.tar.gz
+	rm -f /tmp/remote-logging.txt
+	sn="$tmp"
+fi
+
+start_work
+logger -t "$tag" 'Checking for web/internet update...'
+
+use_sn_dir=1
+
+rest_key="X-API-KEY=287ec790e1ce0861866c05ba918f83b36e83842f"
+url="https://redstone.atsplace.com:38041/API/autoupdate?format=jsonp&$rest_key&sn=`expr $sn - 51000`"
+wget -T 10 -t 1 $url --no-check-certificate -O /tmp/verfile >/dev/null 2>&1
+
+verFile=`cat /tmp/verfile|tr -d '\n'`
+ver=`parse_json $verFile ver`
+
+if [ ! $ver ]; then
+	stop_work
+	logger "$tag: Unable to update - no version found verFile=($verFile) sn=($sn)"
+	exit_script 0
+fi
+
+wget "$autoupdate_webfolder/rls/tl5000/$ver/$versionfile" -O /tmp/$versionfile >/dev/null 2>&1
+
+if [ -e "/tmp/$versionfile" ];then
+	update_timestamp=`date -r "/tmp/$versionfile" '+%s'|tr -d '\n'`
+fi
+
+override_versionfile
+get_update_options
+get_update_version 'exit_on_fail'
+
+test_if_update_required
+
+if [ 1 != "$update_required" ];then
+	stop_work
+	exit_script 0
+fi
+
+logger -t "$tag" "Will perform an update from web/internet..."
+
+get_update_file 'exit_on_fail'
+
+update_tmp_file="/tmp/update_$$"
+wget ${autoupdate_webfolder}/rls/tl5000/$ver/$updatefile -O "$update_tmp_file" >/dev/null 2>&1
+
+do_update "$update_tmp_file"
+rm -f "$update_tmp_file"
+
+if [ 1 = "$update_complete" ];then
+	stop_work
+	exit_script 0
+fi
+
+stop_work
+exit_script 8
+

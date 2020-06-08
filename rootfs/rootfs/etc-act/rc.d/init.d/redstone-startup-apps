@@ -1,0 +1,125 @@
+#!/bin/sh
+	logger -s "===== redstone-startup-apps running ====="
+	echo > /dev/watchdog
+	# Issue 1315 - customer specific script to allow some flexibility
+	#              Script must be executable.
+	if  [ -s '/mnt/nvram/config/startup.sh' ]; then
+		/mnt/nvram/config/startup.sh
+	fi
+
+	if [ ! -e '/tmp/usb' ];then
+		log=`db-config get system remote-logging -v`
+
+		if [ '1' = "$log" ];then
+			size=`du -s /home/root/system-log|sed 's/\t.*//'`
+
+			if [ "$size" -lt 6144 ];then
+				tar -czf /tmp/remote-logging.tar.gz /home/root/system-log
+
+				if [ 0 != "$?" ];then
+					rm -f /tmp/remote-logging.tar.gz
+				fi
+
+			fi
+		fi
+
+	fi
+
+	printf 'start_logging\r' | socat - unix-connect:/var/run/redstone/rtc-monitor
+	run-app 'Ignition Monitor' IgnitionMonitor&
+	run-app 'Check-For-Internet' /usr/bin/check-for-inet &
+
+	feature_configured=`db-config get -v feature-monitor configured`
+
+	# Setup default features (if no feature configuration has been performed).
+	if [ '' = "$feature_configured" ];then
+		db-config unset feature
+
+		db-config set feature can-odb2-monitor 1
+		db-config set feature synctask 1
+		db-config set feature trip-stats 1
+		db-config set feature ssh-admin-tunnel 1
+		db-config set feature SER_GPS 1
+		# ISCP-268 		
+		db-config set -u feature gps-socket-server 0
+		db-config set feature NMEA 1
+		db-config set feature PositionUpdate 1
+		db-config set feature trip-monitor 1
+		db-config set feature heartbeat 1
+		db-config set feature message-assembler 1
+		db-config set feature packetizer-iridium 0
+		db-config set feature packetizer-calamps 0
+		db-config set feature packetizer-cams 0
+		db-config set feature packetizer_dash 0
+		db-config set feature can-gm-seatbelt-monitor ''
+		db-config set feature can-ford-seatbelt-monitor ''
+		db-config set feature can-dodge-seatbelt-monitor ''
+		db-config set feature can-j1939-monitor ''
+		db-config set feature wifi-monitor 0
+		db-config set feature packetizer-inet 1
+		db-config set feature isc-lens 1
+		db-config set feature-monitor configured 1
+	fi
+
+	# Mandatory features are forced on
+	db-config set -u feature i2c-gpio-monitor 1
+	db-config set -u feature autoupdate 1
+	db-config set -u feature power-monitor 1
+	db-config set -u feature modem-monitor 1
+#	db-config set -u feature iridium-monitor 1
+	db-config set -u feature admin-client 1
+	db-config set -u feature ssh-admin-client-tunnel 1
+	db-config set -u feature softap 1 
+	db-config set -u feature zigbee-monitor 1
+	db-config set -u feature lighttpd 1
+	db-config set -u feature ipsec-monitor 0
+	db-config set -u feature telit-monitor 1
+	db-config set -u feature battery-monitor 1
+	db-config set -u feature NMEA 1
+	db-config set -u feature SER_GPS 1
+	db-config set feature packetizer-inet 1
+	db-config set feature isc-lens 1
+
+	db-config set PositionUpdate Time 0
+	db-config set PositionUpdate Heading 0
+
+	# if ethernet is not set it defaults to on	
+
+	eth=`db-config get -b RedStone Ethernet`
+
+	if [ -z "$eth" ]; then
+		db-config set RedStone Ethernet 1
+	fi
+
+	#bilal@ps19 - lets enable the ethernet feature anyway for ISCP-245
+	db-config set feature ethernet 1
+
+	runModbus=`db-config get -b isc-lens ModbusEnabled`         
+
+	if [ "0" = "$runModbus" ]; then
+		db-config set feature isc-modbus 0
+	else
+		db-config set feature isc-modbus 1
+		db-config set isc-lens ModbusEnabled 1
+		/usr/bin/gpio deF
+	fi
+
+	feature-monitor &> /dev/null &
+
+	# watch for loss of USB drivers or ra0
+	/usr/bin/brownout-monitor &
+	# watch for new leases or LCM logins and flash LEDs on connections.
+	/usr/bin/watch_for_LCM &
+	/usr/bin/port_redirect &
+	# watch that the lighttpd log directory doesn't get too big
+	/usr/bin/log-monitor &
+	# lease_monitor restarts wifi if too many leases are requested.
+	/etc/rc.d/init.d/lease_monitor &
+
+	/usr/bin/crit-battery-check &
+	
+	cp /var/log/messages /tmp/logdir &
+	/usr/bin/update-inet-time &
+	# added October 2019 to ensure CCID is correct after SIM change for iNet ModBus
+	/usr/bin/GetCCID &   
+exit 0

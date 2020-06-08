@@ -1,0 +1,142 @@
+#!/bin/sh
+export HOME=/home/root
+
+update_tmp_dir="$UPDATE_TMP_DIR"
+update_fw_dir="$UPDATE_FW_DIR"
+ud_flag="$UPDATE_FLAG"
+ud_auto_flag="$UPDATE_AUTO_FLAG"
+
+if [ '' = "$update_tmp_dir" ];then
+	update_tmp_dir='/mnt/update/update-tmp'
+fi
+
+if [ '' = "$update_fw_dir" ];then
+	update_fw_dir='/mnt/update/update-fw'
+fi
+
+if [ '' = "$ud_flag" ];then
+	ud_flag='/mnt/update/update-ready-to-run'
+fi
+
+if [ '' = "$ud_auto_flag" ];then
+	ud_auto_flag='/mnt/update/autoupdate-ready-to-run'
+fi
+
+cleanup_all()
+{
+	rm -rf "$update_tmp_dir"
+	rm -rf "$update_fw_dir"
+}
+
+UPDATE_FILE="$1"
+pass="$2"
+
+PNAME=`cat /proc/$PPID/comm|tr -d '\n'`
+logger "$0: Starting RedStone update from file \"$UPDATE_FILE\" for \"$PNAME\"..."
+
+	if [ -e "$UPDATE_FILE" ];then
+		logger "$0: Preparing to update SW ($UPDATE_FILE)..."
+
+		if [ "$UPDATE_FILE" = "$DELETE_UPDATE_FILE" ];then
+			delete_update_file="$DELETE_UPDATE_FILE"
+		fi
+
+		EXEC_DIR=`pwd`
+		cd /mnt/update
+
+		if [ ! -e "$UPDATE_FILE" ];then
+			logger "$0: Location of \"$UPDATE_FILE\" is not absolute, creating absolute reference"
+			UPDATE_FILE="$EXEC_DIR/$UPDATE_FILE"
+			logger "$0: Absolute reference is \"$UPDATE_FILE\""
+			if [ ! -e "$UPDATE_FILE" ];then
+				logger "$0: Failed to process \"$UPDATE_FILE\""
+				exit 1
+			fi
+		fi
+
+		cleanup_all
+
+		logger "$0: Decrypting update image..."
+		mkdir -p "$update_tmp_dir"
+		gpg --no-tty --batch --yes --passphrase-file /home/root/.ppf/.txt -d "$UPDATE_FILE" | tar -C "$update_tmp_dir" -x fw.sig fw.bz2
+
+		if [ 0 != "$?" ];then
+			logger "$0: Failed to decrypt update image (md5sum: "`md5sum $UPDATE_FILE`")"
+			cleanup_all
+		else
+			logger "$0: Verifying update image signature..."
+			gpg --no-tty --batch --yes --passphrase-file /home/root/.ppf/.txt --verify "$update_tmp_dir/fw.sig" "$update_tmp_dir/fw.bz2"
+			err=$?
+
+			if [ 0 != "$err" ];then
+				logger "$0: Failed to verify fw.bz2 (error $err)"
+				cleanup_all
+			else
+
+				if [ '' != "$delete_update_file" ];then
+					rm -f "$delete_update_file"
+				fi
+
+				logger "$0: Preparing firmware update..."
+				mkdir -p "$update_fw_dir"
+				tar -C "$update_fw_dir" -xjf "$update_tmp_dir/fw.bz2"
+				ret=$?
+
+				if [ 0 != $ret ];then
+					logger "$0: $ret: Failed to untar file \"$update_tmp_dir/fw.bz2\" to \"$update_fw_dir\""
+					cleanup_all
+				else
+					failed=1
+
+					if [ -e "$update_fw_dir/pass.txt" ];then
+						cat "$update_fw_dir/pass.txt"|grep "^$pass\$"
+
+						if [ 0 != "$?" ];then
+							logger "$0: Incorrect passphrase for dev update"
+						else
+							failed=0
+						fi
+
+					else
+						failed=0
+					fi
+
+					rm -rf "$update_tmp_dir"
+
+					if [ 0 = "$failed" ];then
+
+						if [ 1 = "$REDSTONE_AUTOUPDATE" ];then
+							touch "$ud_auto_flag"
+						else
+							touch "$ud_flag"
+						fi
+
+					fi
+
+					logger "$0: Syncing filesystem (force write)..."
+					sync
+					logger "$0: Sync complete"
+
+				fi
+
+			fi
+		fi
+
+		if [ -e "$ud_flag" ];then
+			logger "$0: SW update is ready to run"
+		else
+
+			if [ -e "$ud_auto_flag" ];then
+				logger "$0: SW autorun is ready to run"
+			else
+				logger "$0: Failed to prepare update SW"
+				exit 1
+			fi
+
+		fi
+	else
+		logger "$0: The specified update file \"$UPDATE_FILE\" does not exist"
+		exit 1
+	fi
+
+exit 0

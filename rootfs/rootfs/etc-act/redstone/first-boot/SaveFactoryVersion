@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ubiattach /dev/ubi_ctrl -m 8 -d 8 > /dev/null 2>&1
+factory_dir="/tmp/factory.$$"
+mkdir "$factory_dir"
+mount -t ubifs ubi8_0 "$factory_dir" -o ro
+val=`head -n 1 "$factory_dir"/version`
+echo  $val > /mnt/nvram/config/FactoryVersion
+umount "$factory_dir"
+rm -rf "$factory_dir"
+ubidetach /dev/ubi_ctrl -m 8
+

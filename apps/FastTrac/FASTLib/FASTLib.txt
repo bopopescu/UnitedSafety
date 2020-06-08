@@ -1,0 +1,1 @@
+./Release/DeviceBase.o ./Release/FASTTrackData.o ./Release/NMEA_Client.o ./Release/SERDevice.o ./Release/VFD_Client.o ./Release/AFFData.o ./Release/AFFDevice.o ./Release/RTU_485Base.o ./Release/RTUDevice.o

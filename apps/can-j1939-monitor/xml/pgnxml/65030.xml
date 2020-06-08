@@ -1,0 +1,36 @@
+<data>
+	<pgn>65030</pgn>
+	<spn>2440</spn>
+	<value>
+		<name>"Generator Average Line-Line AC RMS Voltage"</name>
+		<size>16</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"V"</units>
+	</value>
+	<spn>2444</spn>
+	<value>
+		<name>"Generator Average Line-Neutral AC RMS Voltage"</name>
+		<size>16</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"V"</units>
+	</value>
+	<spn>2436</spn>
+	<value>
+		<name>"Generator Average AC Frequency"</name>
+		<size>16</size>
+		<scale>0.0078125</scale>
+		<offset>0</offset>
+		<units>"Hz"</units>
+	</value>
+	<spn>2448</spn>
+	<value>
+		<name>"Generator Average AC RMS Current"</name>
+		<size>16</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"A"</units>
+	</value>
+
+</data>

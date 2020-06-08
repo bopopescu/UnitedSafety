@@ -1,0 +1,52 @@
+#!/bin/sh
+i=0
+PROG_NAME='run-can-j1939-monitor'
+LOG="/var/log/"`echo -n $0|sed 's/.*\///'`".processlog"
+LAST_MSG=''
+if [ 'OFF' = "$FEATURE" ];then
+	echo "Unsetting $0" >> $LOG
+	exit 0
+fi
+
+c=`feature get can-odb2-monitor | head -1 | sed -r 's/.*([0-9])/\1/'` 
+if [ "1" = "$c" ]; then
+   d=`feature get can-odb2-monitor -s | sed 1d | awk '{split($0,a, ": ");print a[2]}'` 
+	if [ "ON" = "$d" ]; then
+		if [ -e "/home/root/log.enabled" ] ; then
+			echo "can-odb2-monitor still running" >> $LOG
+		fi
+		exit 0 
+	fi
+fi
+
+ln -sf /usr/bin/ip-j1939 /var/run/ip
+
+ifconfig can0 down
+echo 250000 > /sys/devices/platform/FlexCAN.0/bitrate
+ifconfig can0 up 
+
+modprobe can-j1939
+
+sa=`db-config get CanJ1939Monitor sourceaddress -v -n`
+if [ '' = "$sa" ]; then
+	sa=0xF9
+fi
+ 
+/var/run/ip link set can0 j1939 on
+/var/run/ip addr add j1939 $sa dev can0
+        
+. '/etc/rc.d/init.d/common'
+while true
+do
+	i=`expr $i + 1`
+	if [ -e "/home/root/log.enabled" ] ; then
+		uptime > $LOG
+		date >> $LOG
+		echo "starts: $i" >> $LOG
+		echo "lastmsg: $LAST_MSG" >> $LOG
+	fi
+	can-j1939-monitor
+	LAST_MSG="$PROG_NAME exited with code $?, restarting..."
+	sleep 1
+done
+exit 0

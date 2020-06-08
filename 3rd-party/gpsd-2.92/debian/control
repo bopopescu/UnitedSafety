@@ -1,0 +1,106 @@
+Source: gpsd
+Section: misc
+Priority: optional
+Maintainer: Bernd Zeimetz <bzed@debian.org>
+Build-Depends: debhelper (>= 5.0.61), po-debconf, dpkg-dev (>= 1.14.8),
+ quilt, autotools-dev,
+ python-all-dev (>= 2.3.3-6), python-support (>= 0.7.1),
+ python-all-dbg (>= 2.3.3-6),
+ xsltproc, docbook-xsl, docbook-xml,
+ libncurses-dev,
+ libdbus-1-dev, libglib2.0-dev, libdbus-glib-1-dev, makedev,
+ lsb-release
+Standards-Version: 3.8.4
+Homepage: http://gpsd.berlios.de/
+Vcs-Browser: http://git.recluse.de/?p=debian/pkg-gpsd.git
+Vcs-Git: git://git.recluse.de/debian/pkg-gpsd.git
+
+Package: gpsd
+Architecture: any
+Depends: netbase, lsb-base (>= 3.2-13), ${shlibs:Depends}, ${misc:Depends}
+Recommends: udev, python
+Breaks: ${gpsd:Breaks}
+Suggests: gpsd-clients, dbus
+Description: Global Positioning System - daemon
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ With gpsd, multiple GPS client applications can share access to devices
+ without contention or loss of data. Also, gpsd responds to queries with a
+ format that is substantially easier to parse than the different standards
+ emitted by GPS devices.
+
+Package: gpsd-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+ libgps19 (= ${binary:Version}) | gpsd (= ${binary:Version}) | gpsd-clients (= ${binary:Version}) | python-gps (= ${binary:Version})
+Description: Global Positioning System - debugging symbols
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ This package contains the detached debug symbols for gpsd, gpsd-clients,
+ python-gps, and libgps19.
+
+Package: gpsd-clients
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-gps, ${python:Depends}
+Suggests: gpsd
+Conflicts: gps
+Description: Global Positioning System - clients
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ This package contains auxiliary tools and example clients for monitoring and
+ testing gpsd.
+
+Package: python-gps
+Architecture: any
+Section: python
+Replaces: gpsd-clients (<< 2.34.dfsg-1)
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+ python (>= 2.6) | python-simplejson
+Recommends: gpsd
+Provides: ${python:Provides}
+Description: Global Positioning System - Python libraries
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ This package contains a Python interface to connect to gpsd, together with
+ a module providing a controlled testing environment. It also ships two tools
+ which utilize the interface: gpsprof for latency-profiling, and gpsfake to
+ simulate a GPS by playing back a logfile.
+
+Package: libgps19
+Architecture: any
+Section: libs
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: fso-gpsd
+Description: Global Positioning System - library
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ This package provides libgps, a C service library for querying GPS
+ devices. It supports both a low-level interface, which communicates
+ directly with the device to which the GPS is connected, and a high-level
+ interface, which goes through gpsd and is intended for concurrent use by
+ several applications.
+
+Package: libgps-dev
+Architecture: any
+Section: libdevel
+Depends: libgps19 (= ${binary:Version}), ${misc:Depends}
+Conflicts: gpsd (<< 2.34.dfsg-1)
+Description: Global Positioning System - development files
+ The gpsd service daemon can monitor one or more GPS devices connected to
+ a host computer, making all data on the location and movements of the
+ sensors available to be queried on TCP port 2947.
+ .
+ This package contains the header and development files needed to build
+ programs and packages using libgps.

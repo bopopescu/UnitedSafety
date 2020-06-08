@@ -1,0 +1,68 @@
+#!/usr/bin/make -f
+# -*- Makefile -*-
+
+# Set our build directory
+b := $(shell pwd)/debian/sendip
+
+arrange: arrange-stamp
+arrange-stamp: install
+	dh_testdir
+	touch arrange-stamp
+
+binary: binary-stamp
+binary-stamp: binary-indep binary-arch
+	dh_testdir
+	touch binary-stamp
+
+binary-arch: binary-arch-stamp
+binary-arch-stamp: arrange
+	dh_testdir
+	dh_testroot
+	dh_installdocs README TODO contrib/
+	dh_installchangelogs CHANGES
+	dh_fixperms
+	dh_installdeb
+	dh_perl
+	dh_strip
+	dh_shlibdeps
+	dh_link
+	dh_compress
+	dh_gencontrol
+	dh_builddeb
+	touch binary-arch-stamp
+
+binary-indep: binary-indep-stamp
+binary-indep-stamp: arrange
+	dh_testdir
+	touch binary-indep-stamp
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+build-stamp: config
+	dh_testdir
+	$(MAKE) PREFIX=/usr LDLOADLIBS=-lc
+	touch build-stamp
+
+clean:
+	dh_testdir
+	if [ -e Makefile ]; then $(MAKE) -i veryclean; fi
+	dh_clean arrange-stamp binary-stamp binary-arch-stamp binary-indep-stamp build-stamp config-stamp install-stamp
+
+config: config-stamp
+config-stamp:
+	dh_testdir
+	touch config-stamp
+
+install: install-stamp
+install-stamp: build
+	dh_testdir
+	install -d $(b)/usr/bin
+	install -d $(b)/usr/lib/sendip
+	install -d $(b)/usr/share/man/man1
+	install -c -m 755 sendip $(b)/usr/bin
+	install -c -m 755 *.so $(b)/usr/lib/sendip
+	install -c -m 644 sendip.1 $(b)/usr/share/man/man1
+	touch install-stamp
+
+.PHONY: binary binary-arch binary-indep clean

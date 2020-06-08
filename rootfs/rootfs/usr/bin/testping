@@ -1,0 +1,15 @@
+#!/bin/sh
+
+flagfile="/tmp/ramdisk/ping.good"
+
+if [ -e $flagfile ]; then
+	rm $flagfile
+fi
+
+
+ping -c 1 www.google.com  > /dev/null 2>&1
+
+if [ 0 = $? ];then
+	touch $flagfile
+fi
+

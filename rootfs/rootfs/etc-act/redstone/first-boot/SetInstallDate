@@ -1,0 +1,7 @@
+#!/bin/sh
+# This is script set the internet formatted install date.  It writes it to both nvram and db-config RedStone
+#
+t=`date +%Y-%m-%dT%H:%M:%S.000+0000`
+echo $t >> /mnt/nvram/rom/InstalledOn
+db-config set RedStone InstalledOn $t
+

@@ -1,0 +1,3 @@
+#!/bin/sh
+export AUTOSSH_LOGFILE=/var/log/autossh.log
+exec /usr/bin/do-autossh $*

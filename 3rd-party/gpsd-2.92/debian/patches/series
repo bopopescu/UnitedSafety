@@ -1,0 +1,6 @@
+0001-setup.py-Do-nothing-when-SKIP_SETUP_PY-is-set-in-the.patch
+0002-Non-streaming-operation-of-the-Python-exerciser-does.patch
+0003-Address-Debian-bug-573752-mode-sometimes-missing-fro.patch
+0004-Make-xgps-robust-against-JSON-with-no-time-field.patch
+0005-Make-the-library-default-to-new-protocol-rather-than.patch
+0006-Actually-close-the-daemon-socket-in-a-library-close.patch

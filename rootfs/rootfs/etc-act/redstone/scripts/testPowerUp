@@ -1,0 +1,11 @@
+#!/bin/sh
+db-config set RedStone IgnitionSource GPIO
+db-config set RedStone KeepAwakeMinutes 0
+db-config set feature packetizer_dash 1
+db-config set heartbeat m_state_1_timeout_seconds 86400
+
+echo "Unit will now reboot."
+echo "Please wait..."
+
+reboot
+

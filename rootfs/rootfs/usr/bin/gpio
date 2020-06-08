@@ -1,0 +1,154 @@
+#!/bin/sh
+
+#
+#gpio - script to display the GPIO status of the TRULink in human readable form.
+#
+#  Usage: gpio [output string]
+#  If no output string then display current settings
+
+if [ "$#" -gt 1 ]; then
+	echo "Illegal number of parameters"
+	exit 0
+fi
+
+if [ "$#" -eq 1 ]; then
+    echo $1 > /dev/set-gpio
+fi
+
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+BLUE="\033[34m"
+CYAN="\033[36m"
+NORMAL="\033[39m\033[0m"
+INVERT="\033[7m"
+
+raw=`head -n1 /dev/set-gpio`
+echo -e "Raw output string:$CYAN $raw $NORMAL"
+
+echo -e "\r"
+
+if [ "$raw" != "${raw/C/}" ]; then
+	echo -e "C:$GREEN output power is enabled $NORMAL"
+else
+	echo -e "c:$RED output power is DISABLED $NORMAL"
+fi
+echo -e "\r"
+
+if [ "$raw" != "${raw/D/}" ]; then
+	echo -e "D:Serial port (mode) is$YELLOW RS485$NORMAL"
+else
+	echo -e "d:Serial port (mode) is$GREEN RS232$NORMAL"
+fi
+if [ "$raw" != "${raw/E/}" ]; then
+	echo -e "E:Serial port (DEN) is$YELLOW RS485$NORMAL"
+else
+	echo -e "e:Serial port (DEN) is$GREEN RS232$NORMAL"
+fi
+if [ "$raw" != "${raw/F/}" ]; then
+	echo -e "F:Serial port (RXEN) is$YELLOW RS485$NORMAL"
+else
+	echo -e "f:Serial port (RXEN) is$GREEN RS232$NORMAL"
+fi
+echo -e "\r"
+
+if [ "$raw" != "${raw/G/}" ]; then
+	echo -e 'G:'$GREEN'Cell is powered'$NORMAL
+else
+	echo -e 'g:'$RED'Cell is not powered'$NORMAL
+fi
+
+if [ "$raw" != "${raw/H/}" ]; then
+	echo -e 'H:'$GREEN'GPS antenna is powered'$NORMAL
+else
+	echo -e 'h:'$RED'GPS antenna is not powered'$NORMAL
+fi
+
+if [ "$raw" != "${raw/J/}" ]; then
+	echo -e 'J:'$GREEN'Cell is enabled'$NORMAL
+else
+	echo -e 'j:'$RED'Cell is DISABLED'$NORMAL
+fi
+
+echo -e "\r"
+
+
+if [ "$raw" != "${raw/M/}" ]; then
+	echo -e 'M:'$GREEN'USB0 is powered'$NORMAL
+else
+	echo -e 'm:'$RED'USB0 is NOT powered'$NORMAL
+fi
+
+if [ "$raw" != "${raw/N/}" ]; then
+	echo -e 'N:'$GREEN'CAN control is enabled'$NORMAL
+else
+	echo -e 'n:'$RED'CAN control is DISABLED'
+fi
+if [ "$raw" != "${raw/O/}" ]; then
+	echo -e 'O:'$GREEN'Wireless is enabled'$NORMAL
+else
+	echo -e 'o:'$RED'Wireless is DISABLED'$NORMAL
+fi
+if [ "$raw" != "${raw/P/}" ]; then
+	echo -e 'P:'$GREEN'3V is enabled'$NORMAL
+else
+	echo -e 'p:'$RED'3V is DISABLED'$NORMAL
+fi
+
+if [ "$raw" != "${raw/Q/}" ]; then
+	echo -e 'Q:'$GREEN'5V is enabled'$NORMAL
+else
+	echo -e 'q:'$RED'5V is DISABLED'$NORMAL
+fi
+
+if [ "$raw" != "${raw/R/}" ]; then
+	echo -e 'R:'$GREEN'Iridium is enabled'$NORMAL
+else
+	echo -e 'r:'$RED'Iridium is DISABLED'$NORMAL
+fi
+
+if [ "$raw" != "${raw/S/}" ]; then
+	echo -e 'S:'$GREEN'XBee is enabled'$NORMAL
+else
+	echo -e 's:'$RED'XBee is DISABLED'$NORMAL
+fi
+
+echo -e "\r"
+
+if [ "$raw" != "${raw/T/}" ]; then
+	echo -e 'T:'$GREEN'GREEN power led is on'$NORMAL
+else
+	echo -e 't:'$RED'GREEN power led is off'$NORMAL
+fi
+
+if [ "$raw" != "${raw/U/}" ]; then
+	echo -e 'U:'$GREEN'RED power led is on'$NORMAL
+else
+	echo -e 'u:'$RED'RED power led is off'$NORMAL
+fi
+
+echo -e "\r"
+if [ "$raw" != "${raw/V/}" ]; then
+	echo -e 'V:'"USB hub nRESET $GREEN OFF $NORMAL"
+else
+	echo -e 'v:'"USB hub nRESET $RED ON $NORMAL"
+fi
+
+if [ "$raw" != "${raw/W/}" ]; then
+	echo -e 'W:'"ENET nRESET is$GREEN OFF $NORMAL"
+else
+	echo -e 'w:'"ENET nRESET is$RED ON $NORMAL"
+fi
+
+if [ "$raw" != "${raw/X/}" ]; then
+	echo -e 'X:'"LED nRESET is$GREEN OFF $NORMAL"
+else
+	echo -e 'x:'"LED nRESET is$RED ON $NORMAL"
+fi
+
+if [ "$raw" != "${raw/Z/}" ]; then
+	echo -e 'Z:'"Ignition Input is$GREEN ON $NORMAL"
+else
+	echo -e 'z:'"Ignition Input is$RED OFF $NORMAL"
+fi
+

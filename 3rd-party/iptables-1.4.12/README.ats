@@ -1,0 +1,13 @@
+=======================================================================
+= Building iptables
+=======================================================================
+Build Machine:
+	bm2
+	Linux Mint 13 Maya \n \l
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./autogen.sh
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc CFLAGS='-Os -Xlinker -s' --prefix="`pwd`/.redstone_build"
+	make -j12

@@ -1,0 +1,22 @@
+The new version of gnutls introduced this new option which mutt did not 
+know about, if the cert is signed with an insecure algorithm (md5) it will
+set a particular bit; if the cert is in the cache of the user we will
+unset all bits so this has to be unset as well
+See http://bugs.mutt.org/3229 and http://bugs.debian.org/514960
+
+--- a/mutt_ssl_gnutls.c
++++ b/mutt_ssl_gnutls.c
+@@ -614,6 +614,13 @@
+        in our cache. */
+       certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
+     }
++
++    if (certstat & GNUTLS_CERT_INSECURE_ALGORITHM)
++    {
++      /* if the certificate is in the cache the user is happy with
++         using an insecure algorithm */
++      certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
++    }
+   }
+ 
+   if (certstat & GNUTLS_CERT_REVOKED)

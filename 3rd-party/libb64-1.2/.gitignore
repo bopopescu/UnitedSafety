@@ -1,0 +1,7 @@
+*.swp
+base64/base64
+base64/depend
+src/cdecode.o
+src/cencode.o
+src/depend
+src/libb64.a

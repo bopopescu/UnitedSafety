@@ -1,0 +1,33 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	./configure --host=arm-linux-gnu CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}ld AR=${CROSS_COMPILE}ar STRIP=${CROSS_COMPILE}strip --with-config-file-path=/etc/ --enable-xml --enable-json --enable-hash --enable-dom --enable-session --enable-ctype --enable-tokenizer --without-pear  --enable-libxml --with-libxml-dir=/tmp/$(whoami)/xml2/ --enable-simplexml --enable-mbregex --enable-sockets  --enable-soap --enable-pdo --with-pdo-sqlite --with-sqlite3 --with-openssl=/tmp/$(whoami)/openssl --enable-calendar --disable-all CFLAGS='-Os -Xlinker -s' --disable-rpath
+
+	cat libtool|sed 's/^hardcode_libdir_flag_spec=.*/hardcode_libdir_flag_spec="\\${wl}--rpath \/lib"/' > libtool.redstone; mv libtool.redstone libtool
+
+	make -j$TRULINK_JOBS LDFLAGS+="-s"
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		APP="sapi/cgi/php-cgi"
+		sudo cp -av $APP "$ROOTFS_DEF_DIR/usr/bin/php5-cgi"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

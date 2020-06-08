@@ -1,0 +1,6 @@
+*.swp
+moc
+obj
+bin
+uic
+Makefile

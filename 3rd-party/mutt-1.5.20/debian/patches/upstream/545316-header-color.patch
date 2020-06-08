@@ -1,0 +1,13 @@
+Do not store the header color into hcache, see http://bugs.mutt.org/3376 and
+http://dev.mutt.org/trac/changeset/b7d2cb7c7ce1 for more info
+
+--- a/hcache.c
++++ b/hcache.c
+@@ -623,6 +623,7 @@
+   nh.limited = 0;
+   nh.num_hidden = 0;
+   nh.recipient = 0;
++  nh.pair = 0;
+   nh.attach_valid = 0;
+   nh.path = NULL;
+   nh.tree = NULL;

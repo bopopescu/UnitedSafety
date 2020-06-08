@@ -1,0 +1,58 @@
+#!/bin/sh
+
+if [ -e /mnt/nvram/config/testmode ];then
+	exit 0
+fi
+
+count=0
+#  need to see the drivers come up before it will restart 
+ 
+while :
+do
+	drivers=`lsusb | grep Future`
+
+	if [ -n "$drivers" ]
+ 	then
+	 	drivers=`route -n  | grep ra0`
+ 		if [ -n "$drivers" ]
+ 		then
+	 		break;
+ 		fi
+ 	fi
+ 	
+ 	sleep 15
+done
+ 								
+while :
+do
+ 	drivers=`lsusb | grep Future`
+ 
+ 	if [ -z "$drivers" ]
+	then
+		count=$((count+1))
+ 	
+ 		if [ $count -gt 4 ]
+ 		then
+ 			echo "No drivers - count is $count"
+ 			echo "USB Drivers missing" >> /tmp/logdir/brownout.txt
+ 			reboot.brownout;
+ 		fi
+	fi
+
+ 	drivers=`route -n  | grep ra0`
+ 
+ 	if [ -z "$drivers" ]
+	then
+		count=$((count+1))
+ 	
+ 		if [ $count -gt 4 ]
+ 		then
+ 			echo "No ra0 - count is $count"
+ 			echo "ra0 missing" >> /tmp/logdir/brownout.txt
+ 			reboot.brownout;
+ 		fi
+	fi
+	
+	sleep 15
+done
+

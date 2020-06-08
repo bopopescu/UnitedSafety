@@ -1,0 +1,30 @@
+#!/bin/sh
+echo > /dev/watchdog
+logger -s "===== run-db-monitor ====="
+i=0
+PROG_NAME='db-monitor'
+LOG="/var/log/"`echo -n $0|sed 's/.*\///'`".processlog"
+LAST_MSG=''
+
+DB_OK=`sqlite3 /mnt/nvram/config/config.db "pragma integrity_check"`
+
+if [ "$DB_OK" != "ok" ]; then
+        logger -s "run-db-monitor - configuration database failed integrity check! Running sqlite3 vacuum on it"
+        /usr/bin/sqlite3 /mnt/nvram/config/config.db vacuum
+fi
+
+
+while true
+do
+	i=`expr $i + 1`
+	if [ -e "/home/root/log.enabled" ] ; then
+		uptime > $LOG
+		date >> $LOG
+		echo "starts: $i" >> $LOG
+		echo "lastmsg: $LAST_MSG" >> $LOG
+	fi
+	$PROG_NAME
+	LAST_MSG="$PROG_NAME exited with code $?, restarting..."
+	sleep 1
+done
+exit 0

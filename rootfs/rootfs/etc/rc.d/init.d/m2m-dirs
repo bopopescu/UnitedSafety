@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mkdir -p /tmp/flags
+mkdir -p /tmp/config
+
+ubiattach /dev/ubi_ctrl -m 4 -d 4
+mount -t ubifs ubi4_0 /mnt/nvram/
+
+ubiattach /dev/ubi_ctrl -m 10 -d 10
+mount -t ubifs ubi10_0 /mnt/update/
+
+mknod /dev/set-gpio c 238 0
+
+exit 0

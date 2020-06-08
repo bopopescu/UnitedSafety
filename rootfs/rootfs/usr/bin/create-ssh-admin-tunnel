@@ -1,0 +1,39 @@
+#!/bin/sh
+
+done=0
+
+while [ $done -eq 0 ];
+do
+	if [ -e /tmp/ramdisk/ping.good ]; then
+		done=1
+	fi
+done
+
+
+
+sn=`cat /mnt/nvram/rom/sn.txt`
+monitor=`expr $sn + 35000`
+sn_port=`expr $sn + 30000`
+
+host='redstone.atsplace.com'
+LOG_FILE='/var/log/ssh-admin-tunnel-status.log'
+	poll=`db-config get -v RedStone AutosshPollTime`
+
+	if [ '' = "$poll" ];then
+		poll=600
+	fi
+
+	export AUTOSSH_FIRST_POLL=$poll
+	export AUTOSSH_POLL=$poll
+	export AUTOSSH_LOGFILE=/var/log/autossh.log
+
+	while true
+	do
+		date > "$LOG_FILE"
+		echo "Device \"$sn\" creating SSH (developer) tunnel to \"$host\"" >> "$LOG_FILE"
+		resolve-or-wait "$host"
+		/usr/bin/do-autossh -M $monitor -R $sn_port:127.0.0.1:22 -y -i /etc/dropbear/dropbear_rsa_host_key -p 38022 redstone@$host -N &> /dev/null
+		sleep 15
+	done
+
+exit 1

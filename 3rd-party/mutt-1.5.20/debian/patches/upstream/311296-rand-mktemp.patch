@@ -1,0 +1,19 @@
+More random file creation in /tmp to prevent DOS, see CVE CAN-2005-2351 and
+upstream http://bugs.mutt.org/3158
+
+--- a/muttlib.c
++++ b/muttlib.c
+@@ -748,7 +748,12 @@
+ 
+ void _mutt_mktemp (char *s, const char *src, int line)
+ {
+-  snprintf (s, _POSIX_PATH_MAX, "%s/mutt-%s-%d-%d-%d", NONULL (Tempdir), NONULL(Hostname), (int) getuid(), (int) getpid (), Counter++);
++  long sek;
++
++  time(&sek);
++  srand(sek);
++  snprintf (s, _POSIX_PATH_MAX, "%s/mutt-%s-%d-%d-%d%x%x", NONULL (Tempdir), NONULL(Hostname), (int) getuid(), (int) getpid (),
++            Counter++, (unsigned int) rand(), (unsigned int) rand());
+   dprint (3, (debugfile, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s));
+   unlink (s);
+ }

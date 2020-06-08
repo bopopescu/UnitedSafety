@@ -1,0 +1,11 @@
+*.swp
+*.o
+Makefile
+config.h
+config.h.redstone
+config.log
+config.status
+filan
+libxio.a
+procan
+socat

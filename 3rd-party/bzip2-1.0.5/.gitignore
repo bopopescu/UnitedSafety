@@ -1,0 +1,15 @@
+*.swp
+*.o
+blocksort.sho
+bzip2
+bzip2recover
+bzlib.sho
+compress.sho
+crctable.sho
+decompress.sho
+huffman.sho
+libbz2.a
+libbz2.so
+libbz2.so.1.0
+libbz2.so.1.0.4
+randtable.sho

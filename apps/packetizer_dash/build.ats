@@ -1,0 +1,23 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	export KERNEL_SRC_DIR="${BUILD_DIR}/kernel"
+	make -e
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+	${CROSS_COMPILE}strip "bin/$ARCH/packetizer_dash"
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+		APP="./bin/$ARCH/packetizer_dash"
+		sudo cp -av "$APP" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+	fi
+exit 0

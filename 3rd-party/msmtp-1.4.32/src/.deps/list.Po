@@ -1,0 +1,77 @@
+list.o list.o: list.c ../config.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdlib.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/features.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/predefs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/cdefs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wordsize.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gnu/stubs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stddef.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitflags.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitstatus.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/endian.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/endian.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/xlocale.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/types.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/types.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/typesizes.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/time.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/select.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/select.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sigset.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/time.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/sysmacros.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/pthreadtypes.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/alloca.h \
+  xalloc.h list.h
+
+../config.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdlib.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/features.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/cdefs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wordsize.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gnu/stubs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stddef.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitflags.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitstatus.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/endian.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/endian.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/xlocale.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/types.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/types.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/typesizes.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/time.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/select.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/select.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sigset.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/time.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/sysmacros.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/pthreadtypes.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/alloca.h:
+
+xalloc.h:
+
+list.h:

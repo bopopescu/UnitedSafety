@@ -1,0 +1,34 @@
+Actually reopen mbox/mmdf files in case we find modifications. Closes 
+http://bugs.mutt.org/2725.
+
+Since the file is changed while we have it open in ctx->fp, we likely
+get wrong information when parsing the mailbox. Now we explicitely close
+and (re)open it.
+
+See http://bugs.debian.org/375530 for more info
+
+--- a/mbox.c
++++ b/mbox.c
+@@ -1119,17 +1119,13 @@
+   {
+     case M_MBOX:
+     case M_MMDF:
+-      if (fseek (ctx->fp, 0, SEEK_SET) != 0)
+-      {
+-        dprint (1, (debugfile, "mutt_reopen_mailbox: fseek() failed\n"));
++      cmp_headers = mbox_strict_cmp_headers;
++      safe_fclose (&ctx->fp);
++      if (!(ctx->fp = safe_fopen (ctx->path, "r")))
+         rc = -1;
+-      } 
+-      else 
+-      {
+-        cmp_headers = mbox_strict_cmp_headers;
++      else
+         rc = ((ctx->magic == M_MBOX) ? mbox_parse_mailbox
+-				     : mmdf_parse_mailbox) (ctx);
+-      }
++                                  : mmdf_parse_mailbox) (ctx);
+       break;
+ 
+     default:

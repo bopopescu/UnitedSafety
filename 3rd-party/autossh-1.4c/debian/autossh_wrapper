@@ -1,0 +1,54 @@
+#!/bin/sh
+# little wrapper to choose a random port for autossh, falling back to $fallback_port
+
+fallback_port="21021"
+tcpstat="/proc/net/tcp" 
+
+# take an hex port and check whether it is in use (i.e. locally bound) in
+# $tcpstat
+# unix command semantics: if in use return 0 else return 1
+port_in_use() {
+	if egrep -q "^[0-9 ]+: [0-9A-F]{8}:$1" $tcpstat ; then
+		return 0
+	else
+		return 1
+	fi
+}
+	
+echo "$@" | egrep -q -- '-f?M ?[0-9]+' # backward compatibility, skip guess if -M is passed
+
+if [ $? -gt 0 ] && [ -z "$AUTOSSH_PORT" ]; then 
+	portguess=""
+	if [ -r "/dev/urandom" ] && [ -r "$tcpstat" ]; then
+		for t in $(seq 1 42); do
+			# get a random hex
+			randport=$( od -x -N2 -An /dev/urandom | tr -d ' ' )
+			
+			# increase it a little "bit"
+			randport=$( /usr/bin/printf "%04x" $(( 0x$randport | 0x8000 )) )
+			randport_1=$( /usr/bin/printf "%04x" $(( 0x$randport + 1 )) )
+
+			# check if port is in use, possibile race condition between here
+			# and the exec 
+			if ! port_in_use $randport && ! port_in_use $randport_1; then
+				portguess=$(( 0x$randport ))
+				break	
+			fi
+		done
+	fi
+
+	if [ -z "$portguess" ]; then
+		fallback=$( /usr/bin/printf "%04x" $fallback_port )
+		fallback_1=$( /usr/bin/printf "%04x" $(( 0x$fallback + 1 )) )
+		if ! port_in_use $fallback && ! port_in_use $fallback_1; then
+			portguess=$fallback_port
+		else
+			echo "unable to find a suitable tunnel port"
+			exit 1
+		fi
+	fi
+
+	export AUTOSSH_PORT="$portguess"
+fi
+
+exec /usr/lib/autossh/autossh "$@"

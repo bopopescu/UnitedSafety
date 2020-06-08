@@ -1,0 +1,1 @@
+./Release/angle.o ./Release/BufferedFile.o ./Release/dbls_eq.o ./Release/ellipse.o ./Release/fragment.o ./Release/J2K.o ./Release/keyboard.o ./Release/Lat.o ./Release/Lon.o ./Release/tinystr.o ./Release/tinyxml.o ./Release/tinyxmlerror.o ./Release/tinyxmlparser.o ./Release/utility.o ./Release/WriteDebug.o ./Release/CSelect.o

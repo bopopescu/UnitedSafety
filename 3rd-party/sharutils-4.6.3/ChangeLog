@@ -1,0 +1,24 @@
+2006-05-18  Bruce Korb  <bkorb@gnu.org>
+
+	* bootstrap: add code to derive compress-dummy.1 from the script.
+	* configure.ac: Remember which dirent header was found
+	* src/shar.c: Use the #define name of the dirent header for #include
+	Remove our own private declarations of opendir and readdir.
+	* doc/Makefile.am(dist_man2_MANS): add compress-dummy.1
+	* src/compress-dummy.in: clarify the name of what it is.
+
+2006-05-15  Bruno Haible  <bruno@clisp.org>
+
+	* shar.c: declare readdir IFF readdir is not already a #define
+
+2006-04-26  Pavel Roskin  <proski@gnu.org>
+
+	* uudecode.c (read_stduu): Allow characters other than '\n'
+	after "end", viz., the DOS style newline "\r\n".
+
+2006-03-24  Santiago Vila  <sanvila@unex.es>
+
+	* uudecode.c(decode): make clear the name of the file causing problems
+	* shar.c(change_files): fix args to fprintf.
+
+[[... see cvs ChangeLog.2005 ]]

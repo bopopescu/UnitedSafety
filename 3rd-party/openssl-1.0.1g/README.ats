@@ -1,0 +1,26 @@
+=======================================================================
+= Building openssl 1.0.1c
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 11 Katya \n \l
+
+	bm1, bm2
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	// XXX: The below command optimizes for speed
+	./Configure --prefix=/tmp/$(whoami)/openssl linux-armv4
+
+	// XXX: The below command optimizes for size
+	./Configure --prefix=/tmp/$(whoami)/openssl linux-armv4:gcc:-Os
+
+	// ATS FIXME: The OpenSSL Makefile contains a race-condition because "make -j12" fails with linker
+	//	errors, however "make" works. This was found on "bm2".
+	make -j 4
+
+	make install

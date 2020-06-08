@@ -1,0 +1,17 @@
+This is Debian GNU/Linux's prepackaged version of sendip, a program to allow
+the sending of arbitrary IP packets.
+
+This package was put together by Jonathan McDowell <noodles@earth.li>
+
+It can be obtained from http://www.earth.li/projectpurple/progs/sendip.html
+
+Upstream author: Mike Ricketts <mike@earth.li>
+
+Copyright 2000-2005 Mike Ricketts
+
+You are free to distribute this software under the terms of the GNU
+General Public License. The full text of this license can be found
+in the file /usr/share/common-licenses/GPL-2
+
+The Debian packaging is (C) 2000-2011, Jonathan McDowell <noodles@earth.li>
+and is licensed under the GPLv2, see above.

@@ -1,0 +1,84 @@
+# build system patches
+misc/am-maintainer-mode
+misc/hg.pmdef.debugtime
+debian-specific/build_doc_adjustments.diff 
+debian-specific/sort-patchlist
+
+# features
+features/ifdef
+features/xtitles
+features/trash-folder
+features/purge-message
+features/sensible_browser_position
+features-old/patch-1.5.4.vk.pgp_verbose_mime
+features/compressed-folders
+features/compressed-folders.debian
+
+# Debian config
+debian-specific/Muttrc
+debian-specific/Md.etc_mailname_gethostbyname.diff 
+debian-specific/use_usr_bin_editor.diff 
+debian-specific/correct_docdir_in_man_page.diff 
+debian-specific/dont_document_not_present_features.diff 
+debian-specific/document_debian_defaults
+debian-specific/assumed_charset-compat
+debian-specific/467432-write_bcc.patch
+misc/define-pgp_getkeys_command.diff 
+misc/gpg.rc-paths
+misc/smime.rc
+
+# patches integrated from upstream mercurial
+# drop them with a new upstream release
+upstream/533209-mutt_perror.patch
+upstream/533459-unmailboxes.patch
+upstream/533439-mbox-time.patch
+upstream/531430-imapuser.patch
+upstream/534543-imap-port.patch
+upstream/538128-mh-folder-access.patch
+upstream/537818-emptycharset.patch
+upstream/535096-pop-port.patch
+upstream/542910-search-segfault.patch
+upstream/533370-pgp-inline.patch
+upstream/533520-signature-highlight.patch
+upstream/393926-internal-viewer.patch
+upstream/543467-thread-segfault.patch
+upstream/544180-italian-yesorno.patch
+upstream/542817-smimekeys-tmpdir.patch
+upstream/544794-smtp-batch.patch
+upstream/537694-segv-imap-headers.patch
+upstream/548577-gpgme-1.2.patch
+upstream/548494-swedish-intl.patch
+upstream/553321-ansi-escape-segfault.patch
+upstream/553238-german-intl.patch
+upstream/557395-muttrc-crypto.patch
+upstream/545316-header-color.patch
+upstream/568295-references.patch
+upstream/547980-smime_keys-chaining.patch
+upstream/528233-readonly-open.patch
+upstream/228671-pipe-mime.patch
+upstream/383769-score-match.patch
+upstream/547739-manual-typos.patch
+upstream/311296-rand-mktemp.patch
+
+misc/hyphen-as-minus.patch
+#misc/manpage-typos.patch
+misc/smime_keys-manpage.patch
+
+# Ubuntu cherry-pick from upstream
+ubuntu/CVE-2011-1429.patch
+
+mutt.org
+# extra patches for mutt-patched
+mutt-patched/sidebar
+mutt-patched/sidebar-dotted
+mutt-patched/sidebar-sorted
+
+# not applying cleanly at the moment
+#mutt-patched/nntp
+
+# unapplied patches for custom packages
+# not-applied/chdir
+# not-applied/indexcolor
+# not-applied/w3mface
+# unapplied, not stable at the moment
+#mutt-patched/sidebar-newonly

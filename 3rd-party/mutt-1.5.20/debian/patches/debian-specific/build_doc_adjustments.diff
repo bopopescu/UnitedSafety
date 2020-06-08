@@ -1,0 +1,17 @@
+Use elinks(1) to generate the HTML manual page
+
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -114,10 +112,10 @@ stamp-doc-rc: $(top_srcdir)/init.h maked
+ 	touch stamp-doc-rc
+ 
+ manual.html: $(srcdir)/html.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir)/mutt.css
+-	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
++	xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
+ 
+ stamp-doc-chunked: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir)/mutt.css
+-	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
++	xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
+ 	touch stamp-doc-chunked
+ 
+ $(CHUNKED_DOCFILES): stamp-doc-chunked

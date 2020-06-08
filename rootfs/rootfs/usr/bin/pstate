@@ -1,0 +1,3 @@
+#!/bin/sh
+echo -e 'PowerMonitorStateMachine stats' | nc -w 1 localhost 41009
+

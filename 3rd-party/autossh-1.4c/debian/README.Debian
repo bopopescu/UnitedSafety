@@ -1,0 +1,12 @@
+autossh for Debian README
+=========================
+autossh is wrapped to choose a random port or fall back to 21021 the real
+binary is /usr/lib/autossh/autossh 
+
+In this version of autossh the commandline switch -M overrides AUTOSSH_PORT
+environment, as opposed to default upstream behaviour (see
+http://bugs.debian.org/238150#msg6 and following)
+
+Note: if your ssh client/server version is recent enough you can obtain similar
+behaviour by setting ClientAliveCountMax and ServerAliveInterval in
+/etc/ssh/sshd_config. See sshd_config(5).

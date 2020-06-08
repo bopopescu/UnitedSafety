@@ -1,0 +1,27 @@
+=======================================================================
+= Building gnutls26-2.12.14
+=======================================================================
+Build Machine:
+	bm2
+	Linux Mint 13 Maya \n \l
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	autoreconf
+	./configure --host arm-linux-gnu\
+		CC=${CROSS_COMPILE}gcc\
+		LD=${CROSS_COMPILE}gcc\
+		AS=${CROSS_COMPILE}as\
+		AR=${CROSS_COMPILE}ar\
+		NM=${CROSS_COMPILE}nm\
+		CFLAGS="-Os -I`pwd`/../gmp-5.0.5/.redstone_build/include -I`pwd`/../p11-kit-0.12/.redstone_build/include/p11-kit-1"\
+		CXXFLAGS='-Os'\
+		LDFLAGS="-L`pwd`/../gmp-5.0.5/.redstone_build/lib -L`pwd`/../nettle-2.4/ -L`pwd`/../p11-kit-0.12/.redstone_build/lib"\
+		LIBS='-lp11-kit'\
+		P11_KIT_CFLAGS="-I`pwd`/../p11-kit-0.12/.redstone_build/include"\
+		P11_KIT_LIBS="-L`pwd`/../p11-kit-0.12/.redstone_build/lib"\
+		--with-libnettle-prefix="`pwd`/../nettle-2.4/.redstone_build"\
+		CXX=${CROSS_COMPILE}g++\
+		--prefix="`pwd`/.redstone_build"
+	make -j12

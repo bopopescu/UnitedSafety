@@ -1,0 +1,1212 @@
+# Norwegian messages for GNU gettext.  (nynorsk dialect)
+# Copyright (C) 1996 Free Software Foundation, Inc.
+# Karl Anders Øygard <karlo@ifi.uio.no>, 1996.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GNU gettext 0.10.12\n"
+"Report-Msgid-Bugs-To: bug-gnu-utils@gnu.org\n"
+"POT-Creation-Date: 2006-06-03 12:18-0700\n"
+"PO-Revision-Date: 2002-06-25 20:04+0200\n"
+"Last-Translator: Karl Anders Øygard <karlo@ifi.uio.no>\n"
+"Language-Team: Norwegian-nynorsk <no@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/error.c:131 lib/error.c:159
+msgid "Unknown system error"
+msgstr ""
+
+#: lib/getopt.c:694
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: flagg «%s» er fleirtydig\n"
+
+#: lib/getopt.c:719
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: flagg «--%s» tek ikkje argument\n"
+
+#: lib/getopt.c:724
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: flagg «%c%s» tek ikkje argument\n"
+
+#: lib/getopt.c:742 lib/getopt.c:915
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: flagg «%s» treng eit argument\n"
+
+#: lib/getopt.c:771
+#, fuzzy, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: ulovleg flagg -- %c\n"
+
+#: lib/getopt.c:775
+#, fuzzy, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: ulovleg flagg -- %c\n"
+
+#: lib/getopt.c:801
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: ulovleg flagg -- %c\n"
+
+#: lib/getopt.c:804
+#, fuzzy, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: ulovleg flagg -- %c\n"
+
+#: lib/getopt.c:834 lib/getopt.c:964
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: flagg treng eit argument -- %c\n"
+
+#: lib/getopt.c:881
+#, fuzzy, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: flagg «%s» er fleirtydig\n"
+
+#: lib/getopt.c:899
+#, fuzzy, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: flagg «--%s» tek ikkje argument\n"
+
+#: lib/xmalloc.c:66
+msgid "memory exhausted"
+msgstr ""
+
+#: src/shar.c:606
+msgid "Note: not verifying md5sums.  Consider installing GNU coreutils."
+msgstr ""
+
+#: src/shar.c:641
+msgid "WARNING: not restoring timestamps.  Consider getting and"
+msgstr ""
+
+#: src/shar.c:643
+msgid "installing GNU `touch'\\'', distributed in GNU coreutils..."
+msgstr ""
+
+#: src/shar.c:650
+msgid "lock directory '${lock_dir}' exists"
+msgstr ""
+
+#: src/shar.c:655
+msgid "failed to create lock directory"
+msgstr ""
+
+#: src/shar.c:659
+#, c-format
+msgid "x - created lock directory `'%s\\''."
+msgstr ""
+
+#: src/shar.c:661
+#, c-format
+msgid "x - failed to create lock directory `'%s\\''."
+msgstr ""
+
+#: src/shar.c:669
+msgid "yes"
+msgstr ""
+
+#: src/shar.c:669
+msgid "overwrite this file"
+msgstr ""
+
+#: src/shar.c:670
+msgid "no"
+msgstr ""
+
+#: src/shar.c:670
+msgid "skip this file"
+msgstr ""
+
+#: src/shar.c:671
+msgid "all"
+msgstr ""
+
+#: src/shar.c:671
+msgid "overwrite all files"
+msgstr ""
+
+#: src/shar.c:672
+msgid "none"
+msgstr ""
+
+#: src/shar.c:672
+msgid "overwrite no files"
+msgstr ""
+
+#: src/shar.c:673
+msgid "help"
+msgstr ""
+
+#: src/shar.c:673
+msgid "explain choices"
+msgstr ""
+
+#: src/shar.c:674
+msgid "quit"
+msgstr ""
+
+#: src/shar.c:674
+msgid "exit immediately"
+msgstr ""
+
+#: src/shar.c:716
+msgid "Too many directories for mkdir generation"
+msgstr ""
+
+#: src/shar.c:735
+#, c-format
+msgid "x - created directory `%s'\\''."
+msgstr ""
+
+#: src/shar.c:737
+#, c-format
+msgid "x - failed to create directory `%s'\\''."
+msgstr ""
+
+#: src/shar.c:804 src/shar.c:1055
+#, c-format
+msgid "Cannot access %s"
+msgstr ""
+
+#: src/shar.c:858
+msgid "-C is being deprecated, use -Z instead"
+msgstr ""
+
+#: src/shar.c:899 src/unshar.c:377
+#, fuzzy
+msgid "Cannot get current directory name"
+msgstr "kan ikkje skifte til filkatalog \"%s\""
+
+#: src/shar.c:963
+msgid ""
+"Archives must be unpacked in sequence!\n"
+"Please unpack part '`cat ${lock_dir}/seq`' next."
+msgstr ""
+
+#: src/shar.c:974 src/shar.c:1381
+#, fuzzy, c-format
+msgid "New file, remaining %s, "
+msgstr "feil under skriving av fila \"%s\""
+
+#: src/shar.c:975 src/shar.c:1382
+#, c-format
+msgid "Limit still %s\n"
+msgstr ""
+
+#: src/shar.c:981 src/shar.c:1556 src/shar.c:1572
+#, c-format
+msgid "restore of %s failed"
+msgstr ""
+
+#: src/shar.c:985
+#, c-format
+msgid "End of part %d, continue with part %d"
+msgstr ""
+
+#: src/shar.c:999 src/shar.c:1475
+#, c-format
+msgid "Starting file %s\n"
+msgstr ""
+
+#: src/shar.c:1050
+#, c-format
+msgid "%s: Not a regular file"
+msgstr ""
+
+#: src/shar.c:1065
+#, c-format
+msgid "In shar: remaining size %s\n"
+msgstr ""
+
+#: src/shar.c:1084
+msgid "empty"
+msgstr ""
+
+#: src/shar.c:1085
+msgid "(empty)"
+msgstr ""
+
+#: src/shar.c:1109
+#, fuzzy, c-format
+msgid "Cannot open file %s"
+msgstr "kan ikkje opprette utfila \"%s\""
+
+#: src/shar.c:1146
+msgid "compressed"
+msgstr ""
+
+#: src/shar.c:1147
+msgid "gzipped"
+msgstr ""
+
+#: src/shar.c:1148
+msgid "bzipped"
+msgstr ""
+
+#: src/shar.c:1149
+msgid "binary"
+msgstr ""
+
+#: src/shar.c:1150
+msgid "(compressed)"
+msgstr ""
+
+#: src/shar.c:1151
+msgid "(gzipped)"
+msgstr ""
+
+#: src/shar.c:1152
+msgid "(bzipped)"
+msgstr ""
+
+#: src/shar.c:1153
+msgid "(binary)"
+msgstr ""
+
+#: src/shar.c:1166
+msgid "Could not fork"
+msgstr ""
+
+#: src/shar.c:1171 src/shar.c:1231
+#, c-format
+msgid "File %s (%s)"
+msgstr ""
+
+#: src/shar.c:1225
+msgid "text"
+msgstr ""
+
+#: src/shar.c:1226
+msgid "(text)"
+msgstr ""
+
+#: src/shar.c:1249
+#, c-format
+msgid "overwriting %s"
+msgstr ""
+
+#: src/shar.c:1251
+#, c-format
+msgid "overwrite %s"
+msgstr ""
+
+#: src/shar.c:1255
+#, c-format
+msgid "SKIPPING %s"
+msgstr ""
+
+#: src/shar.c:1256
+msgid "extraction aborted"
+msgstr ""
+
+#: src/shar.c:1260
+#, c-format
+msgid "SKIPPING %s (file already exists)"
+msgstr ""
+
+#: src/shar.c:1270
+#, c-format
+msgid "Saving %s (%s)"
+msgstr ""
+
+#: src/shar.c:1274
+#, c-format
+msgid "x - extracting %s %s"
+msgstr ""
+
+#: src/shar.c:1390
+#, c-format
+msgid "restore of %s failed\n"
+msgstr ""
+
+#: src/shar.c:1399
+#, c-format
+msgid "End of part %ld, continue with part %ld"
+msgstr ""
+
+#: src/shar.c:1405
+#, c-format
+msgid "End of %s part %d"
+msgstr ""
+
+#: src/shar.c:1406
+msgid "archive"
+msgstr ""
+
+#: src/shar.c:1410
+#, c-format
+msgid "File %s is continued in part %d"
+msgstr ""
+
+#: src/shar.c:1454
+msgid "Please unpack part 1 first!"
+msgstr ""
+
+#: src/shar.c:1458
+msgid "Please unpack part '${shar_sequence}' next!"
+msgstr ""
+
+#: src/shar.c:1469
+#, c-format
+msgid "STILL SKIPPING %s"
+msgstr ""
+
+#: src/shar.c:1477
+#, fuzzy, c-format
+msgid "continuing file %s"
+msgstr "inga innfil spesifisert"
+
+#: src/shar.c:1495
+#, c-format
+msgid "File %s is complete"
+msgstr ""
+
+#: src/shar.c:1502
+#, c-format
+msgid "uudecoding file %s"
+msgstr ""
+
+#: src/shar.c:1512
+#, fuzzy, c-format
+msgid "uncompressing file %s"
+msgstr "kan ikkje opprette utfila \"%s\""
+
+#: src/shar.c:1520
+#, c-format
+msgid "gunzipping file %s"
+msgstr ""
+
+#: src/shar.c:1528
+#, c-format
+msgid "bunzipping file %s"
+msgstr ""
+
+#: src/shar.c:1583
+msgid "MD5 check failed"
+msgstr ""
+
+#: src/shar.c:1639
+#, c-format
+msgid "'restoration warning:  size of %s is not %s'\n"
+msgstr ""
+
+#: src/shar.c:1691
+msgid "allocating output file name"
+msgstr ""
+
+#: src/shar.c:1697
+#, c-format
+msgid "Opening `%s'"
+msgstr ""
+
+#: src/shar.c:1708
+#, c-format
+msgid "Closing `%s'"
+msgstr ""
+
+#: src/shar.c:1720 src/unshar.c:313 src/uudecode.c:439 src/uuencode.c:204
+#, fuzzy, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "Prøv «%s --help» for meir informasjon\n"
+
+#: src/shar.c:1724 src/unshar.c:317
+#, c-format
+msgid "Usage: %s [OPTION]... [FILE]...\n"
+msgstr ""
+
+#: src/shar.c:1725
+msgid ""
+"Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr ""
+
+#: src/shar.c:1728
+msgid ""
+"\n"
+"Giving feedback:\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"  -q, --quiet, --silent   do not output verbose messages locally\n"
+msgstr ""
+
+#: src/shar.c:1736
+msgid ""
+"\n"
+"Selecting files:\n"
+"  -p, --intermix-type     allow -[BTzZ] in file lists to change mode\n"
+"  -S, --stdin-file-list   read file list from standard input\n"
+msgstr ""
+
+#: src/shar.c:1743
+msgid ""
+"\n"
+"Selecting files:\n"
+"  -p, --intermix-type     allow -[BTz] in file lists to change mode\n"
+"  -S, --stdin-file-list   read file list from standard input\n"
+msgstr ""
+
+#: src/shar.c:1750
+msgid ""
+"\n"
+"Splitting output:\n"
+"  -o, --output-prefix=PREFIX    output to file PREFIX.01 through PREFIX.NN\n"
+"  -l, --whole-size-limit=SIZE   split archive, not files, to SIZE kilobytes\n"
+"  -L, --split-size-limit=SIZE   split archive, or files, to SIZE kilobytes\n"
+msgstr ""
+
+#: src/shar.c:1757
+msgid ""
+"\n"
+"Controlling the shar headers:\n"
+"  -n, --archive-name=NAME   use NAME to document the archive\n"
+"  -s, --submitter=ADDRESS   override the submitter name\n"
+"  -a, --net-headers         output Submitted-by: & Archive-name: headers\n"
+"  -c, --cut-mark            start the shar with a cut line\n"
+"  -t, --translate           translate messages in the script\n"
+"\n"
+"Selecting how files are stocked:\n"
+"  -M, --mixed-uuencode         dynamically decide uuencoding (default)\n"
+"  -T, --text-files             treat all files as text\n"
+"  -B, --uuencode               treat all files as binary, use uuencode\n"
+"  -z, --gzip                   gzip and uuencode all files\n"
+"  -g, --level-for-gzip=LEVEL   pass -LEVEL (default 9) to gzip\n"
+"  -j, --bzip2                  bzip2 and uuencode all files\n"
+msgstr ""
+
+#: src/shar.c:1775
+msgid ""
+"  -Z, --compress               compress and uuencode all files\n"
+"  -b, --bits-per-code=BITS     pass -bBITS (default 12) to compress\n"
+msgstr ""
+
+#: src/shar.c:1780
+msgid ""
+"\n"
+"Protecting against transmission:\n"
+"  -w, --no-character-count      do not use `wc -c' to check size\n"
+"  -D, --no-md5-digest           do not use `md5sum' digest to verify\n"
+"  -F, --force-prefix            force the prefix character on every line\n"
+"  -d, --here-delimiter=STRING   use STRING to delimit the files in the shar\n"
+"\n"
+"Producing different kinds of shars:\n"
+"  -V, --vanilla-operation   produce very simple and undemanding shars\n"
+"  -P, --no-piping           exclusively use temporary files at unshar time\n"
+"  -x, --no-check-existing   blindly overwrite existing files\n"
+"  -X, --query-user          ask user before overwriting files (not for Net)\n"
+"  -m, --no-timestamp        do not restore file modification dates & times\n"
+"  -Q, --quiet-unshar        avoid verbose messages at unshar time\n"
+"  -f, --basename            restore in one directory, despite hierarchy\n"
+"      --no-i18n             do not produce internationalized shell script\n"
+msgstr ""
+
+#: src/shar.c:1798
+msgid ""
+"\n"
+"Option -o is required with -l or -L, option -n is required with -a.\n"
+msgstr ""
+
+#: src/shar.c:1802
+msgid "Option -g implies -z, option -b implies -Z.\n"
+msgstr ""
+
+#: src/shar.c:1805
+msgid "Option -g implies -z.\n"
+msgstr ""
+
+#. TRANSLATORS: add the contact address for your translation team!
+#: src/shar.c:1809 src/unshar.c:332 src/uudecode.c:450 src/uuencode.c:214
+#, c-format
+msgid "Report bugs to <%s>.\n"
+msgstr ""
+
+#: src/shar.c:1867
+#, c-format
+msgid "invalid file size limit `%s'"
+msgstr ""
+
+#: src/shar.c:1903
+#, c-format
+msgid "invalid format (count field too wide): '%s'\n"
+msgstr ""
+
+#: src/shar.c:1964
+msgid "DEBUG was not selected at compile time"
+msgstr ""
+
+#: src/shar.c:1984
+#, c-format
+msgid "Hard limit %s\n"
+msgstr ""
+
+#: src/shar.c:2026
+msgid "This system doesn't support -Z ('compress'), use -z instead"
+msgstr ""
+
+#: src/shar.c:2059
+#, c-format
+msgid "Soft limit %s\n"
+msgstr ""
+
+#: src/shar.c:2074
+#, c-format
+msgid "illegal output prefix\n"
+msgstr ""
+
+#: src/shar.c:2121 src/unshar.c:415 src/uudecode.c:488 src/uuencode.c:254
+#, c-format, no-wrap
+msgid ""
+"Copyright (C) %s Free Software Foundation, Inc.\n"
+"This is free software; see the source for copying conditions.  There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr ""
+
+#: src/shar.c:2168
+msgid "WARNING: No user interaction in vanilla mode"
+msgstr ""
+
+#: src/shar.c:2180
+msgid "WARNING: Non-text storage options overridden"
+msgstr ""
+
+#: src/shar.c:2236
+#, fuzzy
+msgid "No input files"
+msgstr "inga innfil spesifisert"
+
+#: src/shar.c:2242
+msgid "Cannot use -a option without -n"
+msgstr ""
+
+#: src/shar.c:2248
+msgid "Cannot use -l or -L option without -o"
+msgstr ""
+
+#: src/shar.c:2260
+msgid "PLEASE avoid -X shars on Usenet or public networks"
+msgstr ""
+
+#: src/shar.c:2301
+msgid "You have unpacked the last part"
+msgstr ""
+
+#: src/shar.c:2303
+#, c-format
+msgid "Created %d files\n"
+msgstr ""
+
+#: src/shar.c:2308
+#, c-format
+msgid "x - removed lock directory `'%s\\''."
+msgstr ""
+
+#: src/shar.c:2310
+#, c-format
+msgid "x - failed to remove lock directory `'%s\\''."
+msgstr ""
+
+#: src/unshar.c:169
+#, c-format
+msgid "Found no shell commands in %s"
+msgstr ""
+
+#: src/unshar.c:185
+#, c-format
+msgid "%s looks like raw C code, not a shell archive"
+msgstr ""
+
+#: src/unshar.c:221
+#, c-format
+msgid "Found no shell commands after `cut' in %s"
+msgstr ""
+
+#: src/unshar.c:242
+#, c-format
+msgid "%s is probably not a shell archive"
+msgstr ""
+
+#: src/unshar.c:243
+#, c-format
+msgid "The `cut' line was followed by: %s"
+msgstr ""
+
+#: src/unshar.c:269
+msgid "Starting `sh' process"
+msgstr ""
+
+#: src/unshar.c:318
+msgid ""
+"Mandatory arguments to long options are mandatory for short options too.\n"
+"\n"
+"  -d, --directory=DIRECTORY   change to DIRECTORY before unpacking\n"
+"  -c, --overwrite             pass -c to shar script for overwriting files\n"
+"  -e, --exit-0                same as `--split-at=\"exit 0\"'\n"
+"  -E, --split-at=STRING       split concatenated shars after STRING\n"
+"  -f, --force                 same as `-c'\n"
+"      --help                  display this help and exit\n"
+"      --version               output version information and exit\n"
+"\n"
+"If no FILE, standard input is read.\n"
+msgstr ""
+
+#: src/unshar.c:395
+#, fuzzy, c-format
+msgid "Cannot chdir to `%s'"
+msgstr "kan ikkje skifte til filkatalog \"%s\""
+
+#: src/unshar.c:446 src/unshar.c:508
+msgid "allocate file name buffer"
+msgstr ""
+
+#: src/unshar.c:467
+msgid "standard input"
+msgstr ""
+
+#: src/unshar.c:529
+msgid "allocate file buffer"
+msgstr ""
+
+#: src/uudecode.c:123 src/uudecode.c:427
+#, c-format
+msgid "%s: Write error"
+msgstr ""
+
+#: src/uudecode.c:141 src/uudecode.c:229
+#, c-format
+msgid "%s: Short file"
+msgstr ""
+
+#: src/uudecode.c:177
+#, c-format
+msgid "%s: No `end' line"
+msgstr ""
+
+#: src/uudecode.c:238
+#, c-format
+msgid "%s: data following `=' padding character"
+msgstr ""
+
+#: src/uudecode.c:262 src/uudecode.c:270 src/uudecode.c:284
+#, fuzzy, c-format
+msgid "%s: illegal line"
+msgstr "%s: ulovleg flagg -- %c\n"
+
+#: src/uudecode.c:324
+#, c-format
+msgid "%s: No `begin' line"
+msgstr ""
+
+#: src/uudecode.c:356
+#, c-format
+msgid "%s: Illegal ~user"
+msgstr ""
+
+#: src/uudecode.c:363
+#, c-format
+msgid "%s: No user `%s'"
+msgstr ""
+
+#: src/uudecode.c:387
+#, c-format
+msgid "cannot access %s"
+msgstr ""
+
+#: src/uudecode.c:392
+#, c-format
+msgid "denied writing FIFO (%s)"
+msgstr ""
+
+#: src/uudecode.c:397
+#, c-format
+msgid "not following symlink (%s)"
+msgstr ""
+
+#: src/uudecode.c:405
+#, c-format
+msgid "freopen of %s"
+msgstr ""
+
+#: src/uudecode.c:411
+#, c-format
+msgid "chmod of %s"
+msgstr ""
+
+#: src/uudecode.c:443
+#, c-format
+msgid "Usage: %s [FILE]...\n"
+msgstr ""
+
+#: src/uudecode.c:444
+msgid ""
+"Mandatory arguments to long options are mandatory to short options too.\n"
+"  -o, --output-file=FILE   direct output to FILE\n"
+"      --help               display this help and exit\n"
+"      --version            output version information and exit\n"
+msgstr ""
+
+#: src/uuencode.c:135 src/uuencode.c:303 src/uuencode.c:310
+msgid "Write error"
+msgstr ""
+
+#: src/uuencode.c:157 src/uuencode.c:188 src/uuencode.c:190
+msgid "Read error"
+msgstr ""
+
+#: src/uuencode.c:208
+#, c-format
+msgid "Usage: %s [INFILE] REMOTEFILE\n"
+msgstr ""
+
+#: src/uuencode.c:209
+msgid ""
+"\n"
+"  -m, --base64    use base64 encoding as of RFC1521\n"
+"      --help      display this help and exit\n"
+"      --version   output version information and exit\n"
+msgstr ""
+
+#: src/uuencode.c:275
+#, c-format
+msgid "fopen-ing %s"
+msgstr ""
+
+#: src/uuencode.c:277
+#, c-format
+msgid "fstat-ing %s"
+msgstr ""
+
+#~ msgid "missing arguments"
+#~ msgstr "manglar argument"
+
+#, fuzzy
+#~ msgid "too many arguments"
+#~ msgstr "manglar argument"
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: %s [OPTION] [[[TEXTDOMAIN] MSGID] | [-s [MSGID]...]]\n"
+#~ "  -d, --domain=TEXTDOMAIN   retrieve translated messages from TEXTDOMAIN\n"
+#~ "  -e                        enable expansion of some escape sequences\n"
+#~ "  -E                        (ignored for compatibility)\n"
+#~ "  -h, --help                display this help and exit\n"
+#~ "  -n                        suppress trailing newline\n"
+#~ "  -V, --version             display version information and exit\n"
+#~ "  [TEXTDOMAIN] MSGID        retrieve translated message corresponding\n"
+#~ "                            to MSGID from TEXTDOMAIN\n"
+#~ msgstr ""
+#~ "Bruk: %s [FLAGG] [[[TEXTDOMAIN] MSGID] | [-s [MSGID]...]]\n"
+#~ "  -d, --domain=TEXTDOMAIN   hent oversette meldingar frå TEXTDOMAIN\n"
+#~ "  -e                        slå på ekspandering av nokre escape-"
+#~ "sekvensar\n"
+#~ "  -E                        (tillete av kompatibilitetsomsyn)\n"
+#~ "  -h, --help                vis denne hjelpeteksta og avslutt\n"
+#~ "  -n                        undertrykk etterfølgjande linjeskift\n"
+#~ "  -v, --version             vis programversjon og avslutt\n"
+#~ "  [TEXTDOMAIN] MSGID        hent oversett melding som stemmer overeins "
+#~ "med\n"
+#~ "                            MSGID frå TEXTDOMAIN\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "If the TEXTDOMAIN parameter is not given, the domain is determined from "
+#~ "the\n"
+#~ "environment variable TEXTDOMAIN.  If the message catalog is not found in "
+#~ "the\n"
+#~ "regular directory, another location can be specified with the "
+#~ "environment\n"
+#~ "variable TEXTDOMAINDIR.\n"
+#~ "When used with the -s option the program behaves like the `echo' "
+#~ "command.\n"
+#~ "But it does not simply copy its arguments to stdout.  Instead those "
+#~ "messages\n"
+#~ "found in the selected catalog are translated.\n"
+#~ "Standard search directory: %s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Dersom TEXTDOMAIN-parameteren ikkje er gjeven, vert domenet valgt frå\n"
+#~ "miljøvariabelen TEXTDOMAIN.  Dersom meldingskatalogen ikkje finst i den\n"
+#~ "vanlege filkatalogen, kan ein annan filkatalog spesifiserast ved hjelp "
+#~ "av\n"
+#~ "miljøvariabelen TEXTDOMAIN.\n"
+#~ "Når flagget -s vert brukt, oppfører programmet seg som kommandoen "
+#~ "«echo»,\n"
+#~ "men gjer ikkje ein enkel kopiering av argumenta sine til standard ut.  I\n"
+#~ "staden vert meldingar som er funne i den valgte katalogen oversatt.\n"
+#~ "Standard søkekatalog er: %s\n"
+
+#~ msgid ""
+#~ "internationalized messages should not contain the `\\%c' escape sequence"
+#~ msgstr ""
+#~ "internasjonaliserte meldingar skal ikkje innehalde escape-sekvensen «\\%c»"
+
+#~ msgid "error while writing \"%s\" file"
+#~ msgstr "feil under skriving av fila \"%s\""
+
+#~ msgid "exactly 2 input files required"
+#~ msgstr "treng nøyaktig to innfiler"
+
+#~ msgid ""
+#~ "Usage: %s [OPTION] def.po ref.po\n"
+#~ "Mandatory arguments to long options are mandatory for short options too.\n"
+#~ "  -h, --help               display this help and exit\n"
+#~ "  -V, --version            output version information and exit\n"
+#~ "\n"
+#~ "Compare two Uniforum style .po files to check that both contain the same\n"
+#~ "set of msgid strings.  The def.po file is an existing PO file with the\n"
+#~ "old translations.  The ref.po file is the last created PO file\n"
+#~ "(generally by xgettext).  This is useful for checking that you have\n"
+#~ "translated each and every message in your program.  Where an exact match\n"
+#~ "cannot be found, fuzzy matching is used to produce better diagnostics.\n"
+#~ msgstr ""
+#~ "Bruk: %s [FLAGG] def.po ref.po\n"
+#~ "Obligatoriske argumenter til lange flagg er obligatoriske også til korte "
+#~ "flagg.\n"
+#~ "  -h, --help               vis denne hjelpeteksta og avslutt\n"
+#~ "  -V, --version            vis programversjon og avslutt\n"
+#~ "\n"
+#~ "Samanliknar to Uniforum .po-filer for å sjekke at begge inneheld det "
+#~ "samme\n"
+#~ "settet msgid-strengar.  def.po-filen er ein eksisterende PO-fil med dei\n"
+#~ "gamle oversetjingane.  ref.po-filen er den sist genererte PO-fila\n"
+#~ "(vanligvis generert med xgettext).  Dette er nyttig for å sjekke at du "
+#~ "har\n"
+#~ "oversett alle meldingar i programmet.  Der samsvar ikkje kan finnast, "
+#~ "vert\n"
+#~ "«fuzzy» samanlikning brukt for å få betre diagnostikk.\n"
+
+#~ msgid "this message is used but not defined..."
+#~ msgstr "denne meldinga er brukt, men ikkje definert..."
+
+#~ msgid "...but this definition is similar"
+#~ msgstr "... men denne definisjonen liknar"
+
+#~ msgid "this message is used but not defined in %s"
+#~ msgstr "denne meldinga er brukt, men ikkje definert i %s"
+
+#~ msgid "warning: this message is not used"
+#~ msgstr "advarsel: denne meldinga er ikkje brukt"
+
+#~ msgid "this is the location of the first definition"
+#~ msgstr "den første definisjonen finst her"
+
+#~ msgid "this message has no definition in the \"%s\" domain"
+#~ msgstr "denne meldinga har ingen definisjon i \"%s\"-domenet"
+
+#~ msgid "no input file given"
+#~ msgstr "inga innfil spesifisert"
+
+#, fuzzy
+#~ msgid "error while opening \"%s\" for writing"
+#~ msgstr "feil under skriving av fila \"%s\""
+
+#~ msgid ""
+#~ "Usage: %s [OPTION] filename.po ...\n"
+#~ "Mandatory arguments to long options are mandatory for short options too.\n"
+#~ "  -a, --alignment=NUMBER   align strings to NUMBER bytes (default: %d)\n"
+#~ "  -h, --help               display this help and exit\n"
+#~ "      --no-hash            binary file will not include the hash table\n"
+#~ "  -o, --output-file=FILE   specify output file name as FILE\n"
+#~ "      --strict             enable strict Uniforum mode\n"
+#~ "  -v, --verbose            list input file anomalies\n"
+#~ "  -V, --version            output version information and exit\n"
+#~ "\n"
+#~ "If input file is -, standard input is read.  If output file is -,\n"
+#~ "output is written to standard output.\n"
+#~ msgstr ""
+#~ "Bruk: %s [FLAGG] filnavn.po ...\n"
+#~ "Obligatoriske argumenter til lange flagg er obligatoriske også til korte "
+#~ "flagg.\n"
+#~ "  -a, --alignment=ANTALL    justér strengar til ANTALL bytes (forvalgt: %"
+#~ "d)\n"
+#~ "  -h, --help                vis denne hjelpeteksta og avslutt\n"
+#~ "      --no-hash             binærfil skal ikkje innehalde hash-tabell\n"
+#~ "  -o, --output-file=FILNAVN sett utfil til FILNAVN\n"
+#~ "      --strict              lag strengt Uniforum-konform .po-fil\n"
+#~ "  -v, --verbose             list alle avvik i innfil\n"
+#~ "  -V, --version             vis programversjon og avslutt\n"
+#~ "\n"
+#~ "Dersom innfil er -, vil inndata verte lest frå standard inn.  Dersom "
+#~ "utfil\n"
+#~ "er -, vil utdata verte skrive til standard ut.\n"
+
+#~ msgid "while creating hash table"
+#~ msgstr "mens hash-tabellen vart laga"
+
+#, fuzzy
+#~ msgid "warning: no header entry found"
+#~ msgstr "advarsel: denne meldinga er ikkje brukt"
+
+#~ msgid "domain name \"%s\" not suitable as file name"
+#~ msgstr "domenenamnet \"%s\" passar ikkje som filnavn"
+
+#~ msgid "domain name \"%s\" not suitable as file name: will use prefix"
+#~ msgstr "domenenamnet \"%s\" passar ikkje som filnavn: brukar prefiks"
+
+#~ msgid "headerfield `%s' missing in header"
+#~ msgstr "filhovud-feltet «%s» manglar i filhovud"
+
+#~ msgid "header field `%s' should start at beginning of line"
+#~ msgstr "filhovud-feltet «%s» skulle ha starta på byrjinga av linja"
+
+#~ msgid "some header fields still have the initial default value"
+#~ msgstr "nokre filhovud-felt har framleis sin initielle verdi"
+
+#~ msgid "field `%s' still has initial default value"
+#~ msgstr "feltet «%s» har framleis sin forvalgte verdi"
+
+#~ msgid "WARNING: source file contains fuzzy translation"
+#~ msgstr "ADVARSEL: kildefila har «fuzzy» oversetjingar"
+
+#~ msgid "`msgid' and `msgstr' entry does not both begin with '\\n'"
+#~ msgstr "«msgid»- og «msgstr»-verdiane byrjarr ikkje båe med '\\n'"
+
+#~ msgid "`msgid' and `msgstr' entry does not both end with '\\n'"
+#~ msgstr "«msgid»- og «msgstr»-verdiane sluttar ikkje båe med '\\n'"
+
+#~ msgid ""
+#~ "number of format specifications in `msgid' and `msgstr' does not match"
+#~ msgstr ""
+#~ "antall format-spesifiseringar i «msgid» og «msgstr» stemmer ikkje overeins"
+
+#~ msgid "format specifications for argument %u are not the same"
+#~ msgstr "format-spesifiseringane for argument %u er ulike"
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: %s [OPTION] def.po ref.po\n"
+#~ "Mandatory arguments to long options are mandatory for short options too.\n"
+#~ "  -e, --no-escape          do not use C escapes in output (default)\n"
+#~ "  -E, --escape             use C escapes in output, no extended chars\n"
+#~ "  -h, --help               display this help and exit\n"
+#~ "  -i, --indent             indented output style\n"
+#~ "  -o, --output-file=FILE   result will be written to FILE\n"
+#~ "      --strict             strict Uniforum output style\n"
+#~ "  -v, --verbose            increase verbosity level\n"
+#~ "  -V, --version            output version information and exit\n"
+#~ msgstr ""
+#~ "Bruk: %s [FLAGG] INNFIL ...\n"
+#~ "Obligatoriske argumenter til lange flagg er obligatoriske også til korte "
+#~ "flagg.\n"
+#~ "  -e, --no-escape          ikkje bruk C-escapekoder i utdata (forvalgt)\n"
+#~ "  -E, --escape             bruk C-escapekoder i utdata, ingen utvida "
+#~ "teikn\n"
+#~ "  -h, --help               vis denne hjelpeteksta og avslutt\n"
+#~ "  -i, --indent             indentert utdata\n"
+#~ "  -o, --output-file=FIL    resultat vert skrive til FIL\n"
+#~ "      --strict             lag strengt Uniforum-konformt utdata\n"
+#~ "  -V, --version            vis programversjon og avslutt\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Merges two Uniforum style .po files together.  The def.po file is an\n"
+#~ "existing PO file with the old translations which will be taken over to\n"
+#~ "the newly created file as long as they still match; comments will be\n"
+#~ "preserved, but extract comments and file positions will be discarded.\n"
+#~ "The ref.po file is the last created PO file (generally by xgettext), any\n"
+#~ "translations or comments in the file will be discarded, however dot\n"
+#~ "comments and file positions will be preserved.  Where an exact match\n"
+#~ "cannot be found, fuzzy matching is used to produce better results.  The\n"
+#~ "results are written to stdout unless an output file is specified.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Fletter saman to Uniforum .po-filer.  def.po-filen er ei eksisterande\n"
+#~ "PO-fil med gamle oversetjingar, som vil verte overført til den nye fila\n"
+#~ "dersom dei framleis stemmer.  Kommentarar vert teke med, men kommentarer "
+#~ "om\n"
+#~ "sjølve ekstraheringa og fil-posisjoner vert sletta.  ref.po-filen er den\n"
+#~ "sist genererte PO-fila (vanlegvis generert med xgettext).  Oversetjingar\n"
+#~ "eller kommentarer i denne fila vert sletta, men punktum-kommentarer og\n"
+#~ "fil-posisjonar vert teke vare på.  Der det ikkje er mogleg å finne ei\n"
+#~ "eksakt overeinsstemming, vert «fuzzy» samanlikning brukt for å få betre\n"
+#~ "resultat.  Resultatet vert skrive til standard ut, med mindre ei utfil "
+#~ "er\n"
+#~ "spesifisert.\n"
+
+#~ msgid ""
+#~ "%sRead %d old + %d reference, merged %d, fuzzied %d, missing %d, obsolete "
+#~ "%d.\n"
+#~ msgstr ""
+#~ "%sLeste %d gamle + %d referansar, fletta inn %d, «fuzzya» %d, manglar %"
+#~ "d,\n"
+#~ "utdaterte %d.\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: %s [OPTION] [FILE]...\n"
+#~ "Mandatory arguments to long options are mandatory for short options too.\n"
+#~ "  -e, --no-escape          do not use C escapes in output (default)\n"
+#~ "  -E, --escape             use C escapes in output, no extended chars\n"
+#~ "  -h, --help               display this help and exit\n"
+#~ "  -i, --indent             write indented output style\n"
+#~ "  -o, --output-file=FILE   write output into FILE instead of standard "
+#~ "output\n"
+#~ "      --strict             write strict uniforum style\n"
+#~ "  -V, --version            output version information and exit\n"
+#~ msgstr ""
+#~ "Usage: %s [OPTION] [FILE]...\n"
+#~ "Mandatory arguments to long options are mandatory for short options too.\n"
+#~ "  -e, --no-escape          do not use C escapes in output (default)\n"
+#~ "  -E, --escape             use C escapes in output, no extended chars\n"
+#~ "  -h, --help               display this help and exit\n"
+#~ "  -i, --indent             write indented output style\n"
+#~ "  -o, --output-file=FILE   write output into FILE instead of standard "
+#~ "output\n"
+#~ "      --strict             write strict uniforum style\n"
+#~ "  -V, --version            output version information and exit\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "Convert binary .mo files to Uniforum style .po files.\n"
+#~ "Both little-endian and big-endian .mo files are handled.\n"
+#~ "If no input file is given or it is -, standard input is read.\n"
+#~ "By default the output is written to standard output.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Konverter binære .mo-filer til Uniforum .po-filer.  Både «little-endian» "
+#~ "og\n"
+#~ "«big-endian» .mo filer vert håndtert.  Dersom innfil er -, blir standard\n"
+#~ "inn lest.  Dersom utfil er -, vert det skrive til standard ut.\n"
+
+#~ msgid "file \"%s\" truncated"
+#~ msgstr "filen \"%s\" er avkutta"
+
+#~ msgid "seek \"%s\" offset %ld failed"
+#~ msgstr "«seek» \"%s\" posisjon %ld feila"
+
+#, fuzzy
+#~ msgid "error while opening \"%s\" for reading"
+#~ msgstr "feil under skriving av fila \"%s\""
+
+#~ msgid "file \"%s\" is not in GNU .mo format"
+#~ msgstr "fila \"%s\" er ikkje i GNU .mo-format"
+
+#~ msgid "missing `msgstr' section"
+#~ msgstr "manglar «msgstr»-seksjon"
+
+#, fuzzy
+#~ msgid "found %d fatal errors"
+#~ msgstr "fann %d fatale feil"
+
+#, fuzzy
+#~ msgid "too many errors, aborting"
+#~ msgstr "for mange feil, avsluttar"
+
+#~ msgid "while preparing output"
+#~ msgstr "under klargjering av utdata"
+
+#~ msgid "%s and %s are mutually exclusive"
+#~ msgstr "%s og %s utelukker kvarandre"
+
+#~ msgid "--join-existing cannot be used when output is written to stdout"
+#~ msgstr ""
+#~ "--join-existing kan ikkje brukast når utdata vert skrive til standard ut"
+
+#~ msgid "cannot change back to directory \"%s\""
+#~ msgstr "kan ikkje skifte tilbake til filkatalog \"%s\""
+
+#, fuzzy
+#~ msgid ""
+#~ "Usage: %s [OPTION] INPUTFILE ...\n"
+#~ "Mandatory arguments to long options are mandatory for short options too.\n"
+#~ "  -a, --extract-all              extract all strings\n"
+#~ "  -c, --add-comments[=TAG]       place comment block with TAG (or those\n"
+#~ "                                 preceding keyword lines) in output file\n"
+#~ "  -C, --c++                      recognize C++ style comments\n"
+#~ "  -d, --default-domain=NAME      use NAME.po for output (instead of "
+#~ "messages.po)\n"
+#~ "  -D, --directory=DIRECTORY      change to DIRECTORY before processing\n"
+#~ "  -e, --no-escape                do not use C escapes in output "
+#~ "(default)\n"
+#~ "  -E, --escape                   use C escapes in output, no extended "
+#~ "chars\n"
+#~ "  -f, --files-from=FILE          get list of input files from FILE\n"
+#~ "      --force-po                 write PO file even if empty\n"
+#~ "  -F, --sort-by-file             sort output by file location\n"
+#~ msgstr ""
+#~ "Bruk: %s [FLAGG] INNFIL ...\n"
+#~ "Obligatoriske argumenter til lange flagg er obligatoriske også til korte "
+#~ "flagg.\n"
+#~ "  -a, --extract-all             ekstrahér alle strengar\n"
+#~ "  -c, --add-comments[=TAG]      lagre kommentarblokker med TAG (eller\n"
+#~ "                                kommentarar i linjer som kjem foran\n"
+#~ "                                nøkkelord) i utfila\n"
+#~ "  -C, --c++                     kjenn igjen C++-kommentarar\n"
+#~ "  -d, --default-domain=NAVN     lagre utdata i NAVN.po (i staden for\n"
+#~ "                                messages.po)\n"
+#~ "  -D, --directory=FILKATALOG    skift til FILKATALOG før prosessering\n"
+#~ "  -e, --no-escape               ikkje bruk C-escapekoder i utdata "
+#~ "(forvalgt)\n"
+#~ "  -E, --escape                  bruk C-escapekoder i utdata, ingen utvida "
+#~ "teikn\n"
+#~ "  -f, --files-from=FIL          hent liste av innfiler frå FIL\n"
+#~ "  -F, --sort-by-file            sorter utdata etter fil-lokasjon\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "  -h, --help                     display this help and exit\n"
+#~ "  -i, --indent                   write the .po file using indented style\n"
+#~ "  -j, --join-existing            join messages with existing file\n"
+#~ "  -k, --keyword[=WORD]           additonal keyword to be looked for "
+#~ "(without\n"
+#~ "                                 WORD means not to use default keywords)\n"
+#~ "  -l, --string-limit=NUMBER      set string length limit to NUMBER "
+#~ "instead %u\n"
+#~ "  -m, --msgstr-prefix[=STRING]   use STRING or \"\" as prefix for msgstr "
+#~ "entries\n"
+#~ "  -M, --msgstr-suffix[=STRING]   use STRING or \"\" as suffix for msgstr "
+#~ "entries\n"
+#~ "      --no-location              do not write '#: filename:line' lines\n"
+#~ msgstr ""
+#~ "  -h, --help                    vis denne hjelpeteksta og avslutt\n"
+#~ "  -i, --indent                  lag indentert utdata\n"
+#~ "  -j, --join-existing           flett saman meldingar med eksisterande "
+#~ "fil\n"
+#~ "  -k, --keyword[=ORD]           sjå også etter nøkkelordet ORD (manglar "
+#~ "ORD,\n"
+#~ "                                skal ikkje dei vanlege nøkkelorda "
+#~ "nyttast)\n"
+#~ "  -l, --string-limit=NUMMER     sett største streng-lengde til NUMMER\n"
+#~ "                                i staden for %u\n"
+#~ "  -m, --msgstr-prefix[=STRENG]  bruk STRENG eller \"\" som prefiks for\n"
+#~ "                                msgstr-verdiar\n"
+#~ "  -M, --msgstr-suffix[=STRENG]  bruk STRENG eller \"\" som suffiks for\n"
+#~ "                                msgstr-verdiar\n"
+#~ "      --no-location             ikkje lag «#: filnavn:linje»-linjer\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "  -n, --add-location             generate '#: filename:line' lines "
+#~ "(default)\n"
+#~ "      --omit-header              don't write header with `msgid \"\"' "
+#~ "entry\n"
+#~ "  -p, --output-dir=DIR           output files will be placed in directory "
+#~ "DIR\n"
+#~ "  -s, --sort-output              generate sorted output and remove "
+#~ "duplicates\n"
+#~ "      --strict                   write out strict Uniforum conforming .po "
+#~ "file\n"
+#~ "  -T, --trigraphs                understand ANSI C trigraphs for input\n"
+#~ "  -V, --version                  output version information and exit\n"
+#~ "  -x, --exclude-file=FILE        entries from FILE are not extracted\n"
+#~ "\n"
+#~ "If INPUTFILE is -, standard input is read.\n"
+#~ msgstr ""
+#~ "  -n, --add-location            lag «#: filenavn:linje»-linjer "
+#~ "(forvalgt)\n"
+#~ "      --omit-header             ikkje lag startseksjon med «msgid \"\"»\n"
+#~ "  -p, --output-dir=KAT          plassér utfiler i filkatalogen KAT\n"
+#~ "  -s, --sort-output             sortér utdata og ta bort duplikat\n"
+#~ "      --strict                  lag strengt Uniforum-konform .po-fil\n"
+#~ "  -T, --trigraphs               forstå ANSI C trigraphs i inndata\n"
+#~ "  -V, --version                 vis programversjon og avslutt\n"
+#~ "  -x, --exclude-file=FIL        innslag frå FIL vert ikkje ekstrahert\n"
+#~ "\n"
+#~ "Dersom INNFIL er -, vil det verte lese frå standard inn.\n"
+
+#~ msgid "this file may not contain domain directives"
+#~ msgstr "denne fila kan ikkje innehalde domene-nøkkelord"

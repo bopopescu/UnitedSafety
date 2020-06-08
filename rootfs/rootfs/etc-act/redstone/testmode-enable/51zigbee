@@ -1,0 +1,13 @@
+#!/bin/sh
+des=/dev/ttySP2
+	echo -n S > /dev/set-gpio
+	sleep 2
+	stty -F $des 19200 -echo
+	echo 'ATS09=11111111111111111111111111111111:password' > $des
+	echo 'ATS01=-7' > $des
+	echo 'ATS0A=011A:password' > $des
+	sleep 1
+	echo -n s > /dev/set-gpio
+	sleep 1
+	echo -n S > /dev/set-gpio
+exit 0

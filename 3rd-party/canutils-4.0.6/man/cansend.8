@@ -1,0 +1,38 @@
+.TH CANSEND 8 "13 March 2005" "canutils" "Linux Programmer's Manual"
+.SH NAME
+cansend \- send data on a CAN interface
+.SH SYNOPSIS
+.B "send [Options] <interface> -i  message"
+.br
+.SH DESCRIPTION
+cansend sends messages on a CAN (Controller Area Network) bus interface. 
+
+.SH ARGUMENTS and OPTIONS
+.TP
+.B interface
+The name of the interface. This is usually a driver name followed by
+a unit number, for example "can0". 
+.TP
+.B -f family
+Specifies the protocol family which has to be sniffed for. Default is
+PF_CAN, which is 30. 
+.TP
+.B -t type 
+Specifies the socket type to be sniffed on. Default is SOCK_RAW, which
+is 3. 
+.TP
+.B -p proto
+Specifies the protocol to sniff for; default is CAN_PROTO_RAW, which
+is 0.
+.TP
+.B -v
+Verbose mode. 
+0. 
+.br
+.SH SEE ALSO
+- ifconfig(8), canconfig(8), candump(8), cansend(8)
+.br
+- http://www.pengutronix.de/software/socket-can/ (Socket-CAN Project)
+.SH AUTHORS
+Marc Kleine-Budde <m.kleine-budde@pengutronix.de>
+Robert Schwebel <r.schwebel@pengutronix.de>

@@ -1,0 +1,10 @@
+#!/bin/sh
+db-config set SER_GPS	sendGPS	On
+db-config set gps-socket-server	listen_server_port	41094
+db-config set feature gps-socket-server 1
+killall SER_GPS
+killall NMEA
+gps-socket-server &
+echo "Unit is ready for GPS Output test."
+echo "Connect to port 41094 via Telnet in putty."
+

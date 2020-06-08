@@ -1,0 +1,90 @@
+#!/bin/bash
+#
+# Simply call ./tl5000.sh to build a version 2.0.#.svn_rev where # is the incremented build number from build.cnt
+#  Call ./tl5000.sh abc to create a revision number the old way - e.g abc.svn_rev
+src=tl5000
+rev_name="2.0.0"
+
+GREEN='\033[32m'
+YELLOW='\033[33m'
+NORMAL='\033[39m\033[0m'
+
+cwd=`pwd`
+
+cd /home/dave/svn/$src
+
+# check for file system changes that need to be repacked into the rootfs-def.tar file.
+cd /home/dave/svn/$src/rootfs
+./repack
+cd /home/dave/svn/$src
+
+# make sure everything is up to date from the server
+git-svn rebase
+
+export PASSPHRASE_FILE=/home/dave/pass.txt
+
+rev=`git-svn info | grep Revision | awk -F ' ' '{print $2}'`
+
+echo -e $GREEN "Creating Tagged release $rev_name.$rev..." $NORMAL
+
+echo -e $GREEN BUILDING rev $rev $NORMAL
+
+#cd ~/RedStone/Software/build
+#svn update
+#cd ~/RedStone/Software/create-release
+#svn update
+#cd ~/RedStone/Software/create-update
+#svn update
+#cd ~/RedStone/Software/create-auto-update
+#svn update
+
+
+sudo rm -rf ~/redstone/builddir
+mkdir ~/redstone/builddir
+sudo rm -rf ~/trulink/builddir
+mkdir ~/trulink/builddir
+
+cd ~/RedStone/Software/build
+./build.pl srcdir=/home/dave/svn/$src revName=$rev_name
+
+if [ $? -ne 0 ]; then
+	exit 1
+fi
+
+echo $GREEN "Tagging build..." $NORMAL
+
+cd ~/svn/tl5000/build
+today=`date`
+git tag -a $rev_name.$rev -m "$rev_name.$rev $today"
+git-svn dcommit
+
+echo -e $GREEN "Creating release..." $NORMAL
+
+
+cd ~/RedStone/Software/create-release
+./create-release.pl upload=1 uboot=1 install-rootfs=1 factory-install=1 test-factory-install=1 /home/dave/trulink/builddir
+
+echo -e $GREEN "Release built to /tmp directory" $NORMAL
+
+
+echo -e $GREEN "Committing to SVN..." $NORMAL
+
+mkdir -p /home/dave/RedStone/Software/releases/$rev_name/$rev
+cp  /tmp/*$rev*.bin /home/dave/RedStone/Software/releases/$rev_name/$rev
+cp  /home/dave/trulink/builddir/firmware/* /home/dave/RedStone/Software/releases/$rev_name/$rev
+cd /home/dave/RedStone/Software/releases
+svn add $rev_name
+svn add $rev_name/$rev
+svn commit -m "$rev_name.$rev commit"
+
+echo -e $GREEN "Creating patches..." $NORMAL
+
+cd /home/dave/RedStone/Software/create-release
+$cwd/patches.sh $rev_name $rev
+
+echo -e $GREEN "Creating MFG Site entries..." $NORMAL
+
+ssh -t -p 2209 redstone@redstone.atsplace.com "sudo sh /var/www/redstone-update-server/autoupdate/rls/makepatch5000.sh $rev_name.$rev"
+
+echo -e $GREEN "Version $rev_name.$rev build is complete and available via the mfg website." $NORMAL
+

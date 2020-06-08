@@ -1,0 +1,12 @@
+=======================================================================
+= Building wget
+=======================================================================
+Build Machine:
+	bm2
+	Linux Mint 13 Maya \n \l
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc --with-libgnutls-prefix="`pwd`/../gnutls26-2.12.14/.redstone_build/" CFLAGS='-Os -Xlinker -s' --disable-debug --disable-rpath
+	make -j12

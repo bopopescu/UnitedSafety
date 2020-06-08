@@ -1,0 +1,171 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+build_UtilityLib()
+{
+	cd UtilityLib
+		make -e -j$TRULINK_JOBS
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build UtilityLib" >&2
+			exit 1
+		fi
+	cd ..
+}
+
+build_FASTLib()
+{
+	cd FASTLib
+		make -e -j$TRULINK_JOBS
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build FASTLib" >&2
+			exit 1
+		fi
+	cd ..
+}
+
+build_SER_GPS()
+{
+	cd SER_GPS
+		make -e
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build SER_GPS" >&2
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip "bin/$ARCH/SER_GPS"
+	cd ..
+}
+
+build_NMEA()
+{
+	cd NMEA
+		make -e
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build NMEA" >&2
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip "bin/$ARCH/NMEA"
+	cd ..
+}
+
+build_PROC_Seatbelt()
+{
+	cd PROC_Seatbelt
+		make -e
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build PROC_Seatbelt" >&2
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip "bin/$ARCH/PROC_Seatbelt"
+	cd ..
+}
+
+build_AFF_Email()
+{
+	cd AFF_Email
+		make -e
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build AFF_Email" >&2
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip "bin/$ARCH/AFF_Email"
+	cd ..
+}
+
+build_PositionUpdate()
+{
+	cd PositionUpdate
+		QT_DIR="/usr/local/Trolltech/QtEmbedded-4.8.2-arm/"
+		${QT_DIR}/bin/qmake ./PositionUpdate.pro -r -spec qws/linux-redstone-g++
+		make -e
+
+		if [ 0 != "$?" ];then
+			echo "Failed to build PositionUpdate" >&2
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip "PositionUpdate"
+	cd ..
+}
+
+	build_UtilityLib&
+	build_FASTLib&
+
+	FAIL=0
+
+	for job in `jobs -p`
+	do
+		echo "Waiting for job $job"
+		wait $job || let "FAIL+=1"
+	done
+
+	if [ 0 != "$FAIL" ];then
+		echo "ERROR: Failed to build the FastTrac libraries (see previous error messages)" >&2
+		exit 1
+	fi
+
+	build_SER_GPS&
+	build_NMEA&
+#	build_PROC_Seatbelt&
+#	build_AFF_Email&
+	build_PositionUpdate&
+
+	FAIL=0
+
+	for job in `jobs -p`
+	do
+		echo "Waiting for job $job"
+		wait $job || let "FAIL+=1"
+	done
+
+	if [ 0 != "$FAIL" ];then
+		echo "ERROR: 1 or more jobs failed (see previous error messages)" >&2
+		exit 1
+	fi
+
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+		sudo cp -av "SER_GPS/bin/$ARCH/SER_GPS" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"SER_GPS\""
+			exit 1
+		fi
+
+		sudo cp -av "NMEA/bin/$ARCH/NMEA" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"NMEA\""
+			exit 1
+		fi
+
+#		sudo cp -av "PROC_Seatbelt/bin/$ARCH/PROC_Seatbelt" "$ROOTFS_DEF_DIR/usr/bin"
+#		if [ 0 != "$?" ];then
+#			echo "Failed to install \"PROC_Seatbelt\""
+#			exit 1
+#		fi
+
+#		sudo cp -av "AFF_Email/bin/$ARCH/AFF_Email" "$ROOTFS_DEF_DIR/usr/bin"
+#		if [ 0 != "$?" ];then
+#			echo "Failed to install \"AFF_Email\""
+#			exit 1
+#		fi
+
+		sudo cp -av "PositionUpdate/PositionUpdate" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"PositionUpdate\""
+			exit 1
+		fi
+	fi
+
+exit 0

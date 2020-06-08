@@ -1,0 +1,23 @@
+Description: Reset module reference after unloading duplicates
+Author: Adam Conrad <adconrad@ubuntu.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/911436
+Forwarded: no
+Reviewed-By: Steve Langasek <steve.langasek@ubuntu.com>
+Last-Update: 2012-03-23
+
+--- p11-kit-0.12.orig/p11-kit/modules.c
++++ p11-kit-0.12/p11-kit/modules.c
+@@ -390,11 +390,13 @@ take_config_and_load_module_unlocked (ch
+ 		prev->config = mod->config;
+ 		mod->config = NULL;
+ 		free_module_unlocked (mod);
++		mod = prev;
+ 
+ 	/* Ignore duplicate module */
+ 	} else if (prev) {
+ 		_p11_message ("duplicate configured module: %s: %s", mod->name, path);
+ 		free_module_unlocked (mod);
++		mod = prev;
+ 
+ 	/* Add this new module to our hash table */
+ 	} else {

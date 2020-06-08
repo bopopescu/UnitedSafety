@@ -1,0 +1,11 @@
+The patches in this directory should be applied in order to produce an optimal
+build of "bspatch" for the TRULink (ARM). Since the TRULink just applies patches
+(and does not do diffs) the "bsdiff" program is not needed (but could be used in
+the future).
+
+An optimal "bspatch" application is one that is as small as possible, while still being
+able to perform patches without error and in a reasonable amount of time.
+
+The Create-Release system uses "bspatch" to generate differential patches.
+
+See Issue "Feature 1329" in the TRULink tracker for more details.

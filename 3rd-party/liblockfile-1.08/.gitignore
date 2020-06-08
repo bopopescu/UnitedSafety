@@ -1,0 +1,12 @@
+*.swp
+Makefile
+autoconf.h
+config.cache
+config.log
+config.status
+dotlockfile
+dotlockfile.o
+liblockfile.a
+lockfile.o
+maillock.h
+xlockfile.o

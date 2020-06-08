@@ -1,0 +1,26 @@
+diff -ru /tmp/redstone-ahassan/pack-rootfs/16688/ref/etc/rc.d/init.d/do-install /srv/rootfs-redstone-install-ahassan/etc/rc.d/init.d/do-install
+--- /tmp/redstone-ahassan/pack-rootfs/16688/ref/etc/rc.d/init.d/do-install	2014-02-10 13:20:05.000000000 -0700
++++ /srv/rootfs-redstone-install-ahassan/etc/rc.d/init.d/do-install	2014-02-10 13:32:41.447539533 -0700
+@@ -77,13 +77,18 @@
+ 
+ 	mkdir -p /tmp/act_rootfs
+ 	mount -t ubifs ubi9_0 /tmp/act_rootfs
++	rfs_tar='/tmp/update/latest/act_rootfs/rootfs.tar.bz2'
+ 
+-	msg 'Extracting files into active rootfs...'
+-	tar -C /tmp/act_rootfs -xjf /tmp/update/latest/act_rootfs/rootfs.tar.bz2
++	if [ -s "$rfs_tar" ];then
++		msg 'Extracting files into active rootfs...'
++		tar -C /tmp/act_rootfs -xjf "$rfs_tar"
++	fi
++
++	post='/tmp/update/latest/act_rootfs/post-install.sh'
+ 
+-	if [ -e /tmp/update/latest/act_rootfs/post-install.sh ];then
++	if [ -s "$post" ];then
+ 		msg 'Running post-install...'
+-		/tmp/update/latest/act_rootfs/post-install.sh
++		"$post"
+ 	fi
+ 
+ 	msg 'Syncronizing...'

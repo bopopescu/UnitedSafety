@@ -1,0 +1,15 @@
+Notes on the issues with a GPS restart causing SER_GPS to no longer receive any characters.
+
+Both gps.start and restart_gps need to check for ttyGPSAT
+udev rule added in 93-gemalto.rules for ttyGPSAT to bee create off of ttyACM5 since it seems to be more reliable.
+
+
+ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="0a", SYMLINK+="ttyGPSAT", OWNER="telit", GROUP="telit"
+ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="08", SYMLINK+="ttyModemAT", OWNER="telit", GROUP="telit"
+#ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="08", RUN+="/bin/sh /usr/bin/gps.setup"
+ACTION=="add", KERNEL=="ttyACM5", SUBSYSTEM=="tty", RUN+="/bin/sh /usr/bin/gps.setup"
+ACTION=="remove", KERNEL=="ttyACM5", SUBSYSTEM=="tty", RUN+="/bin/sh /usr/bin/gps.remove"
+
+NOTE: "0a" not "0A" - case is important
+
+Seems to fix issue now.  Repeated up and down of gemalto chip always brings back the GPS

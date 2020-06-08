@@ -1,0 +1,351 @@
+#!/bin/sh
+
+# NOTE - the blink scripts will show the failure mode based on the off time in wifig.  It used to be different names but that isn't the way to do it.
+#        So now the off time is different for each failure mode.  It doesn't change the display but it allows you to figure out why the unit failed.
+#					100000 - 	RaLink WiFi not detected
+#					200000 - failed to insmod either rtutil3070sta.ko or rtutil5370sta.ko
+#					300000 - failed to insmod either rt3070sta.ko or rt5370sta.ko
+#					400000 - failed to insmod either rtnet3070sta.ko or rtnet5370sta.ko
+#					500000 - failed to insmod either rtutil3070ap.ko or rtutil5370ap.ko
+#					600000 - failed to insmod either rt3070ap.ko or rt5370ap.ko
+#					700000 - failed to insmod either rtnet3070ap.ko or rtnet5370ap.ko
+#					800000 - failed 'ifconfig ra0 up'
+
+
+if [ -e /mnt/nvram/config/testmode ];then
+
+	if [ '' = "$MFG_TEST_TOOL" ];then
+		echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		echo -e -n 'blink add name=softap.g.fail led=wifi script="0,1000000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		exit 0
+	fi
+
+fi
+
+sn=`cat /mnt/nvram/rom/sn.txt`
+sn=`printf "%03d" $sn`
+
+confdir='/etc/Wireless/RT2870AP'
+mkdir -p /tmp/config/RT2870AP
+
+conf=$confdir/'RT2870AP.dat'
+
+wifimacfile='/mnt/nvram/rom/wifimacaddr.txt'
+wifimacaddr=`db-config get system wifimacaddr -v -n`
+
+if [ '' = "$wifimacaddr" -a -s "$wifimacfile" ];then
+	wifimacaddr=`cat "$wifimacfile"|tr -d '\n'`
+	db-config set system wifimacaddr "$wifimacaddr"
+fi
+
+ra0addr=`db-config get system ra0addr -v -n`
+
+if [ '' = "$ra0addr" ];then
+	ra0addr=192.168.36.1
+	db-config set system ra0addr "$ra0addr"
+fi
+
+ap_on=`db-config get WiFi ap-enabled -v -n --bool`
+
+ps=""
+essid=`db-config get WiFi ssid -v -n`
+
+# if the ssid is empty and we have an SSID in the old RT2870AP.dat we are probably upgrading from the old - grab the existing SSID and password
+#
+if [ '' = "$essid" ];then
+	essid=`db-config get -v WiFi RT2870AP.dat | grep SSID | grep -v BSSID | grep -v HideSSID | awk 'BEGIN {FS="="}{print $2}'`
+
+	if [ '' = "$essid" ];then # never been an SSID
+		essid=Aware$sn
+		password=ISC0$sn
+		ps=`wpa_passphrase $essid $password | sed -n "4p" | cut -d '=' -f 2`
+	
+		db-config set WiFi ssid "$essid"
+		db-config set WiFi password "$ps"
+	else	# found an SSID so set it and the password
+		db-config set WiFi ssid "$essid"
+		ps=`db-config get WiFi RT2870AP.dat | grep WPAPSK | awk 'BEGIN {FS="="}{print $2}'`
+		db-config set WiFi password "$ps"
+	fi
+fi
+
+# rewrite the ssid if RedstoneAP000 and a valid serial number
+#
+if [ 'RedStoneAP000' = "$essid" ] && [ '000' != "$sn" ];then
+	essid=Aware$sn
+	password=ISC0$sn
+	ps=`wpa_passphrase $essid $password | sed -n "4p" | cut -d '=' -f 2`
+	
+	db-config set WiFi ssid "$essid"
+	db-config set WiFi password "$ps"
+fi
+if [ 'Aware000' = "$essid" ] && [ '000' != "$sn" ];then
+	essid=Aware$sn
+	password=ISC0$sn
+	ps=`wpa_passphrase $essid $password | sed -n "4p" | cut -d '=' -f 2`
+	
+	db-config set WiFi ssid "$essid"
+	db-config set WiFi password "$ps"
+fi
+
+authmode=`db-config get WiFi authmode -v -n`
+if [ '' = "$authmode" ];then
+	authmode=WPA2PSK
+	db-config set WiFi authmode "$authmode"
+fi
+
+encryptype=`db-config get WiFi encryptype -v -n`
+if [ '' = "$encryptype" ];then
+	encryptype=TKIP
+	db-config set WiFi encryptype "$encryptype"
+fi
+
+if [ '' = "$ps" ];then
+	if [ 'NONE' != "$encryptype" ];then
+		ps=`db-config get WiFi password -v -n`
+		if [ '' = "$ps" ];then
+			 password=ISC0$sn
+			 ps=`wpa_passphrase $essid $password | sed -n "4p" | cut -d '=' -f 2`
+			 db-config set WiFi password "$ps"
+		fi
+	fi
+fi
+
+wpapsk=''
+if [ 'TKIP' = "$encryptype" -o 'AES' = "$encryptype" -o 'TKIPAES' = "$encryptype" ];then
+	wpapsk=$ps
+fi
+
+Key1="Key1Type=0\nKey1Str="
+if [ 'WEP' = "$encryptype" ];then
+	Key1="Key1Type=1;0;0;0\nKey1Str="$ps""
+fi
+
+echo -e "#The word of "Default" must not be removed
+Default
+CountryRegion=5
+CountryRegionABand=7
+CountryCode=CA
+MacAddress=$wifimacaddr
+BssidNum=1
+SSID=$essid
+WirelessMode=9
+TxRate=0
+Channel=11
+BasicRate=15
+BeaconPeriod=100
+DtimPeriod=1
+TxPower=100
+DisableOLBC=0
+BGProtection=0
+TxAntenna=
+RxAntenna=
+TxPreamble=0
+RTSThreshold=2347
+FragThreshold=2346
+TxBurst=1
+PktAggregate=0
+TurboRate=0
+WmmCapable=0
+APSDCapable=0
+DLSCapable=0
+APAifsn=3;7;1;1
+APCwmin=4;4;3;2
+APCwmax=6;10;4;3
+APTxop=0;0;94;47
+APACM=0;0;0;0
+BSSAifsn=3;7;2;2
+BSSCwmin=4;4;3;2
+BSSCwmax=10;10;4;3
+BSSTxop=0;0;94;47
+BSSACM=0;0;0;0
+AckPolicy=0;0;0;0
+NoForwarding=0
+NoForwardingBTNBSSID=0
+HideSSID=0
+StationKeepAlive=0
+ShortSlot=1
+AutoChannelSelect=0
+IEEE8021X=0
+IEEE80211H=0
+CSPeriod=10
+WirelessEvent=0
+IdsEnable=0
+AuthFloodThreshold=32
+AssocReqFloodThreshold=32
+ReassocReqFloodThreshold=32
+ProbeReqFloodThreshold=32
+DisassocFloodThreshold=32
+DeauthFloodThreshold=32
+EapReqFooldThreshold=32
+PreAuth=0
+AuthMode=$authmode
+EncrypType=$encryptype
+RekeyInterval=0
+RekeyMethod=DISABLE
+PMKCachePeriod=10
+WPAPSK=$wpapsk
+DefaultKeyID=1
+$Key1
+Key2Type=0
+Key2Str=
+Key3Type=0
+Key3Str=
+Key4Type=0
+Key4Str=
+HSCounter=0
+AccessPolicy0=0
+AccessControlList0=
+AccessPolicy1=0
+AccessControlList1=
+AccessPolicy2=0
+AccessControlList2=
+AccessPolicy3=0
+AccessControlList3=
+WdsEnable=0
+WdsEncrypType=NONE
+WdsList=
+WdsKey=
+RADIUS_Server=192.168.36.3
+RADIUS_Port=1812
+RADIUS_Key=ralink
+own_ip_addr=$ra0addr
+EAPifname=br0
+PreAuthifname=br0
+HT_HTC=0
+HT_RDG=0
+HT_EXTCHA=0
+HT_LinkAdapt=0
+HT_OpMode=0
+HT_MpduDensity=5
+HT_BW=1
+HT_AutoBA=1
+HT_AMSDU=0
+HT_BAWinSize=64
+HT_GI=1
+HT_MCS=33
+MeshId=MESH
+MeshAutoLink=1
+MeshAuthMode=OPEN
+MeshEncrypType=NONE
+MeshWPAKEY=
+MeshDefaultkey=1
+MeshWEPKEY=
+WscManufacturer=
+WscModelName=
+WscDeviceName=
+WscModelNumber=
+WscSerialNumber=
+RadioOn=1" > $conf
+
+echo OQLl > /dev/set-gpio
+sleep 1
+
+modprobe cfg80211
+modprobe mac80211
+
+ralink_sta_flag='/tmp/flags/ralink-sta-driver'
+ralink_chip=`grep -m1 -o 'Vendor=148f ProdID=\(3070\|5370\)' /proc/bus/usb/devices`
+
+if [ -z "$ralink_chip" ];then
+	logger "$0: ERROR: RaLink WiFi not detected"
+	echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	echo -e -n 'blink add name=softap.g.fail led=wifi script="0,1000000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	exit 1
+fi
+
+export $ralink_chip
+
+if [ 0 = "$ap_on" ];then
+	if [ '3070' == "$ProdID" ];then
+		util='rtutil3070sta.ko'
+		ap='rt3070sta.ko'
+		net='rtnet3070sta.ko'
+	else
+		util='rtutil5370sta.ko'
+		ap='rt5370sta.ko'
+		net='rtnet5370sta.ko'
+	fi
+	emsg=`insmod /usr/lib/$util 2>&1`
+
+	if [ 0 != $? ];then
+		logger "$0: ERROR: $util failed: $emsg"
+		echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		echo -e -n 'blink add name=softap.g.fail led=wifi script="0,2000000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		exit 1
+	fi
+
+	emsg=`insmod /usr/lib/$ap 2>&1`
+
+	if [ 0 != $? ];then
+		logger "$0: ERROR: $ap failed: $emsg"
+		echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		echo -e -n 'blink add name=softap.g.fail led=wifi script="0,3000000"\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		exit 1
+	fi
+
+	emsg=`insmod /usr/lib/$net 2>&1`
+
+	if [ 0 != $? ];then
+		logger "$0: ERROR: $net failed: $emsg"
+		echo -e -n 'blink add name=softap.5r.fail led=wifi.r script="1,500000;0,500000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		echo -e -n 'blink add name=softap.5g.fail led=wifi script="0,4000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		exit 1
+	fi
+
+	touch "$ralink_sta_flag"
+	exit 0
+fi
+
+rm -f "$ralink_sta_flag"
+
+if [ '3070' == "$ProdID" ];then
+	util='rtutil3070ap.ko'
+	ap='rt3070ap.ko'
+	net='rtnet3070ap.ko'
+else
+	util='rtutil5370ap.ko'
+	ap='rt5370ap.ko'
+	net='rtnet5370ap.ko'
+fi
+
+emsg=`insmod /usr/lib/$util 2>&1`
+
+if [ 0 != $? ];then
+	logger "$0: ERROR: $util failed: $emsg"
+	echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	echo -e -n 'blink add name=softap.g.fail led=wifi script="0,5000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	exit 1
+fi
+
+emsg=`insmod /usr/lib/$ap 2>&1`
+
+if [ 0 != $? ];then
+	logger "$0: ERROR: $ap failed: $emsg"
+	echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	echo -e -n 'blink add name=softap.g.fail led=wifi script="0,6000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	exit 1
+fi
+
+emsg=`insmod /usr/lib/$net redStoneAutoEven=1 2>&1`
+
+if [ 0 != $? ];then
+	logger "$0: ERROR: $net failed: $emsg"
+	echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	echo -e -n 'blink add name=softap.g.fail led=wifi script="0,7000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	exit 1
+fi
+
+emsg=`ifconfig ra0 up $ra0addr 2>&1`
+
+if [ 0 != $? ];then
+	logger "$0: ERROR: ifconfig ra0 failed: $emsg"
+	echo -e -n 'blink add name=softap.r.fail led=wifi.r script="1,500000;0,500000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	echo -e -n 'blink add name=softap.g.fail led=wifi script="0,8000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	exit 1
+fi
+
+/usr/bin/ap-monitor &
+
+exit 0
+

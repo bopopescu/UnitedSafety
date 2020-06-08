@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Simply call ./build to build a version 3.0.0.#  where# is the incremented number from build.cnt
+
+rev_name="3.0.0"
+
+
+rev=`cat build.num`
+
+GREEN='\033[32m'
+YELLOW='\033[33m'
+NORMAL='\033[39m\033[0m'
+
+cd ..
+cwd=`pwd`
+
+
+
+export PASSPHRASE_FILE=/home/dave/pass.txt
+
+
+echo -e $GREEN "Creating lite release..." $NORMAL
+cd ~/RedStone/Software/create-release
+./create-release.pl upload=1  /home/dave/trulink/builddir
+echo -e $GREEN "Release built to /tmp directory" $NORMAL
+echo -e $GREEN "Committing to SVN..." $NORMAL
+
+mkdir -p /home/dave/RedStone/Software/releases/$rev_name/$rev
+cp  /tmp/*$rev*.bin /home/dave/RedStone/Software/releases/$rev_name/$rev
+cp  /home/dave/trulink/builddir/firmware/* /home/dave/RedStone/Software/releases/$rev_name/$rev
+
+echo -e $GREEN "Creating patches..." $NORMAL
+
+cd $cwd/build
+./patches.sh $rev_name $rev
+
+echo -e $GREEN "Creating MFG Site entries..." $NORMAL
+
+ssh -t -p 2209 trulink@redstone.atsplace.com "sudo sh /var/www/redstone-update-server/autoupdate/rls/makepatch5000.sh $rev_name.$rev"
+
+echo -e $GREEN "Version $rev_name.$rev build is complete and available via the mfg website." $NORMAL
+

@@ -1,0 +1,127 @@
+Minor typos in manual.txt, see upstream http://bugs.mutt.org/3379
+
+--- a/doc/manual.xml.head
++++ b/doc/manual.xml.head
+@@ -1511,7 +1511,7 @@
+ 
+ <para>
+ After editing the initial message text and before entering
+-the compose menu, Mutt properly space-stuffes the message.
++the compose menu, Mutt properly space-stuffs the message.
+ <emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
+ <literal>format=flowed</literal> and means to prepend a space to:
+ </para>
+@@ -2507,7 +2507,7 @@
+ 
+ <itemizedlist>
+ <listitem><para>attachment</para></listitem>
+-<listitem><para>bold (hiliting bold patterns in the body of messages)</para></listitem>
++<listitem><para>bold (highlighting bold patterns in the body of messages)</para></listitem>
+ <listitem><para>error (error messages printed by Mutt)</para></listitem>
+ <listitem><para>hdrdefault (default color of the message header in the pager)</para></listitem>
+ <listitem><para>indicator (arrow or bar used to indicate the current item in a menu)</para></listitem>
+@@ -2516,11 +2516,11 @@
+ <listitem><para>normal</para></listitem>
+ <listitem><para>quoted (text matching <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> in the body of a message)</para></listitem>
+ <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
+-<listitem><para>search (hiliting of words in the pager)</para></listitem>
++<listitem><para>search (highlighting of words in the pager)</para></listitem>
+ <listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
+ <listitem><para>tilde (the <quote>&tilde;</quote> used to pad blank lines in the pager)</para></listitem>
+ <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
+-<listitem><para>underline (hiliting underlined patterns in the body of messages)</para></listitem>
++<listitem><para>underline (highlighting underlined patterns in the body of messages)</para></listitem>
+ </itemizedlist>
+ 
+ <para>
+@@ -3095,7 +3095,7 @@
+ the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as <quote>=</quote> and <quote>!</quote>), any variable
+ definition that affects these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
+ should be set before the <command>mailboxes</command> command. If
+-none of these shorcuts are used, a local path should be absolute as
++none of these shortcuts are used, a local path should be absolute as
+ otherwise Mutt tries to find it relative to the directory
+ from where Mutt was started which may not always be desired.
+ </para>
+@@ -5841,7 +5841,7 @@
+ If the <emphasis>command</emphasis> is empty, this operation is
+ disabled for this file type. In this case, the folder will be open and
+ closed again (using <link linkend="open-hook">open-hook</link> and
+-<link linkend="close-hook">close-hook</link>respectively) each time you
++<link linkend="close-hook">close-hook</link> respectively) each time you
+ will add to it.
+ </para>
+ </sect2>
+@@ -6811,7 +6811,7 @@
+ ## line is unnecessary if you already have "attach-allow */.*", of
+ ## course.  These are off by default!  The MIME elements contained
+ ## within a message/* or multipart/* are still examined, even if the
+-## containers themseves don't qualify.
++## containers themselves don't qualify.
+ ##
+ #attachments  +A message/.* multipart/.*
+ #attachments  +I message/.* multipart/.*
+@@ -7465,7 +7465,7 @@
+ the current chain position, use <literal>&lt;select-entry&gt;</literal> or <literal>&lt;append&gt;</literal>.
+ You can also delete entries from the chain, using the corresponding
+ function.  Finally, to abandon your changes, leave the menu, or
+-<literal>&lt;accept&gt;</literal> them pressing (by default) the <literal>Return</literal> key.
++<literal>&lt;accept&gt;</literal> them, pressing (by default) the <literal>Return</literal> key.
+ </para>
+ 
+ <para>
+--- a/doc/Muttrc
++++ b/doc/Muttrc
+@@ -1991,7 +1991,7 @@
+ # 
+ # 
+ # The default mailbox type used when creating new folders. May be any of
+-# ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overriden by the
++# ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overridden by the
+ # -m command-line option.
+ # 
+ # 
+--- a/doc/manual.txt
++++ b/doc/manual.txt
+@@ -7405,7 +7405,7 @@
+ Default: mbox
+ 
+ The default mailbox type used when creating new folders. May be any of ?mbox?,
+-?MMDF?, ?MH? and ?Maildir?. This is overriden by the -m command-line option.
++?MMDF?, ?MH? and ?Maildir?. This is overridden by the -m command-line option.
+ 
+ 3.128. menu_context
+ 
+--- a/edit.c
++++ b/edit.c
+@@ -39,7 +39,7 @@
+  * declared "static" (sigh)
+  */
+ static char* EditorHelp1 = N_("\
+-~~		insert a line begining with a single ~\n\
++~~		insert a line beginning with a single ~\n\
+ ~b users	add users to the Bcc: field\n\
+ ~c users	add users to the Cc: field\n\
+ ~f messages	include messages\n\
+--- a/recvattach.c
++++ b/recvattach.c
+@@ -698,7 +698,7 @@
+ 	{
+ 	  if (!mutt_can_decode (top))
+ 	  {
+-	    mutt_error (_("I dont know how to print %s attachments!"), type);
++	    mutt_error (_("I don't know how to print %s attachments!"), type);
+ 	    return (0);
+ 	  }
+ 	}
+--- a/init.h
++++ b/init.h
+@@ -1413,7 +1413,7 @@
+   /*
+   ** .pp
+   ** The default mailbox type used when creating new folders. May be any of
+-  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overriden by the
++  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overridden by the
+   ** \fC-m\fP command-line option.
+   */
+   { "menu_context",	DT_NUM,  R_NONE, UL &MenuContext, 0 },

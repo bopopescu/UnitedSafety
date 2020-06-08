@@ -1,0 +1,116 @@
+lockfile-progs (0.1.13ubuntu1) lucid; urgency=low
+
+  * Compute md5sums during build.
+
+ -- Loïc Minier <loic.minier@ubuntu.com>  Tue, 12 Jan 2010 00:10:53 +0100
+
+lockfile-progs (0.1.13) unstable; urgency=low
+
+  * Make exit_status volatile since it interacts with a signal handler.
+
+  * Adjust code for -Wformat-security.  Thanks to Michael Bienia
+    <michael@vorlon.ping.de>. (closes: #487503)
+
+ -- Rob Browning <rlb@defaultvalue.org>  Sun, 21 Jun 2009 10:00:52 -0700
+
+lockfile-progs (0.1.12) unstable; urgency=low
+
+  * Fix manpage typos.  Thanks to "A. Costa" <agcosta@gis.net>.
+    (closes: #439745)
+
+  * Remove duplicate priority field from the control file.
+    (closes: #464297)
+
+  * Add a --use-pid option which adds L_PID to the underlying liblockfile
+    call.  Users should note the caveats in lockfile_create(3).
+
+  * Add a lockfile-check program (see lockfile_check(3)).
+
+  * Remove duplicate priority and section fields from debian/control.
+    Thanks to Lucas Nussbaum <lucas@lucas-nussbaum.net> and Patrick
+    Winnertz <winnie@debian.org>. (closes: #464297)
+
+ -- Rob Browning <rlb@defaultvalue.org>  Wed, 17 Jun 2009 21:38:54 -0700
+
+lockfile-progs (0.1.11) unstable; urgency=low
+
+  * Add --quiet and --verbose options. (closes: #272539)
+  * Use hard links for duplicate binaries. (closes: #382730)
+  * Respect DEB_BUILD_OPTIONS nostrip. (closes: #437491)
+  * Fix manpage to reflect changes to liblockfile --retry.
+    (closes: #161685, #244314, #360474)
+  * Add support for --lock-name (-l). (closes: #416355)
+
+ -- Rob Browning <rlb@defaultvalue.org>  Fri, 24 Aug 2007 17:35:23 -0700
+
+lockfile-progs (0.1.10) unstable; urgency=low
+
+  * update manpage to fix dashes under utf-8. (closes: #159907)
+  * recompile to fix prelink problem. (closes: #231550)
+  * fix manpage to note --try like semantics of --retry.
+
+ -- Rob Browning <rlb@defaultvalue.org>  Sat, 28 Feb 2004 11:44:30 -0600
+
+lockfile-progs (0.1.9) unstable; urgency=low
+
+  * Add command tool names to manpages. (closes: #88510)
+  * Update my email address.
+
+ -- Rob Browning <rlb@defaultvalue.org>  Tue, 17 Jul 2001 12:38:34 -0500
+
+lockfile-progs (0.1.8) unstable; urgency=low
+
+  * Add Build-Depends: liblockfile-dev (Closes: Bug#94948, Bug#84547).
+  * Move manpages to /usr/share/man (Closes: Bug#80755, Bug#91205).
+  * Move docs to /usr/share (Closes: Bug#91571).
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Mon, 23 Apr 2001 15:24:26 -0500
+
+lockfile-progs (0.1.7) unstable; urgency=low
+
+  * Update to depend on liblockfile1 (Closes: Bug#44819)
+  * Support new lockfile_create() signature.
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Fri, 24 Sep 1999 18:41:58 -0500
+
+lockfile-progs (0.1.6) unstable; urgency=low
+
+  * Really fix return codes (Closes: Bug#34279)
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Sat, 29 May 1999 13:36:42 -0500
+
+lockfile-progs (0.1.5) unstable; urgency=low
+
+  * Programs now return more meaningful result codes (Closes: Bug#31254).
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Sun, 17 Jan 1999 20:39:29 -0600
+
+lockfile-progs (0.1.4) unstable; urgency=low
+
+  * Don't allow locking arbitrary mailbox (Closes: Bug#28773).
+  * Clean up code to use getopt.
+  * Add --oneshot option to lock touching programs.
+  * Add --retry-count option to locking programs.
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Sat, 21 Nov 1998 01:06:27 -0600
+
+lockfile-progs (0.1.3) unstable; urgency=low
+
+  * Rebuild as root.  Libtricks built a broken .deb (a file that should
+    have been a symlink was a truncated file of garbage).
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Fri, 30 Oct 1998 16:11:34 -0600
+
+lockfile-progs (0.1.2) unstable; urgency=low
+
+  * Make mail lock programs a separate binary, and make them sgid mail.
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Fri, 30 Oct 1998 15:47:17 -0600
+
+lockfile-progs (0.1.1) unstable; urgency=low
+
+  * Initial release.
+  * This is beta code, so be a little cautious.  I don't think there are
+    any *serious* bugs, but...
+
+ -- Rob Browning <rlb@cs.utexas.edu>  Mon, 19 Oct 1998 16:53:40 -0500

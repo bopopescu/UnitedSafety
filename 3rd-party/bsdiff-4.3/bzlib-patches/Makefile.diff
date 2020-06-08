@@ -1,0 +1,47 @@
+Index: bzip2-1.0.5/Makefile
+===================================================================
+--- bzip2-1.0.5/Makefile	(revision 7199)
++++ bzip2-1.0.5/Makefile	(working copy)
+@@ -23,7 +23,8 @@
+ LDFLAGS=
+ 
+ BIGFILES=-D_FILE_OFFSET_BITS=64
+-CFLAGS=-Wall -Winline -O2 -g $(BIGFILES) $(DEBCFLAGS)
++CFLAGS=-Wall -Winline -Os $(BIGFILES) $(DEBCFLAGS) -static
++#CFLAGS=-Wall -Winline -Os $(BIGFILES) $(DEBCFLAGS) -static -DBZ_NO_STDIO
+ 
+ # Where you want it installed when you do 'make install'
+ PREFIX=/usr/local
+@@ -39,7 +40,8 @@
+ 
+ all: libbz2.a bzip2 bzip2recover # test
+ 
+-bzip2: libbz2.so bzip2.o
++#bzip2: libbz2.so bzip2.o
++bzip2: bzip2.o
+ 	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2 bzip2.o -L. -lbz2
+ 
+ bzip2recover: bzip2recover.o
+@@ -54,15 +56,15 @@
+ 		$(RANLIB) libbz2.a ; \
+ 	fi
+ 
+-libbz2.so: libbz2.so.$(somajor)
+-	ln -sf $^ $@
++#libbz2.so: libbz2.so.$(somajor)
++#	ln -sf $^ $@
+ 
+-libbz2.so.$(somajor): libbz2.so.$(sominor)
+-	ln -sf $^ $@
++#libbz2.so.$(somajor): libbz2.so.$(sominor)
++#	ln -sf $^ $@
+ 
+-libbz2.so.$(sominor): $(OBJS:%.o=%.sho)
+-	$(CC) -o libbz2.so.$(sominor) -shared \
+-	  -Wl,-soname,libbz2.so.$(somajor) $^ -lc
++#libbz2.so.$(sominor): $(OBJS:%.o=%.sho)
++#	$(CC) -o libbz2.so.$(sominor) -shared \
++#	  -Wl,-soname,libbz2.so.$(somajor) $^ -lc
+ 
+ %.sho: %.c
+ 	$(CC) $(CFLAGS) -D_REENTRANT -fPIC -o $@ -c $<

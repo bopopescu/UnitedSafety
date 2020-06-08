@@ -1,0 +1,3 @@
+autossh			usr/lib/autossh
+debian/autossh-argv0	usr/bin
+debian/rscreen		usr/bin

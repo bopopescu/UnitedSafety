@@ -1,0 +1,62 @@
+#!/bin/sh
+
+#wait for boot to complete
+sleep 30
+
+DIR='/tmp/webconfig'
+DHCP='/var/state/dhcp/dhcpd.leases'
+
+if [ "$(ls -A $DHCP)" ]; then
+	d_md5=`md5sum $DHCP | md5sum  |  awk '{print $1}'`
+else
+	d_md5=0
+fi
+
+if [ -d "$DIR" ]; then
+	if [ "$(ls -A $DIR)" ]; then
+		s_md5=`md5sum $DIR/* | md5sum  |  awk '{print $1}'`
+	else
+		s_md5=0
+	fi
+else
+	s_md5=0
+fi
+
+new_s_md5=$s_md5
+new_d_md5=$d_md5
+
+while true
+do
+	if [ -d "$DIR" ]; then
+		if [ "$(ls -A $DIR)" ]; then
+			new_s_md5=`md5sum $DIR/* | md5sum  |  awk '{print $1}'`
+		fi
+	fi
+
+	if [ "$(ls -A $DHCP)" ]; then
+		new_d_md5=`md5sum $DHCP | md5sum  |  awk '{print $1}'`
+	fi
+
+	if [ "$s_md5" != "$new_s_md5" ] || [ "$d_md5" != "$new_d_md5" ];  then
+
+		if [  "$d_md5" != "$new_d_md5" ];  then
+			if [ "$d_md5" = "0" ]; then
+				d_md5=$new_d_md5
+				continue
+			fi
+		fi
+
+		if [ "$s_md5" != "$new_s_md5" ] ;  then
+			if [ "$s_md5" = "0" ]; then
+				s_md5=$new_s_md5
+				continue
+			fi
+		fi
+		
+		s_md5=$new_s_md5
+		d_md5=$new_d_md5
+		printf "blink add name=connect app=/usr/redstone/connect-blink.so\r" |socat - unix-connect:/var/run/redstone/i2c-gpio-monitor > /dev/null
+	fi
+	sleep 5
+done
+

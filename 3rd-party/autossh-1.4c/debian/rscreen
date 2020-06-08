@@ -1,0 +1,72 @@
+#!/bin/sh
+#
+# Script to use autossh to open up a remote screen session, or
+# reconnect to an existing one. Based on autossh's original rscreen
+# example script as installed on Debian systems into
+# /usr/share/doc/autossh/rscreen, but with more generally usable
+# defaults
+#
+# Copyright (C) Carson Harding, 2002.
+# Copyright (C) Axel Beckert, 2011.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are freely permitted.
+#
+# THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
+# THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+BASENAME=`basename $0`
+usage() {
+	echo <<EOF
+Usage: $BASENAME [autossh or ssh options] <host>
+
+If \$RSCREEN_COMMAND is set (either in the environment, in
+/etc/${BASENAME}rc, or in ~/.${BASENAME}rc), it will be used instead of screen
+or tmux.  Use this feature if you want to supply additional screen
+options or tmux commands. (Using \$RTMUX_COMMAND does not work!)
+
+EOF
+}
+
+if [ -z "$1" ]; then
+	usage
+	exit 1
+elif [ "$1" = "-h" -o "$1" = "--help" ]; then
+	usage
+	exit 0
+fi
+
+if [ -r /etc/${BASENAME}rc ]; then
+    . /etc/${BASENAME}rc
+fi
+
+if [ -r ~/.${BASENAME}rc ]; then
+    . ~/.${BASENAME}rc
+fi
+
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval `ssh-agent -s`
+    ssh-add
+fi
+
+if [ -n "$RSCREEN_COMMAND" ]; then
+    exec autossh -t "$@" "$RSCREEN_COMMAND"
+elif [ "$BASENAME" = "rtmux" ]; then
+    exec autossh -t "$@" "tmux a || tmux new"
+elif [ "$BASENAME" = "ruscreen" ]; then
+    # screen with explicit UTF-8 setting
+    exec autossh -t "$@" "screen -RdU"
+else
+    # Fall back to normal screen
+    exec autossh -t "$@" "screen -Rd"
+fi

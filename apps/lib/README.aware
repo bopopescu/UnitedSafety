@@ -1,0 +1,25 @@
+
+ _______         _      _       _    
+|__   __|       | |    (_)     | |   
+   | |_ __ _   _| |     _ _ __ | | __
+   | | '__| | | | |    | | '_ \| |/ /
+   | | |  | |_| | |____| | | | |   < 
+   |_|_|   \__,_|______|_|_| |_|_|\_\
+                                     
+
+libs directory.
+
+This directory is for prebuilt arm libraries.  Specifically added for curl.
+
+The libraries located in here are usually linked by the the apps programs.  The include
+files for these libraries are located in ../include and usually come under their own subdirectory
+e.g. ../include/curl
+
+
+Dave Huff
+December 10 2018
+
+KH Akira Consulting Inc.
+for
+Aware360 Ltd.
+

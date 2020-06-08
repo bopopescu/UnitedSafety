@@ -1,0 +1,43 @@
+<data>
+	<pgn>65271</pgn>
+	<spn>114</spn>
+	<value>
+		<name>"Net Battery Current"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-125</offset>
+		<units>"A"</units>
+	</value>
+	<spn>115</spn>
+	<value>
+		<name>"Alternator Current"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"A"</units>
+	</value>
+	<spn>167</spn>
+	<value>
+		<name>"Charging System Potential"</name>
+		<size>16</size>
+		<scale>0.05</scale>
+		<offset>0</offset>
+		<units>"V"</units>
+	</value>
+	<spn>168</spn>
+	<value>
+		<name>"Battery Potential / Power Input 1"</name>
+		<size>16</size>
+		<scale>0.05</scale>
+		<offset>0</offset>
+		<units>"V"</units>
+	</value>
+	<spn>158</spn>
+	<value>
+		<name>"Keyswitch Battery Potential"</name>
+		<size>16</size>
+		<scale>0.05</scale>
+		<offset>0</offset>
+		<units>"V"</units>
+	</value>
+</data>

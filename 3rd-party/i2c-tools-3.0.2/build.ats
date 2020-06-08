@@ -1,0 +1,40 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	export CC=${CROSS_COMPILE}gcc
+	make -e
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo cp -av "./tools/i2cdetect" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"i2cdetect\""
+			exit 1
+		fi
+
+		sudo cp -av "./tools/i2cdump" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"i2cdump\""
+			exit 1
+		fi
+
+		sudo cp -av "./tools/i2cget" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"i2cget\""
+			exit 1
+		fi
+
+		sudo cp -av "./tools/i2cset" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"i2cset\""
+			exit 1
+		fi
+	fi
+exit 0

@@ -1,0 +1,7 @@
+Makefile
+*.o
+*.swp
+config.cache
+config.log
+config.status
+ssmtp

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+turn_off_features()
+{
+	a=`ps | grep -v grep | grep -v '/bin/sh' | grep -v applet | grep 'feature-monitor' | awk '{print $1}'`
+	b=`cat /proc/$a/stat | awk '{print $5}'`
+	kill -SIGTERM -$b
+}
+
+if [ -e /tmp/flags/go-to-sleep ];then
+	logger -s 'Preparing to sleep'
+	wait_sec=`db-config get system sleep-delay -v`
+	turn_off_features
+
+	if [ '' = "$wait_sec" ];then
+		wait_sec=1
+	fi
+
+	logger -s 'Turning off CAN bus...'
+	echo -n n > /dev/set-gpio # CAN_ON disabled
+	ifconfig can0 down
+	ifconfig can1 down
+	logger -s "Sleep delay (seconds): $wait_sec"
+	i=0
+
+	while [ $i -le $wait_sec ]; do
+		echo > /dev/watchdog
+		sleep 1
+		i=`expr $i + 1`
+	done
+
+	logger -s 'Shutting off daughter card...'
+	latch=`supports-latching|tr -d '\n'`
+
+	if [ 'yes' = "$latch" ];then
+		echo -n pqLl > /dev/set-gpio
+	else
+		echo -n pq > /dev/set-gpio
+		sleep 3
+	fi
+
+else
+	turn_off_features
+fi
+
+exit 0

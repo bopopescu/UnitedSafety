@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo 'blink' | socat - unix-connect:/var/run/redstone/i2c-gpio-monitor
+

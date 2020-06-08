@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# this will get the command response from the modem
+#
+
+tmp="modem.raw"
+
+if [ -e $tmp ]; then
+	rm $tmp
+fi
+
+count=0
+
+echo -e "ate0\r" > /dev/ttyACM5
+
+cat /dev/ttyACM5 >> $tmp &
+thePID=$!
+
+
+echo -e "$1" > /dev/ttyACM5
+sleep 2
+kill $thePID
+cmd=`echo $1  | cut -b 4-`
+grep $cmd $tmp
+
+if [ -e $tmp ]; then 
+	rm $tmp
+fi 
+

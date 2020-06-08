@@ -1,0 +1,4 @@
+ct_host=redstone.atsplace.com
+ct_port=38023
+start_speed=5
+start_timeout=5

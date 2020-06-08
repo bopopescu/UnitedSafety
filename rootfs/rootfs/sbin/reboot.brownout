@@ -1,0 +1,31 @@
+#!/bin/sh
+# NOTE: reboot only affects the imx28 - not the micro.  So no signals should be sent to the micro
+#       relating to the rail power down or clearing of the registers.
+#
+# basically the same as reboot but only called by the brownout monitor to give better shutdown information
+if [ -e /tmp/flags/go-to-sleep ]; then
+	rm /tmp/flags/go-to-sleep
+fi
+
+GPPID=`cat /proc/$PPID/stat|sed 's/^\([^ ]\+ \)\{3\}//'|sed 's/ .*//'`
+r='/tmp/logdir/brownout.txt'
+
+echo "msg power_off" | socat - unix-connect:/var/run/redstone/message-assembler
+# Save the configuration database to the /mnt/logs disk if the APN has changed.
+/usr/bin/SaveConfigToRestore
+echo `date` >> $r
+echo "UP: `uptime`" >> $r
+echo -n -e "\\tcaller: $PPID:" >> $r
+echo `cat /proc/$PPID/cmdline|tr '\\0' ','|sed 's/,\\\$//'` >> $r
+
+echo -n -e "\\tcaller: $GPPID:" >> $r
+echo `cat /proc/$GPPID/cmdline|tr '\\0' ','|sed 's/,\\\$//'` >> $r
+
+echo hpqvLl > /dev/set-gpio
+
+if [ -e /tmp/flags/go-to-sleep ];then
+	echo 'sleep' >> $r
+	exec /sbin/poweroff
+fi
+
+exec /usr/redstone/reboot

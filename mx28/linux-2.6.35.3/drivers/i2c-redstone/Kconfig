@@ -1,0 +1,12 @@
+menuconfig REDSTONE_I2C_GPIO_DRIVER
+	tristate "Redstone I2C GPIO Driver"
+	default n
+	depends on I2C && I2C_MXS
+	help
+	  Redstone I2C GPIO device driver.
+	  This is just a top level menu. Use the sub menu to enable/disable features.
+
+config REDSTONE_I2C_GPIO
+	tristate "I2C GPIO driver on VPN"
+	default n
+	depends on REDSTONE_I2C_GPIO_DRIVER

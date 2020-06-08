@@ -1,0 +1,20 @@
+Source: sendip
+Maintainer: Jonathan McDowell <noodles@earth.li>
+Priority: optional
+Section: net
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 7)
+Homepage: http://www.earth.li/projectpurple/progs/sendip.html
+
+Package: sendip
+Architecture: any
+Priority: optional
+Section: net
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Commandline tool to allow sending arbitrary IP packets
+ SendIP has a large number of command line options to specify the
+ content of every header of a RIP, TCP, UDP, ICMP or raw IPv4 and IPv6
+ packet. It also allows any data to be added to the packet. Checksums
+ can be calculated automatically, but if you wish to send out wrong
+ checksums, that is supported too.
+

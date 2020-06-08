@@ -1,0 +1,10 @@
+#!/bin/sh
+db-config set feature packetizer-calamps 1
+db-config set packetizer-calamps host www.myabsolutetrac.com
+db-config set packetizer-calamps ack_type standard
+db-config set packetizer-calamps port 51001
+db-config set packetizer-calamps timeout 5
+killall packetizer-calamps
+echo "Unit is ready for test - Please drive a test loop."
+echo "Log into CAMS and look for test loop upon completion."
+

@@ -1,0 +1,4 @@
+ct_host=96.53.25.78
+ct_port=1723
+start_speed=5
+start_timeout=5

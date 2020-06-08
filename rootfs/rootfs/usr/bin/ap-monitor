@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# ap-monitor - check that the Access Point is up and set the WiFi LED to green.
+# if the WiFi is down but should be up - set the WiFi LED to red
+#
+
+wifi=`db-config get -b WiFi ssid`
+
+while [ 1 ]
+do
+
+	iwconfig 2> /dev/null | grep $wifi
+
+	if [ $? -eq 0 ] ;then
+		echo -e -n 'blink add name=ledr.softap led=wifi.r script="0,1000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		echo -e -n 'blink add name=ledg.softap led=wifi script="1,1000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	else
+		echo -e -n 'blink add name=ledr.softap led=wifi.r script="1,1000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+		echo -e -n 'blink add name=ledg.softap led=wifi script="0,1000000" priority=2\r'|socat - UNIX-CONNECT:/var/run/redstone/i2c-gpio-monitor
+	fi
+sleep 10
+
+done

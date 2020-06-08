@@ -1,0 +1,21 @@
+From: Bernd Zeimetz <bernd@bzed.de>
+Date: Thu, 1 Apr 2010 21:58:13 +0200
+Subject: [PATCH] Actually close the daemon socket in a library close()
+
+---
+ libgps_core.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/libgps_core.c b/libgps_core.c
+index aa5ff67..3a19d57 100644
+--- a/libgps_core.c
++++ b/libgps_core.c
+@@ -131,6 +131,7 @@ int gps_close(struct gps_data_t *gpsdata)
+ {
+     libgps_debug_trace((1, "gps_close()\n"));
+     free(PRIVATE(gpsdata));
++    close(gpsdata->gps_fd);
+     gpsdata->gps_fd = -1;
+     
+     return 0;
+-- 

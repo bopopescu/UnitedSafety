@@ -1,0 +1,30 @@
+#!/bin/sh
+echo > /dev/watchdog
+logger -s "===== m2m-dirs ====="
+
+ud_sock_dir='/tmp/vrun/redstone'
+
+mkdir -p /tmp/flags
+mkdir -p /tmp/config
+mkdir -p /tmp/debug
+mkdir -p /tmp/vftp/lib
+mkdir -p /tmp/vftp/etc
+mkdir -p /tmp/vftp/pub
+mkdir -p /tmp/vftp/bin
+mkdir -p /tmp/vlib
+mkdir -p /tmp/vlock
+mkdir -p /tmp/vrun/usb
+mkdir -p $ud_sock_dir
+mkdir -p /tmp/vspool/lpd
+mkdir -p /tmp/vspool/mail
+mkdir -p /tmp/vstate/dhcp
+mkdir -p /tmp/vtmp
+ln -s /home/root/system-log /tmp/vlog
+
+touch /tmp/vlog/lastlog
+touch /tmp/vlog/wtmp
+touch /tmp/vrun/utmp
+touch /tmp/vstate/dhcp/dhcpd.leases
+
+chmod 777 $ud_sock_dir
+exit 0

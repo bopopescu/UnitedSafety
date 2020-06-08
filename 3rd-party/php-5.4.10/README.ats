@@ -1,0 +1,21 @@
+=======================================================================
+= Building php-5.4.10
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 11 Katya \n \l
+
+	bm1, bm2
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+Build Commands:
+	Prerequisites:
+		Build and install (to your own install directory, not the system) libxml2-2.9.0 (this is a required library)
+		Build and install (to your own install directory, not the system) openssl-1.0.1c (this is a required library)
+
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./configure --host=arm-linux-gnu CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}ld AR=${CROSS_COMPILE}ar STRIP=${CROSS_COMPILE}strip --with-config-file-path=/etc/ --enable-xml --enable-json --enable-hash --enable-dom --enable-session --enable-ctype --enable-tokenizer --without-pear  --enable-libxml --with-libxml-dir=/tmp/$(whoami)/xml2/ --enable-simplexml --enable-mbregex --enable-sockets  --enable-soap --enable-pdo --with-pdo-sqlite --with-sqlite3 --with-openssl=/tmp/$(whoami)/openssl --enable-calendar --disable-all
+	make -j 4
+

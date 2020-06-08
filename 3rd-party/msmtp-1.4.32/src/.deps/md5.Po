@@ -1,0 +1,25 @@
+md5.o md5.o: md5.c \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/string.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/features.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/predefs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/cdefs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wordsize.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gnu/stubs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stddef.h \
+  md5.h
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/string.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/features.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/cdefs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wordsize.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gnu/stubs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stddef.h:
+
+md5.h:

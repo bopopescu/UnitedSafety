@@ -1,0 +1,71 @@
+<data>
+	<pgn>61444</pgn>
+	<spn>899</spn>
+	<value>
+		<name>"Engine Torque Mode"</name>
+		<size>4</size>
+		<scale>4</scale>
+		<offset>0</offset>
+		<units>"states"</units>
+	</value>
+	<spn>4154</spn>
+	<value>
+		<name>"Actual Engine - Percent Torque High Resolution"</name>
+		<size>4</size>
+		<scale>0.125</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+	<spn>512</spn>
+	<value>
+		<name>"Driver's Demand Engine - Percent Torque"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-125</offset>
+		<units>"%"</units>
+	</value>
+	<spn>513</spn>
+	<value>
+		<name>"Actual Engine - Percent Torque"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-125</offset>
+		<units>"%"</units>
+	</value>
+	<spn>190</spn>
+	<value>
+		<name>"Engine Speed"</name>
+		<size>16</size>
+		<scale>0.125</scale>
+		<offset>0</offset>
+		<units>"rpm"</units>
+	</value>
+	<spn>1483</spn>
+	<value>
+		<name>"Source Address of Controlling Device for Engine Control"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>1675</spn>
+	<value>
+		<name>"Engine Start Mode"</name>
+		<size>4</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<value>
+		<name>ignore</name>
+		<size>4</size>
+	</value>
+	<spn>2432</spn>
+	<value>
+		<name>"Engine Demand - Percent Torque"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-125</offset>
+		<units>"%"</units>
+	</value>
+</data>

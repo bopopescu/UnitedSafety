@@ -1,0 +1,23 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 50_disable_mlock_test.dpatch by Michael Bienia <geser@ubuntu.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Disable mlock() test since it fails with ulimit 0 (on Ubuntu buildds).
+
+
+@DPATCH@
+diff -urNad gnupg-1.4.9~/config.h.in gnupg-1.4.9/config.h.in
+--- gnupg-1.4.9~/config.h.in	2008-03-26 18:33:29.000000000 +0100
++++ gnupg-1.4.9/config.h.in	2008-07-21 00:57:44.000000000 +0200
+@@ -82,8 +82,11 @@
+ /* Define if `gethrtime(2)' does not work correctly i.e. issues a SIGILL. */
+ #undef HAVE_BROKEN_GETHRTIME
+ 
++/* Test doesn't work, since ulimit is sometimes 0... */
++#if 0
+ /* Defined if the mlock() call does not work */
+ #undef HAVE_BROKEN_MLOCK
++#endif
+ 
+ /* Define to 1 if the compiler understands __builtin_expect. */
+ #undef HAVE_BUILTIN_EXPECT

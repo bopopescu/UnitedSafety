@@ -1,0 +1,8 @@
+#!/bin/sh
+
+	if [ -s /home/root/config.db ];then
+		mv /home/root/config.db /mnt/nvram/config/config.db
+		sync
+	fi
+
+exit 0

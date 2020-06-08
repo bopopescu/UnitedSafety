@@ -1,0 +1,25 @@
+# Telit HE910 (Telit_HE910_Family_Ports_Arrangements_r4.pdf, Mod. 0810 2011-07 Rev.2)
+
+# Telit HE910
+SUBSYSTEMS=="usb", DRIVERS=="usb", ATTRS{idVendor}=="1bc7", ATTRS{idProduct}=="0021", ENV{TELIT_HE910_DETECTED}="1"
+
+# AT1 Access Point
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="00", ATTRS{interface}=="Telit Wireless Module Modem", SYMLINK+="ttyModemAT", OWNER="telit", GROUP="telit"
+
+# TT (Telit Trace) Access Point
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="02", ATTRS{interface}=="Telit Wireless Module Port", SYMLINK+="ttyModemTT", OWNER="telit", GROUP="telit"
+
+# Not connected
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="04", ATTRS{interface}=="Telit Wireless Module Port", SYMLINK+="ttyModemAT2", OWNER="telit", GROUP="telit"
+
+# AT2 Access Point
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="06", ATTRS{interface}=="Telit Wireless Module Port", SYMLINK+="ttyModem", OWNER="telit", GROUP="telit"
+
+# GPS (Not connected)
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="08", ATTRS{interface}=="Telit Wireless Module Port", SYMLINK+="ttyModemGPS", OWNER="telit", GROUP="telit"
+
+# Not connected
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="0a", ATTRS{interface}=="Telit Wireless Module Port", SYMLINK+="ttyModemNC", OWNER="telit", GROUP="telit"
+
+# Not connected
+ACTION=="add", ENV{TELIT_HE910_DETECTED}=="1", ATTRS{bInterfaceNumber}=="0c", ATTRS{interface}=="Telit Wireless Module Port", SYMLINK+="ttyModemNC2", OWNER="telit", GROUP="telit"

@@ -1,0 +1,362 @@
+<data name="Cummins" type="powercommand">
+
+	<register name="40061" type="">
+		<definition>
+			<desc>"Battery Voltage"</desc>
+			<pgn>65271</pgn>
+			<spn>158</spn>
+			<size>1</size>
+			<multiplier>0.001</multiplier>
+			<units>"Vdc"</units>
+			<hrange>39</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40062" type="">
+		<definition>
+			<desc>"Oil Pressure"</desc>
+			<pgn>65263</pgn>
+			<spn>100</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"psi"</units>
+			<hrange>145</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40063" type="">
+		<definition>
+			<desc>"Oil Temperature"</desc>
+			<pgn>65262</pgn>
+			<spn>175</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"degF"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40065" type="">
+		<definition>
+			<desc>"Intake Manifold Temperature"</desc>
+			<pgn>65270</pgn>
+			<spn>105</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"degF"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40068" type="">
+		<definition>
+			<desc>"Average Engine Speed"</desc>
+			<pgn>65207</pgn>
+			<spn>1014</spn>
+			<size>1</size>
+			<multiplier>0.125</multiplier>
+			<units>"rpm"</units>
+			<hrange>4096</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40070" type="">
+		<definition>
+			<desc>"Engine Running Time"</desc>
+			<pgn>65253</pgn>
+			<spn>247</spn>
+			<size>2</size>
+			<multiplier>0.05</multiplier>
+			<units>"hours"</units>
+			<hrange>429496729.4</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40229" type="">
+		<definition>
+			<desc>"Barometric Absolute Pressure"</desc>
+			<pgn>65259</pgn>
+			<spn>108</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"psi"</units>
+			<hrange>37.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40230" type="">
+		<definition>
+			<desc>"Boost Pressure"</desc>
+			<pgn>65270</pgn>
+			<spn>102</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"psi"</units>
+			<hrange>148</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40264" type="">
+		<definition>
+			<desc>"Percent Engine Torque/Duty Cycle"</desc>
+			<pgn>61444</pgn>
+			<spn>513</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"%"</units>
+			<hrange>125</hrange>
+			<lrange>-125</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+			<type>16</type>
+		</config>
+	</register>
+
+	<register name="40400" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 1"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>115,122,123,124,135,141,143,144,145,146,151,153,154,155,187,195</faultcode>
+		</definition>
+	</register>
+
+	<register name="40401" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 2"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>196,197,212,213,214,221,222,223,224,227,228,231,232,234,235,238</faultcode>
+		</definition>
+	</register>
+
+	<register name="40402" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 3"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>239,245,261,263,265,266,271,272,281,285,286,0,0,295,319,322</faultcode>
+		</definition>
+	</register>
+
+	<register name="40403" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 4"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>323,324,325,331,332,0,342,343,351,352,359,386,415,418,421,422</faultcode>
+		</definition>
+	</register>
+
+	<register name="40404" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 5"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>425,426,427,435,441,442,449,451,452,488,546,547,553,554,556,559</faultcode>
+		</definition>
+	</register>
+
+	<register name="40405" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 6"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>0,611,0,689,731,0,0,1117,1122,1124,1131,0,0,1243,1244,1245</faultcode>
+		</definition>
+	</register>
+
+	<register name="40406" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 7"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>1246,1247,0,1256,1257,0,0,0,0,1336,1357,0,0,0,0,0</faultcode>
+		</definition>
+	</register>
+
+	<register name="40407" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 8"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>1376,0,0,1416,1417,1433,1434,1435,1438,1439,1441,1442,1443,1444,1445,1446</faultcode>
+		</definition>
+	</register>
+
+	<register name="40408" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 9"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>1447,1448,1449,1459,1461,1463,1464,1465,1469,1471,1472,1483,1548,1549,1551,1552</faultcode>
+		</definition>
+	</register>
+
+	<register name="40409" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 10"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>1553,1554,1555,1556,1557,0,0,1622,1689,1695,1696,1843,1844,1845,1846,1847</faultcode>
+		</definition>
+	</register>
+
+
+	<register name="40410" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 11"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode></faultcode>
+			<faultcode>1852,1853,1854,1855,0,1891,1893,1894,1896,1899,0,0,0,0,0,0</faultcode>
+		</definition>
+	</register>
+
+	<register name="40411" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 12"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>0,0,1933,1934,1935,1942,1943,1944,1961,1974,1992,0,2185,2186,2215,2249</faultcode>
+		</definition>
+	</register>
+
+	<register name="40412" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 13"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>2261,2262,2265,2266,2292,2293,2311,0,0,0,0,2335,2336,2342,0,2377</faultcode>
+		</definition>
+	</register>
+
+	<register name="40413" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 14"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>0,0,0,0,2555,2556,2678,0,2971,2972,2973,2943,2944,2914,0,0</faultcode>
+		</definition>
+	</register>
+
+	<register name="40414" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 15"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>2814,2815,2816,2817,0,0,0,0,0,0,0,0,0,0,0,0</faultcode>
+		</definition>
+	</register>
+
+	<register name="40416" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 17"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>2895,2896,0,0,0,0,0,0,0,0,0,0,0,0,0,0</faultcode>
+		</definition>
+	</register>
+
+	<register name="40419" type="fault">
+		<definition>
+			<desc>"Fault Status Bitmap 20"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>65530</hrange>
+			<lrange>0</lrange>
+			<nadata>7fff</nadata>
+			<faultcode>2945,2979,2993,2938,2939,2977,1978,2541,2539,1573,1312,1317,1318,1979,0,0</faultcode>
+		</definition>
+	</register>
+
+</data>

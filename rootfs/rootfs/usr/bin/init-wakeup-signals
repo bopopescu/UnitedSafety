@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#  Script to check current db-config configuration of wakeup signals against the values in the micro.
+#  If they are different the db-config values are written to the micro
+#  Dave Huff - June 2014
+#
+
+# Get the db-config settings.
+db_mask=`db-config get -v system wakeup-mask`
+db_accel_g=`db-config get -v wakeup AccelTriggerG`
+db_low_batt_v=`db-config get -v wakeup CriticalVoltage`
+db_batt_wakeup_v=`db-config get -v wakeup WakeupVoltage`
+
+# Get the micro settings
+micro_mask=`get-wakeup-mask`
+#$micro_accel_g=`get-accel-g`
+micro_low_batt_v=`get-low-batt-limit`
+micro_batt_wakeup_v=`get-batt-wakeup-threshold`
+
+#do the comparison - only modify micro if they are different
+
+if [ "$db_mask" != "$micro_mask" ]; then
+	set-wakeup-mask
+fi
+
+if [ "$db_low_batt_v" != "$micro_low_batt_v" ]; then
+	set-low-batt-limit $db_low_batt_v
+fi
+
+if [ "$db_batt_wakeup_v" != "$micro_batt_wakeup_v" ]; then
+	set-batt-wakeup-threshold $db_batt_wakeup_v
+fi
+
+exit 0

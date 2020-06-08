@@ -1,0 +1,735 @@
+<data name="Murphy" type="powerview">
+
+	<register name="40001" type="">
+		<definition>
+			<desc>"Accelerator Pedal Position"</desc>
+			<pgn>61443</pgn>
+			<spn>91</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"%"</units>
+			<hrange>100.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40002" type="">
+		<definition>
+			<desc>"Percent Load"</desc>
+			<pgn>61443</pgn>
+			<spn>92</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"%"</units>
+			<hrange>250</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+		</config>
+	</register>
+
+	<register name="40003" type="">
+		<definition>
+			<desc>"Actual Engine Percent Torque"</desc>
+			<pgn>61444</pgn>
+			<spn>513</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"%"</units>
+			<hrange>125</hrange>
+			<lrange>-125</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<tlimit>99</tlimit>
+		</config>
+	</register>
+
+	<register name="40004" type="">
+		<definition>
+			<desc>"Engine Speed"</desc>
+			<pgn>61444</pgn>
+			<spn>190</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"RPM"</units>
+			<hrange>8031</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<llimit>1620</llimit>
+			<tlimit>1980</tlimit>
+		</config>
+	</register>
+
+	<register name="40005" type="">
+		<definition>
+			<desc>"Trip Distance"</desc>
+			<pgn>65248</pgn>
+			<spn>244</spn>
+			<size>2</size>
+			<multiplier>1</multiplier>
+			<units>"M"</units>
+			<hrange>326885152</hrange>
+			<lrange>0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40007" type="">
+		<definition>
+			<desc>"Total Vehicle Distance"</desc>
+			<pgn>65248</pgn>
+			<spn>245</spn>
+			<size>2</size>
+			<multiplier>1</multiplier>
+			<units>"M"</units>
+			<hrange>326885152</hrange>
+			<lrange>0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40009" type="">
+		<definition>
+			<desc>"Total Engine Hours"</desc>
+			<pgn>65253</pgn>
+			<spn>247</spn>
+			<size>2</size>
+			<multiplier>0.1</multiplier>
+			<units>"HRS"</units>
+			<hrange>210554048.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40011" type="">
+		<definition>
+			<desc>"Trip Fuel"</desc>
+			<pgn>65257</pgn>
+			<spn>182</spn>
+			<size>2</size>
+			<multiplier>0.1</multiplier>
+			<units>"GAL"</units>
+			<hrange>214748400.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40013" type="">
+		<definition>
+			<desc>"Total Fuel Used"</desc>
+			<pgn>65257</pgn>
+			<spn>250</spn>
+			<size>2</size>
+			<multiplier>0.1</multiplier>
+			<units>"GAL"</units>
+			<hrange>214748400.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40015" type="">
+		<definition>
+			<desc>"Engine Coolant Temperature"</desc>
+			<pgn>65262</pgn>
+			<spn>110</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<llimit>170</llimit>
+			<tlimit>200</tlimit>
+		</config>
+	</register>
+
+	<register name="40016" type="">
+		<definition>
+			<desc>"Fuel Temperature"</desc>
+			<pgn>65262</pgn>
+			<spn>174</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+
+	<register name="40017" type="">
+		<definition>
+			<desc>"Engine Oil Temperature"</desc>
+			<pgn>65262</pgn>
+			<spn>175</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>3154</hrange>
+			<lrange>-459</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40018" type="">
+		<definition>
+			<desc>"Engine Intercooler Temperature"</desc>
+			<pgn>65262</pgn>
+			<spn>52</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40019" type="">
+		<definition>
+			<desc>"Fuel Delivery Pressure"</desc>
+			<pgn>65263</pgn>
+			<spn>94</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>145</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40020" type="">
+		<definition>
+			<desc>"Engine Oil Level"</desc>
+			<pgn>65263</pgn>
+			<spn>98</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"%"</units>
+			<hrange>100</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40021" type="">
+		<definition>
+			<desc>"Engine Oil Pressure"</desc>
+			<pgn>65263</pgn>
+			<spn>100</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>145</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<llimit>65</llimit>
+			<tlimit>125</tlimit>
+		</config>
+	</register>
+
+	<register name="40022" type="">
+		<definition>
+			<desc>"Coolant Pressure"</desc>
+			<pgn>65263</pgn>
+			<spn>109</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>72</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40023" type="">
+		<definition>
+			<desc>"Coolant Level"</desc>
+			<pgn>65263</pgn>
+			<spn>111</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"%"</units>
+			<hrange>100</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40024" type="">
+		<definition>
+			<desc>"Wheel Base Vehicle Speed"</desc>
+			<pgn>65265</pgn>
+			<spn>84</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"MPH"</units>
+			<hrange>155</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40024" type="">
+		<definition>
+			<desc>"Wheel Base Vehicle Speed"</desc>
+			<pgn>65265</pgn>
+			<spn>84</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"MPH"</units>
+			<hrange>155</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40025" type="">
+		<definition>
+			<desc>"Fuel Rate"</desc>
+			<pgn>65266</pgn>
+			<spn>183</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"G/HR"</units>
+			<hrange>848.1</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40026" type="">
+		<definition>
+			<desc>"Instantaneous Fuel Economy"</desc>
+			<pgn>65266</pgn>
+			<spn>184</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"M/G"</units>
+			<hrange>295.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40027" type="">
+		<definition>
+			<desc>"Average Fuel Economy"</desc>
+			<pgn>65266</pgn>
+			<spn>185</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"M/G"</units>
+			<hrange>295.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40028" type="">
+		<definition>
+			<desc>"Barometric Pressure"</desc>
+			<pgn>65269</pgn>
+			<spn>108</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>18</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<llimit>11</llimit>
+			<tlimit>14.7</tlimit>
+		</config>
+	</register>
+
+	<register name="40029" type="">
+		<definition>
+			<desc>"Air Inlet Temperature"</desc>
+			<pgn>65269</pgn>
+			<spn>172</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+		</config>
+	</register>
+
+	<register name="40030" type="">
+		<definition>
+			<desc>"Boost Pressure"</desc>
+			<pgn>65270</pgn>
+			<spn>102</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>72</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<llimit>11</llimit>
+			<tlimit>40</tlimit>
+		</config>
+	</register>
+
+	<register name="40031" type="">
+		<definition>
+			<desc>"Intake Manifold Temperature"</desc>
+			<pgn>65270</pgn>
+			<spn>105</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<tlimit>45</tlimit>
+		</config>
+	</register>
+
+	<register name="40032" type="">
+		<definition>
+			<desc>"Air Filter Differential Pressure"</desc>
+			<pgn>65270</pgn>
+			<spn>107</spn>
+			<size>1</size>
+			<multiplier>0.01</multiplier>
+			<units>"PSI"</units>
+			<hrange>1.80</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40033" type="">
+		<definition>
+			<desc>"Exhaust Gas Temperature"</desc>
+			<pgn>65270</pgn>
+			<spn>173</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>3154</hrange>
+			<lrange>-459</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40034" type="">
+		<definition>
+			<desc>"Alternator Potential (Voltage)"</desc>
+			<pgn>65271</pgn>
+			<spn>167</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"VDC"</units>
+			<hrange>3212.7</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40035" type="">
+		<definition>
+			<desc>"Electrical Potential (Voltage)"</desc>
+			<pgn>65271</pgn>
+			<spn>168</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"VDC"</units>
+			<hrange>3212.7</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40036" type="">
+		<definition>
+			<desc>"Battery Potential (Voltage)"</desc>
+			<pgn>65271</pgn>
+			<spn>158</spn>
+			<size>1</size>
+			<multiplier>0.1</multiplier>
+			<units>"VDC"</units>
+			<hrange>3212.7</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+			<llimit>28.5</llimit>
+			<tlimit>29.1</tlimit>
+		</config>
+	</register>
+
+	<register name="40037" type="">
+		<definition>
+			<desc>"Transmission Oil Pressure"</desc>
+			<pgn>65272</pgn>
+			<spn>127</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>580</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40038" type="">
+		<definition>
+			<desc>"Transmission Oil Temperature"</desc>
+			<pgn>65272</pgn>
+			<spn>177</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>3154</hrange>
+			<lrange>-459</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40039" type="">
+		<definition>
+			<desc>"Injector Metering Rail 1 Pressure"</desc>
+			<pgn>65243</pgn>
+			<spn>157</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>36403</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40040" type="">
+		<definition>
+			<desc>"Injector Metering Rail 2 Pressure"</desc>
+			<pgn>65243</pgn>
+			<spn>1349</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>36403</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40041" type="">
+		<definition>
+			<desc>"Fan Drive"</desc>
+			<pgn>65213</pgn>
+			<spn>977</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"%"</units>
+			<hrange>100</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40042" type="">
+		<definition>
+			<desc>"Auxiliary Temperature"</desc>
+			<pgn>65164</pgn>
+			<spn>441</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"F"</units>
+			<hrange>410</hrange>
+			<lrange>-40</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40043" type="">
+		<definition>
+			<desc>"Auxiliary Pressure"</desc>
+			<pgn>65164</pgn>
+			<spn>1387</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"PSI"</units>
+			<hrange>580</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40044" type="">
+		<definition>
+			<desc>"Selected Gear"</desc>
+			<pgn>61445</pgn>
+			<spn>524</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"NA"</units>
+			<hrange>125251</hrange>
+			<lrange>-125</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40045" type="">
+		<definition>
+			<desc>"Current Gear"</desc>
+			<pgn>61445</pgn>
+			<spn>523</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"NA"</units>
+			<hrange>125251</hrange>
+			<lrange>-125</lrange>
+			<nadata>7fff</nadata>
+		</definition>
+	</register>
+
+	<register name="40046" type="">
+		<definition>
+			<desc>"Output Shaft Speed"</desc>
+			<pgn>61442</pgn>
+			<spn>191</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"RPM"</units>
+			<hrange>8031</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40047" type="">
+		<definition>
+			<desc>"Input Shaft Speed"</desc>
+			<pgn>61442</pgn>
+			<spn>161</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"RPM"</units>
+			<hrange>8031</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="40048" type="">
+		<definition>
+			<desc>"Torque Converter Lockup"</desc>
+			<pgn>61442</pgn>
+			<spn>573</spn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"NA"</units>
+			<hrange>1</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+
+	<register name="40049" type="" priority="Iridium">
+		<definition>
+			<desc>"Machine Hours"</desc>
+			<pgn>61184</pgn>
+			<spn>520192</spn>
+			<size>2</size>
+			<multiplier>0.1</multiplier>
+			<units>"HRS"</units>
+			<hrange>429496729.4</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+		<config>
+		<type>63</type>
+		</config>
+	</register>
+
+	<register name="41001" type="fault">
+		<definition>
+			<desc>"Number of sets of active fault codes"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>255</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="41002" type="fault">
+		<definition>
+			<desc>"Malfunction Indicator Lamp Status"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>3</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="41003" type="fault">
+		<definition>
+			<desc>"Red Stop Lamp Status"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>3</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="41004" type="fault">
+		<definition>
+			<desc>"Amber Warning Lamp Status"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>3</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+	<register name="41005" type="fault">
+		<definition>
+			<desc>"Protect Lamp Status"</desc>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<hrange>3</hrange>
+			<lrange>0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+	</register>
+
+</data>

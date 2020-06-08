@@ -1,0 +1,43 @@
+<data>
+	<pgn>65266</pgn>
+	<spn>183</spn>
+	<value>
+		<name>"Engine Fuel Rate"</name>
+		<size>16</size>
+		<scale>0.05</scale>
+		<offset>0</offset>
+		<units>"L/h"</units>
+	</value>
+	<spn>184</spn>
+	<value>
+		<name>"Engine Instantaneous Fuel Economy"</name>
+		<size>16</size>
+		<scale>0.001953</scale>
+		<offset>0</offset>
+		<units>"km/L"</units>
+	</value>
+	<spn>185</spn>
+	<value>
+		<name>"Engine Average Fuel Economy"</name>
+		<size>16</size>
+		<scale>0.001953</scale>
+		<offset>0</offset>
+		<units>"km/L"</units>
+	</value>
+	<spn>51</spn>
+	<value>
+		<name>"Engine Throttle Valve 1 Position"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+	<spn>3673</spn>
+	<value>
+		<name>"Engine Throttle Valve 2 Position"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+</data>

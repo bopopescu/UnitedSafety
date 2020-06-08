@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cp /etc/redstone/cacert.pem /mnt/nvram/rom
+
+build=`tail -n 1 /version | awk 'BEGIN {FS="."}{print $4}'`
+x1=$(($build/10000))
+x2=$(($build-(10000*$x1)))
+ver="3.$x1.0.$x2"
+
+db-config set isc-lens FWVer "$ver"
+db-config set isc-lens HWVer "3.0.2"
+
+# May 2019 - this just started being an issue - I don't know why it sets ownership to www-data so setting it to root
+chown root:root /home/root/.ssh/authorized_keys
+
+

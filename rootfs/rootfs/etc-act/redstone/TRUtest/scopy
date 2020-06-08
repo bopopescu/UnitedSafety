@@ -1,0 +1,3 @@
+#!/bin/sh
+scp -P 38020 $1 dave@mail.absolutetrac.com:TRUtest
+

@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+# Divert mutt to mutt.org so the binary from mutt-patched can replace it.
+# We do not need to divert the debugging symbols in the mutt-dbg package
+# as the debugging link in there points to the correct file in any case.
+
+if [ "$1" = install ] || [ "$1" = upgrade ] ; then
+	dpkg-divert --add --package mutt-patched --rename \
+		--divert /usr/bin/mutt.org /usr/bin/mutt
+fi
+
+#DEBHELPER#
+
+exit 0

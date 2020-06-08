@@ -1,0 +1,32 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 99_yat2m_fix_samp_handling.dpatch by Daniel Leidert (dale) <daniel.leidert@wgdd.de>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Fix a bug in the @samp{} handling. Leading to "warning: `foo'' not
+## DP:   defines. Further use a fix from upstream to handle backslashes
+## DP:   correctly (#4734, #4735).
+## DP:
+## DP: <URL:https://bugs.g10code.com/gnupg/issue898>
+
+@DPATCH@
+diff -urNad experimental~/doc/yat2m.c experimental/doc/yat2m.c
+--- experimental~/doc/yat2m.c	2007-12-12 19:40:17.000000000 +0100
++++ experimental/doc/yat2m.c	2008-05-22 00:45:24.000000000 +0200
+@@ -449,7 +449,7 @@
+     { "code",    0, "\\fB", "\\fR" },
+     { "sc",      0, "\\fB", "\\fR" },
+     { "var",     0, "\\fI", "\\fR" },
+-    { "samp",    0, "'",  "'"  },
++    { "samp",    0, "\\(aq", "\\(aq'"  },
+     { "file",    0, "`\\fI","\\fR'" }, 
+     { "env",     0, "`\\fI","\\fR'" }, 
+     { "acronym", 0 },
+@@ -675,6 +675,8 @@
+             }
+           *eol_action = 0;
+         }
++      else if (*s == '\\')
++        fputs ("\\\\", fp);
+       else
+         putc (*s, fp);
+     }

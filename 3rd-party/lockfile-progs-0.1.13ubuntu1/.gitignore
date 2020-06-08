@@ -1,0 +1,12 @@
+*~
+\#*
+.\#*
+/bin
+/check
+/debian/files
+/debian/stamp-build
+/debian/substvars
+/debian/tmp
+/lockfile-create
+/lockfile-progs.o
+/man

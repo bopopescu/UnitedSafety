@@ -1,0 +1,34 @@
+#!/bin/bash
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo cp -arv ./www/* "$ROOTFS_DEF_DIR/var/www/htdocs"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install www"
+			exit 1
+		fi
+
+		curdir=`pwd`
+		strip_script="$curdir/strip-php.pl"
+		cd "$ROOTFS_DEF_DIR/var/www/htdocs"
+		sudo $strip_script
+		www_data_uid=1003
+		sudo chown -R $www_data_uid:$www_data_uid .
+		cd "$curdir"
+
+		sudo cp -arv ./www-app "$ROOTFS_DEF_DIR/var/www"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install www-app"
+			exit 1
+		fi
+
+	fi
+
+exit 0

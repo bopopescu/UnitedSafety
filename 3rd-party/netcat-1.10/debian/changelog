@@ -1,0 +1,334 @@
+netcat (1.10-39) unstable; urgency=low
+
+  [ Ruben Molina ]
+  * New Maintainer, New Uploaders (RFA on debian-devel).
+  * Bump Standards-Version: 3.9.1 (Adding Homepage field)
+  * Raise dh compat to >= 8.0.0
+  * Adding ${misc:Depends}
+  * Now using dh_prep instead of dh_clean -k.
+  * Move nc.1 to debian/man and clean patches that used to change it. 
+  * Now using 3.0 (quilt) format.
+
+  [ Anibal Monsalve Salazar ]
+  * Fix maintainer-script-without-set-e
+
+ -- Ruben Molina <rmolina@udea.edu.co>  Fri, 11 Feb 2011 03:26:13 -0500
+
+netcat (1.10-38) unstable; urgency=low
+
+  * Move nc.1 from debian/ to top level directory, so that debian/ is not
+    a self-referential patch. This will allow the package to trivially be
+    converted to 3.0 (quilt) format. Thanks to Raphael Hertzog for pointing
+    this out. (Closes: #485178)
+  * Clarify documentation for -q.
+
+ -- Decklin Foster <decklin@red-bean.com>  Thu, 19 Jun 2008 16:24:35 -0400
+
+netcat (1.10-37) unstable; urgency=low
+
+  * Fix update-alternatives --remove invocation (Closes: #467505)
+
+ -- Decklin Foster <decklin@red-bean.com>  Mon, 25 Feb 2008 18:47:34 -0500
+
+netcat (1.10-36) unstable; urgency=low
+
+  * Rename binary package from "netcat-base" to "netcat-traditional", per
+    request of ftp-master.
+
+ -- Decklin Foster <decklin@red-bean.com>  Wed, 30 Jan 2008 18:26:25 -0500
+
+netcat (1.10-35) unstable; urgency=low
+
+  * Netcat has been split into netcat-traditional (built by this package),
+    and netcat-openbsd (a rewritten implementation). The command and man
+    page will be managed by the alternatives system. This package generates
+    a transitional "netcat" package that will depend on netcat-traditional.
+
+ -- Decklin Foster <decklin@red-bean.com>  Tue, 22 Jan 2008 20:46:16 -0500
+
+netcat (1.10-34) unstable; urgency=low
+
+  * Rename TOS option from -x to -T. This is painful, but it was never a
+    standard option, and will be needed for command-line compatibility with
+    other implementations of netcat. Forcing them to rename -x is not
+    viable.
+  * Don't return EXIT_FAILURE from -h, and include debian revision number
+    in its output. (Closes: #457171)
+  * Include portability fix for Darwin. (Closes: #457172)
+  * Don't give select more nfds than necessary. (Closes: #457173)
+  * Reformat all the patch headers.
+  * Include note about the use of http_proxy in examples/webproxy. (Closes:
+    #308687)
+  * Edit EXAMPLES pointer in man page, and add an examples section to
+    README.Debian. (Closes: #450676)
+
+ -- Decklin Foster <decklin@red-bean.com>  Sun, 20 Jan 2008 21:43:44 -0500
+
+netcat (1.10-33) unstable; urgency=low
+
+  * Cleaned up sh-c.patch, removing duplicated code and fixing -c behavior for
+    outgoing connections (Closes: #365632)
+  * Don't redirect stderr to the network (Closes: #365626)
+
+ -- Decklin Foster <decklin@red-bean.com>  Thu, 29 Mar 2007 13:32:37 -0400
+
+netcat (1.10-32) unstable; urgency=low
+
+  * Add SO_KEEPALIVE option (thanks Wes Chow).
+  * Refreshed some drifting line patch offsets.
+
+ -- Decklin Foster <decklin@red-bean.com>  Fri, 24 Mar 2006 12:03:35 -0500
+
+netcat (1.10-31) unstable; urgency=low
+
+  * Switch from dpatch to quilt.
+    - Also added proper decriptions to all patches and fixed all the
+      credits for who contributed each one.
+    - Fixes application of rservice-buf.patch.
+    - Combined nosleep.patch and nosleep.diff.
+
+ -- Decklin Foster <decklin@red-bean.com>  Wed,  8 Mar 2006 17:38:18 -0500
+
+netcat (1.10-30) unstable; urgency=low
+
+  * In man page, clarify that EOF is something you get on stdin, not on a
+    socket. (Closes: #349906)
+  * Use strncpy and check bounds in examples/data/rservice.c to prevent a
+    possible buffer overflow. (Closes: #352369)
+
+ -- Decklin Foster <decklin@red-bean.com>  Thu, 23 Feb 2006 10:07:05 -0500
+
+netcat (1.10-29) unstable; urgency=low
+
+  * Update Priority: to important to match override file.
+
+ -- Decklin Foster <decklin@red-bean.com>  Sun, 11 Dec 2005 17:51:22 -0500
+
+netcat (1.10-28) unstable; urgency=low
+
+  * Add patch: 25_tos.dpatch. I'm not exactly sure how this happened, but I
+    never got mail for this report and was just combing through bugs tagged
+    "patch" now. Hooray for year-and-a-half late fixes. Also added some
+    documentation to it. (Closes: #275753)
+  * Standards-Version: 3.6.2.
+
+ -- Decklin Foster <decklin@red-bean.com>  Sun, 11 Dec 2005 15:08:02 -0500
+
+netcat (1.10-27) unstable; urgency=low
+
+  * Add documentation for Mike Sullivan's dashes-in-port-names patch.
+
+ -- Decklin Foster <decklin@red-bean.com>  Tue, 23 Nov 2004 19:04:43 -0500
+
+netcat (1.10-26) unstable; urgency=low
+
+  * Add -c option, from patch by Jan Minar. (Closes: #265583)
+  * Actually include ncmeter this time. (Whoops!)
+
+ -- Decklin Foster <decklin@red-bean.com>  Sun,  3 Oct 2004 17:49:33 -0400
+
+netcat (1.10-25) unstable; urgency=low
+
+  * Included new example script, ncmeter, by Karsten Köm <koem@petoria.de>.
+  * Added patch by Mike Sullivan <msully4321@gmail.com> to allow the use of
+    port names containing "-", as long as the dash is escaped with a
+    backslash. (e.g. "netcat localhost 'ftp\-data'"). (Closes: #10486)
+  * Updated 12_single_verbose to be quiet if -z is on. (Closes: #247895)
+  * Bumped Standards-Version to 3.6.1.
+
+ -- Decklin Foster <decklin@red-bean.com>  Sat,  2 Oct 2004 09:54:56 -0400
+
+netcat (1.10-24) unstable; urgency=low
+
+  * Fix inverted noopt logic (was building with -O0 by default).
+
+ -- Decklin Foster <decklin@red-bean.com>  Wed, 27 Aug 2003 10:00:47 -0400
+
+netcat (1.10-23) unstable; urgency=low
+
+  * The "Waiting for Paolo" release.
+  * Use dpatch. I really should have done this a while ago.
+  * Use debhelper v4 and comply with policy 3.6.0.
+
+ -- Decklin Foster <decklin@red-bean.com>  Sun, 24 Aug 2003 11:34:27 -0400
+
+netcat (1.10-22) unstable; urgency=low
+
+  * Broke apart all the various patches that have accumulated over the years,
+    and put them in a crappy, ad-hoc DBS-like system. This is nowhere near
+    perfect, but I'd rather wait for the new dpkg-source than muck around with
+    my 4.5-year-old .orig.tar.gz just so I can repack things in such a way
+    that DBS is usable. In the long run, separating the patches should make
+    maintenance much easier, although technically getting that to work
+    (without simply using DBS) may take a few tries. I'm not going to attempt
+    to get this into Woody or anything.
+  * Applied patch to prevent possible buffer overflow (Closes: #145801)
+  * Updated URL and email in debian/netcat.copyright (Hobbit has been at
+    @Stake for a while; I sent him a ping email with the split-up patches.)
+  * The nc binary is now installed into /bin (thanks to Robot101, doogie, and
+    dsp for bringing this up on IRC.) As far as I can tell, there aren't
+    really any general-purpose networking tools available on a Debian system
+    without /usr mounted, and this should hopefully fix that. If anyone
+    disagrees I'd be happy to listen to whatever objections they have. Perhaps
+    netcat's priority should be raised to standard in light of this, but I'll
+    wait and see.
+
+ -- Decklin Foster <decklin@red-bean.com>  Tue,  4 Jun 2002 08:52:47 -0400
+
+netcat (1.10-21) unstable; urgency=low
+
+  * Documented -e in man page. (Closes: #131269)
+
+ -- Decklin Foster <decklin@red-bean.com>  Tue, 29 Jan 2002 16:30:30 -0500
+
+netcat (1.10-20) unstable; urgency=low
+
+  * Moved around shutdown call in -q patch to be more compatible with standard
+    nc. Thanks to Dmitry Chernyak <cdl@inkasbank.ru> for pointing this out.
+  * Applied UDP broadcast patch from NetBSD (Closes: #108182)
+    - Updated man page to document this option
+    - Also applied patch to use inet_aton instead of IADDR_NONE (which is
+      obsolete), so that it will work.
+  * Bumped Standards-Version to 3.5.6.
+
+ -- Decklin Foster <decklin@red-bean.com>  Tue,  9 Oct 2001 18:08:24 -0400
+
+netcat (1.10-19) unstable; urgency=low
+
+  * Reupload source package (my typo fix was lost due to a misconfigured
+    dput). This should really fix #97583.
+
+ -- Decklin Foster <decklin@red-bean.com>  Fri,  1 Jun 2001 18:18:17 -0400
+
+netcat (1.10-18) unstable; urgency=low
+
+  * Applied patch from Joe Pepin <jdp@ll.mit.edu> to fix multiple timeouts
+    (Closes: #97583)
+  * Lookup services with getservbyname even if resolving hostnames with DNS is
+    disabled (Closes: #98902)
+  * Install a symlink to the nc binary called 'netcat'. (Closes: #97625)
+
+ -- Decklin Foster <decklin@red-bean.com>  Fri,  1 Jun 2001 13:13:25 -0400
+
+netcat (1.10-17) unstable; urgency=low
+
+  * Added include for <resolv.h>, which is needed to compile with recent
+    versions of glibc.
+  * Added patch to always print "connection refused" messages, without having
+    to turn on the other junk that -v prints. (Closes: #65413)
+  * Upgraded to debhelper 3 and policy 3.5.2.0.
+  * Added DEB_BUILD_OPTIONS =~ /debug/ support.
+
+ -- Decklin Foster <decklin@red-bean.com>  Wed, 28 Feb 2001 16:53:33 -0500
+
+netcat (1.10-16) unstable; urgency=low
+
+  * Rebuild with dpkg 1.8.1.2 to fix bad .diff.gz.
+
+ -- Decklin Foster <decklin@red-bean.com>  Mon,  8 Jan 2001 14:54:48 -0500
+
+netcat (1.10-15) unstable; urgency=low
+
+  * Add shutdown() patch back in (Closes: #81384)
+  * updated /usr/doc -> /usr/share/doc in man page.
+
+ -- Decklin Foster <decklin@red-bean.com>  Sat,  6 Jan 2001 08:58:21 -0500
+
+netcat (1.10-14) unstable; urgency=low
+
+  * Ship with -e turned on. (Closes: #66355)
+  * Fix debian/copyright typo.
+
+ -- Decklin Foster <decklin@red-bean.com>  Sat, 30 Dec 2000 13:27:33 -0500
+
+netcat (1.10-13) unstable; urgency=low
+
+  * New maintainer. (Closes: #80305)
+  * Updated debhelper rules to v2. Also cleaned up/moved some targets and dh_*
+    options.
+  * Bumped Standards-Version to 3.2.1.0.
+  * Compress README file, as per policy.
+  * Applied -q patch properly (Closes: #62402). I think that this is also what
+    caused #71616, but I'll hold off on closing that one.
+  * Added README.Debian explanation about -e. This is possibly the problem
+    behind #66355, so maybe I can close that as well.
+
+ -- Decklin Foster <decklin@red-bean.com>  Thu, 28 Dec 2000 19:02:56 -0500
+
+netcat (1.10-12.1) frozen unstable; urgency=low
+
+  * Non-maintained upload.
+  * Rename arm() to arm_timer() (Closes: #56390)
+
+ -- Edward Brocklesby <ejb@styx.uucp.openprojects.net>  Tue, 22 Feb 2000 12:59:12 +0000
+
+netcat (1.10-12) unstable; urgency=low
+
+  * Fixed bugs #45669 and #45675 (removed extraneous sleep(1) command and also
+    removed the "punt!" message; added -q feature)
+
+ -- Robert S. Edmonds <stu@novare.net>  Wed, 22 Sep 1999 19:29:47 -0400
+
+netcat (1.10-11) unstable; urgency=low
+
+  * Applied patch from Graham Stoney <greyham@research.canon.com.au> that
+    fixes deadlock if the server doesn't close its end until it reads EOF on
+    the connection
+
+ -- Robert S. Edmonds <stu@novare.net>  Mon, 13 Sep 1999 21:53:59 -0400
+
+netcat (1.10-10) unstable; urgency=low
+
+  * Man page fixed (/usr/doc/netcat/README.gz). Fixes bug #35811
+
+ -- Robert S. Edmonds <edmonds@freewwweb.com>  Sat, 12 Jun 1999 15:21:31 -0400
+
+netcat (1.10-9) unstable; urgency=low
+
+  * Compiled with -DTELNET.
+
+ -- Robert S. Edmonds <edmonds@freewwweb.com>  Wed,  4 Nov 1998 09:27:40 -0500
+
+netcat (1.10-8) unstable frozen; urgency=low
+
+  * At the request of many users (and a few bug reports) the binary is now
+    going to be called "nc" as it always was.
+
+ -- Robert S. Edmonds <edmonds@freewwweb.com>  Sun, 26 Apr 1998 19:36:00 -0400
+
+netcat (1.10-7) unstable; urgency=low
+
+  * Fixed lintian error possible-name-space-pollution. (binary nc -> netcat)
+
+ -- Robert S. Edmonds <edmonds@freewwweb.com>  Mon, 30 Mar 1998 19:11:49 -0500
+
+netcat (1.10-6) unstable; urgency=low
+
+  * Upgraded to Standards-Version 2.4.0.0.
+
+ -- Robert S. Edmonds <edmonds@freewwweb.com>  Tue, 17 Feb 1998 13:06:22 -0500
+
+netcat (1.10-5) unstable; urgency=low
+
+  * Merged in changes from Robert Woodcock <rcw@oz.net>.
+    - Man page updates.
+    - Compiled with -DTELNET
+  * Removed bogus menu file.
+  * Full source upload.
+
+ -- Joey Hess <joeyh@master.debian.org>  Sat, 10 Jan 1998 13:53:59 -0500
+
+netcat (1.10-4) unstable; urgency=low
+
+  * Updated to "new" source format. (#9489)
+  * Libc6. (#11716)
+  * Orphaned the package.
+  * Fixed up description in control file to conform with policy, short
+    description doesn't include package name now.
+  * Fixed documentation location to comply with current policy. (#13194,
+    #11530, #9785)
+  * Wrote a man page. (#9785, #5304, #6647)
+  * Rewrote debian/rules to use debhelper.
+  * Install upstream changelog.
+
+ -- Joey Hess <joeyh@master.debian.org>  Sat, 10 Jan 1998 00:53:45 -0500

@@ -1,0 +1,59 @@
+#!/bin/sh
+
+sha=0
+previous_sha=0
+change_count=0
+sn=`cat /mnt/nvram/rom/sn.txt`
+mkdir -p /tmp/.maildir
+
+update_sha()
+{
+	sha=`ls -la /var/state/dhcp/dhcpd.leases | sha1sum`
+}
+
+changed () 
+{
+	# too many changes to the lease file - reload dhcpd and ra0
+	
+	logger "Lease File overloading detected - restarting DHCPD and RA0"
+#	echo "Lease renewal caused ra0/dhcp reset" | mutt -a /var/state/dhcp/dhcpd.leases -s $sn -- trulink@gps1.com
+	killall brownout-monitor	
+	/etc/rc.d/init.d/dhcpd stop
+	ifconfig ra0 down
+	sleep 2
+	/etc/rc.d/init.d/dhcpd start
+	ifconfig ra0 up
+	brownout-monitor &
+}
+
+compare () 
+{
+	update_sha;
+	
+	if [ "$sha" != "$previous_sha" ] ; 
+	then 
+		previous_sha=$sha
+		change_count=`expr $change_count + 1`
+		
+		if [ "$change_count" -ge "6" ] ;
+		then
+			changed; 
+			change_count=0
+		fi
+	else
+		change_count=0
+	fi
+}
+
+run () 
+{
+	
+	while true; 
+	do
+		compare;
+		sleep 8
+	done
+}
+
+run
+

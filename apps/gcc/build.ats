@@ -1,0 +1,3 @@
+#!/bin/bash
+# This is just a header file. Nothing needs to be built or installed.
+exit 0

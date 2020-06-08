@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+
+bsdiff:
+	dh_testdir
+
+	CFLAGS="$(CFLAGS)" gcc -o bsdiff bsdiff.c -lbz2
+	CFLAGS="$(CFLAGS)" gcc -o bspatch bspatch.c -lbz2
+
+build: bsdiff
+
+install: build
+
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_install
+	dh_installman
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-arch
+
+%:
+	dh $@
+
+.PHONY: build install binary binary-indep binary-arch binary-indep
+
+# End of file

@@ -1,0 +1,10 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	export KERNEL_SRC_DIR="${BUILD_DIR}/kernel"
+	make -e
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+exit 0

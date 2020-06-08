@@ -1,0 +1,3 @@
+#!/bin/sh
+echo 'ppp_up' | socat - unix-connect:/var/run/redstone/telit-monitor
+

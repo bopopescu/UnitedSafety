@@ -1,0 +1,51 @@
+<data>
+	<pgn>65262</pgn>
+	<spn>110</spn>
+	<value>
+		<name>"Engine Coolant Temperature"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-40</offset>
+		<units>"deg c"</units>
+	</value>
+	<spn>174</spn>
+	<value>
+		<name>"Engine Fuel Temperature 1"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-40</offset>
+		<units>"deg c"</units>
+	</value>
+	<spn>175</spn>
+	<value>
+		<name>"Engine Oil Temperature 1"</name>
+		<size>16</size>
+		<scale>0.03125</scale>
+		<offset>-273</offset>
+		<units>"deg c"</units>
+	</value>
+	<spn>176</spn>
+	<value>
+		<name>"Engine Turbocharger Oil Temperature"</name>
+		<size>16</size>
+		<scale>0.03125</scale>
+		<offset>-273</offset>
+		<units>"deg c"</units>
+	</value>
+	<spn>52</spn>
+	<value>
+		<name>"Engine Intercooler Temperature"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-40</offset>
+		<units>"deg c"</units>
+	</value>
+	<spn>1134</spn>
+	<value>
+		<name>"Engine Intercooler Thersmostat Opening"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+</data>

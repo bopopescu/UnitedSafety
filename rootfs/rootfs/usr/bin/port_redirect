@@ -1,0 +1,37 @@
+#!/bin/sh
+com1enable=`db-config get -v ComPorts Com1Enable`
+com2enable=`db-config get -v ComPorts Com2Enable`
+
+if [ "$com1enable" = "On" ] ; 
+then
+	comBaud=`db-config get -v ComPorts Com1Baud`
+	comPort=`db-config get -v ComPorts Com1Port`
+	ser2net -C $comPort:raw:0:/dev/ttyUSB0:$comBaud,8DATABITS,NONE,1STOPBIT
+	comDest=`db-config get -v ComPorts Com1Dest`
+
+	if [ "$comDest" = "0" ]; then
+		iptables -A INPUT -i ra0 -p tcp -m tcp --dport $comPort -j ACCEPT
+	elif [ "$comDest" = "1" ]; then
+		iptables -A INPUT -i eth0 -p tcp -m tcp --dport $comPort -j ACCEPT
+	else
+		iptables -A INPUT -i ppp0 -p tcp -m tcp --dport $comPort -j ACCEPT
+	fi
+fi
+
+if [ "$com2enable" = "On" ] ; 
+then
+	comBaud=`db-config get -v ComPorts Com2Baud`
+	comPort=`db-config get -v ComPorts Com2Port`
+	ser2net -C $comPort:raw:0:/dev/ttyUSB1:$comBaud,8DATABITS,NONE,1STOPBIT
+	comDest=`db-config get -v ComPorts Com2Dest`
+
+	if [ "$comDest" = "0" ]; then
+		iptables -A INPUT -i ra0 -p tcp -m tcp --dport $comPort -j ACCEPT
+	elif [ "$comDest" = "1" ]; then
+		iptables -A INPUT -i eth0 -p tcp -m tcp --dport $comPort -j ACCEPT
+	else
+		iptables -A INPUT -i ppp0 -p tcp -m tcp --dport $comPort -j ACCEPT
+	fi
+fi
+
+exit 0

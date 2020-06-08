@@ -1,0 +1,14 @@
+=======================================================================
+= Building nettle-2.4
+=======================================================================
+Build Machine:
+	bm2
+	Linux Mint 13 Maya \n \l
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	autoreconf
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc CFLAGS="-Os -I`pwd`/../gmp-5.0.5/.redstone_build/include" --prefix="`pwd`/.redstone_build"
+	make -j12 libnettle.a
+	make -j12 libhogweed.a

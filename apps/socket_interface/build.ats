@@ -1,0 +1,30 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	make -e
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		SO='./bin/arm/libsocket_interface.so'
+		${CROSS_COMPILE}strip --strip-unneeded "$SO"
+		sudo cp -av "$SO" "$ROOTFS_DEF_DIR/lib/"
+		sudo cp bin/arm/libsocket_interface.a ../Libs/bin/arm
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$SO\""
+			exit 1
+		fi
+
+	fi
+
+exit 0
+

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+appdir='/etc/dropbear/testmode'
+mfgkeyfile="$appdir/mfg_rsa.pub"
+basedir='/home/root/.ssh'
+
+if [ ! -e "$basedir" ];then
+	mkdir -p "$basedir"
+	chmod 700 "$basedir"
+fi
+
+authfile="$basedir/authorized_keys"
+
+if [ ! -e "$authfile" ];then
+	cp "$mfgkeyfile" "$authfile"
+	chmod 600 "$authfile"
+else
+	cat "$authfile" | grep "`cat $mfgkeyfile`"
+
+	if [ 0 != $? ];then
+		tmpfile="$basedir/authorized_keys.tmp"
+		cat "$authfile" "$mfgkeyfile" > "$tmpfile"
+		mv "$tmpfile" "$authfile"
+		sync
+	fi
+
+fi
+
+exit 0

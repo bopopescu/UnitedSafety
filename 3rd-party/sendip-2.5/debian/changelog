@@ -1,0 +1,94 @@
+sendip (2.5-4) unstable; urgency=low
+
+  * Fix FTBFS with ld --as-needed (LP: #832954). Thanks to Angel Abad
+    for forwarding. (closes: #641425)
+  * Lintian/updated policy inspired cleanups:
+    * Add ${misc:Depends} to binary deps.
+    * Add build-arch + build-indep targets.
+    * Point to GPLv2, not bare GPL.
+    * Drop leading "A" from package description.
+    * Bump policy version to 3.9.2
+
+ -- Jonathan McDowell <noodles@earth.li>  Sun, 27 Nov 2011 19:39:08 +0000
+
+sendip (2.5-3) unstable; urgency=low
+
+  * Fix compilation under GNU/kFreeBSD by correcting linker flags (patch
+    from Cyril Brulebois). (closes: 559410)
+  * Bump debhelper compat level to 7.
+  * Clean up debian/copyright a bit.
+  * Bump Standards-Version to 3.8.3:
+    * Add Homepage field to control file.
+
+ -- Jonathan McDowell <noodles@earth.li>  Sat, 26 Dec 2009 10:25:53 +0000
+
+sendip (2.5-2) unstable; urgency=low
+
+  * Fix gcc 4.0 compilation (patch from Andreas Jochens). (closes: #300776)
+  * Add watch file.
+
+ -- Jonathan McDowell <noodles@earth.li>  Wed, 23 Mar 2005 17:05:07 +0000
+
+sendip (2.5-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Jonathan McDowell <noodles@earth.li>  Sun, 13 Jun 2004 11:38:50 +0100
+
+sendip (2.4-1) unstable; urgency=low
+
+  * New upstream release.
+  * Fixed spelling mistake in man page. (closes: #182594)
+
+ -- Jonathan McDowell <noodles@earth.li>  Sat, 31 May 2003 10:47:10 +0100
+
+sendip (2.3-2) unstable; urgency=low
+
+  * Fix stupid prefix bug. (closes: #173979)
+
+ -- Jonathan McDowell <noodles@earth.li>  Sun, 22 Dec 2002 23:20:06 +0000
+
+sendip (2.3-1) unstable; urgency=low
+
+  * New upstream release. (closes: #168879)
+
+ -- Jonathan McDowell <noodles@earth.li>  Wed, 11 Dec 2002 20:39:36 +0000
+
+sendip (2.2-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Jonathan McDowell <noodles@earth.li>  Tue, 12 Nov 2002 19:57:55 +0000
+
+sendip (2.1-1) unstable; urgency=low
+
+  * New upstream release. (closes: Bug#135070)
+
+ -- Jonathan McDowell <noodles@earth.li>  Wed, 27 Feb 2002 00:17:12 +0000
+
+sendip (2.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added contrib directory.
+  * Updated standards-version.
+
+ -- Jonathan McDowell <noodles@earth.li>  Sun, 17 Feb 2002 20:15:03 +0000
+
+sendip (1.5-1) unstable; urgency=low
+
+  * New upstream release. (closes: Bug#94448)
+
+ -- Jonathan McDowell <noodles@earth.li>  Fri, 27 Apr 2001 21:35:12 +0100
+
+sendip (1.4-1) unstable; urgency=low
+
+  * New upstream release. (closes: Bug#81480)
+
+ -- Jonathan McDowell <noodles@earth.li>  Sun, 7 Jan 2001 18:04:15 +0000
+
+sendip (1.2-1) unstable; urgency=low
+
+  * Initial Debianization. (closes: Bug#78155)
+
+ -- Jonathan McDowell <noodles@earth.li>  Mon, 27 Nov 2000 14:45:50 +0000
+

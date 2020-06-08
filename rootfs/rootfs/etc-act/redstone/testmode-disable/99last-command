@@ -1,0 +1,3 @@
+#!/bin/sh
+	rm -f /home/root/testmode-ready
+exit 0

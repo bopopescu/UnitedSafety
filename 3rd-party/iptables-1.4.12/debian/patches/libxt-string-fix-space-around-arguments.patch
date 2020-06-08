@@ -1,0 +1,38 @@
+Description: libxt_string: fix space around arguments
+ .
+   * libxt_string: fix space around arguments. (LP: #1074923)
+Author: Chris J Arges <chris.j.arges@ubuntu.com>
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1074923
+Bug-Debian: http://bugs.debian.org/637499
+Origin: upstream, http://git.netfilter.org/cgi-bin/gitweb.cgi?p=iptables.git;h=3716dfd7eac3afa7fb3098952550e510c8df0220 
+
+--- iptables-1.4.12.orig/extensions/libxt_string.c
++++ iptables-1.4.12/extensions/libxt_string.c
+@@ -228,7 +228,7 @@ print_hex_string(const char *str, const
+ {
+ 	unsigned int i;
+ 	/* start hex block */
+-	printf("\"|");
++	printf(" \"|");
+ 	for (i=0; i < len; i++) {
+ 		/* see if we need to prepend a zero */
+ 		if ((unsigned char) str[i] <= 0x0F)
+@@ -237,7 +237,7 @@ print_hex_string(const char *str, const
+ 			printf("%x", (unsigned char) str[i]);
+ 	}
+ 	/* close hex block */
+-	printf("|\" ");
++	printf("|\"");
+ }
+ 
+ static void
+--- iptables-1.4.12.orig/tests/options-most.rules
++++ iptables-1.4.12/tests/options-most.rules
+@@ -37,6 +37,7 @@
+ -A INPUT -p tcp -m recent --rcheck --name DEFAULT --rsource
+ -A INPUT -p tcp -m socket --transparent
+ -A INPUT -p tcp -m string --string "foobar" --algo kmp --from 1 --to 2 --icase
++-A INPUT -p tcp -m string --hex-string "|00|" --algo kmp --from 1 --to 2 --icase
+ -A INPUT -p tcp -m tcp ! --tcp-flags FIN,SYN,RST,ACK SYN
+ -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN
+ -A INPUT -p tcp -m tos --tos 0xff/0x01

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+while [ 1 ]; do
+	i=`ifconfig can1|grep "RX packets:"|sed "s/.*packets\\:\\(.*\\) errors\\:.*/\\1/"`
+	if [ $i != "0" ]; then
+		echo "50000,0" > /dev/buzzer
+		usleep 10000
+		echo "0,0" > /dev/buzzer
+		exit 0
+	fi
+	usleep 50000
+done

@@ -1,0 +1,15 @@
+#!/bin/sh
+# load_lens_script - loads what should be the only file in /mnt/nvram/lens and determines the CRC and the version.
+# The format of the file name should be  name_CRC_version.bin. Version might also contain underscores.
+#
+
+f1=`ls -1 /mnt/nvram/lens`
+script=`echo "$f1" | awk 'BEGIN {FS="_"}{print $1}'`
+crc=`echo "$f1" | awk 'BEGIN {FS="."}{print $1}' | awk 'BEGIN {FS="_"}{print $2}' `
+ver=`echo "$f1" | awk 'BEGIN {FS="."}{print $1}' | awk 'BEGIN {FS="_"}{print $3}' `
+
+db-config set "isc-lens" "scriptBin" "$f1" 
+db-config set "isc-lens" "scriptName" "$script" 
+db-config set "isc-lens" "scriptCRC" "$crc"
+db-config set "isc-lens" "scriptVersion" "$ver"
+

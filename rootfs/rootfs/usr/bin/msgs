@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo -e "Priority\tEvent Time\tFix Time\t\tEvent Type"
+sqlite3 -separator $'\t' /mnt/update/database/messages.db 'select msg_priority, event_time, fix_time, name from message_table inner join message_types on message_types.mid=message_table.event_type;'

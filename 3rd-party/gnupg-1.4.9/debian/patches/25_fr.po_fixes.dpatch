@@ -1,0 +1,25 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 25_fr.po_fixes.dpatch by Daniel Leidert (dale) <daniel.leidert@wgdd.de>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: French wording improved (closes: #394037).
+## DP:
+## DP: <URL:http://bugs.debian.org/394037>
+## DP: <URL:https://bugs.g10code.com/gnupg/issue922>
+
+@DPATCH@
+diff -urNad experimental~/po/fr.po experimental/po/fr.po
+--- experimental~/po/fr.po	2008-03-25 11:23:35.000000000 +0100
++++ experimental/po/fr.po	2008-05-22 04:16:49.000000000 +0200
+@@ -2809,9 +2809,8 @@
+ "etc.)\n"
+ msgstr ""
+ "Décidez maintenant à quel point vous avez confiance en cet utilisateur\n"
+-"pour qu'il vérifie les clés des autres utilisateurs (vous pouvez\n"
+-"vérifier son passeport, vérifier les empreintes de plusieurs sources\n"
+-"différentes, etc.)\n"
++"pour qu'il vérifie les clés des autres utilisateurs (en vérifiant les passeports, en 
++vérifiant les empreintes de plusieurs sources différentes, etc.)\n"
+ 
+ #: g10/keyedit.c:417 g10/pkclist.c:276
+ #, c-format

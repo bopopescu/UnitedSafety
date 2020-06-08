@@ -1,0 +1,8 @@
+*.swp
+*.mk
+UtilityLib/Debug/
+VFD/Debug/VFD
+VFD/Debug/VFD.o
+VFD/Debug/VFD.o.d
+VFD/Debug/main.o
+VFD/Debug/main.o.d

@@ -1,0 +1,19 @@
+<data>
+	<pgn>65018</pgn>
+	<spn>2468</spn>
+	<value>
+		<name>"Generator Total kW Hours Export"</name>
+		<size>32</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"kWh"</units>
+	</value>
+	<spn>2469</spn>
+	<value>
+		<name>"Generator Total kW Hours Import"</name>
+		<size>32</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"kWh"</units>
+	</value>
+</data>

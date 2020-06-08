@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# script to check the space on the USB disk every hour.  If it is greater than 90% usage
+# we delete old log directories until we get down below the 90% usage mark.
+#
+# Also checks that we do not delete the current directory that we are logging to.  This might be an issue
+# where a device never goes down and it logs to one directory continuously.
+#
+oneHour=3600
+pctAvail=90
+
+mkdir /tmp/flags/usb-monitor-running
+
+if [ 0 != "$?" ];then
+	exit 0
+fi
+
+while true
+do
+	mount | grep 'tmp/usb' > /dev/null
+
+	if [ $? != 0 ]; then
+	  sleep 3600
+	else
+		let p=`df -k /tmp/usb | grep -v ^File | awk '{printf ("%i",$5); }'`
+		if [ "$p" -ge $pctAvail ]; then
+			dir=`ls -d -1 /tmp/usb/redstone/log/** | head -n 1`
+
+			# is the current dir to delete the same as the current log directory?
+						
+			vlogID=`ls -id /tmp/vlog | awk 'BEGIN {FS=" "}{print $1}'`
+			dirID=`ls -id "$dir" | awk 'BEGIN {FS=" "}{print $1}'`
+			
+			if [ "$dirID" != "$vlogID" ]; then	
+				logger usb-monitor - disk management - Removing $dir
+				rm -rf "$dir"
+				sync
+			else  # screwed if we get here - the disk is full with no directories available to delete. hmmmm...
+				logger "usb-monitor ERROR: Unable to create space for log files on usb stick."
+				sleep $oneHour
+			fi
+		else
+			sleep $oneHour
+		fi
+	fi
+done
+

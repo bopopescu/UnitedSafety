@@ -1,0 +1,241 @@
+autossh (1.4c-1) unstable; urgency=low
+
+  * New upstream bugfix release
+    - Drop patch 000_configure_with-ssh_fix.diff (applied upstream)
+    - Refreshed patches 010_override_cmdline_port.diff and
+      040_manpage_debian.diff
+    - Removed hunks from patch 030_manpage_fix.diff which have been
+      applied upstream, refresh the rest.
+  * Add recommended build-arch and build-indep targets to debian/rules,
+    fixes lintian warning debian-rules-missing-recommended-target.
+  * Add lintian override for package-contains-broken-symlink (as that
+    symlink points to a file from a dependency)
+  * Make debian/rscreen to also work with tmux.
+    + Install symbolic links rtmux and ruscreen (for enforcing UTF-8) to
+      rscreen
+    + Mention debian/rscreen in debian/copyright.
+  * Make debian/rscreen and its symlinks source /etc/${BASENAME}rc and
+    ~/.${BASENAME}rc
+  * Make debian/rscreen honour -h and --help, make usage message more verbose.
+
+ -- Axel Beckert <abe@debian.org>  Sat, 19 Nov 2011 03:41:58 +0100
+
+autossh (1.4b-6) unstable; urgency=low
+
+  * Build-Depend on openssh-client to allow configure to find the path to
+    the ssh binary.
+
+ -- Axel Beckert <abe@debian.org>  Mon, 25 Jul 2011 02:28:28 +0200
+
+autossh (1.4b-5) unstable; urgency=low
+
+  * New Maintainers (Closes: #605423)
+    + Move to Git (new Vcs-* headers)
+  * Bump Standards-Version to 3.9.2 (no changes)
+  * Add "Enhances: openssh-client, ssh-client"
+  * Move from cdbs+simple-patchsys to debhelper+quilt
+    + Refreshed all patches and added descriptions
+    + Update build dependencies appropriately
+    + Install autossh and autossh-argv0 via dh_install
+    + Install logcheck stuff via dh_installlogcheck
+    + Use dh_autotools-dev_*config instead of manually handling
+      config.{sub,guess}
+  * Remove deletion of no more created directories and files
+  * Install (slightly modified) example script rscreen to /usr/bin
+    (LP: #410357)
+  * Do not link against libnsl (fixes dpkg-shlibdeps warning)
+  * Add README.source from /usr/share/doc/quilt/ to make Lintian happy
+
+ -- Axel Beckert <abe@debian.org>  Mon, 25 Jul 2011 01:24:55 +0200
+
+autossh (1.4b-4) unstable; urgency=low
+
+  [ Thorsten Glaser ]
+  * debian/patches/000_configure_with-ssh_fix.diff: Remove, create
+    a proper fix in debian/patches/000_configure_fix.diff (the closing
+    parenthesis of AC_HELP_STRING was placed wrong)
+  * debian/patches/000_configure_fix.diff: Add proper check for the
+    existence of __progname (taken from OpenSSH-portable), replace
+    upstream’s check for declaration when what we really need to see
+    is existence of the symbol (Closes: #531937)
+  * debian/control: Remove “Tag:” header lintian complains about,
+    see the following mailing list thread for the reason:
+    - http://lists.alioth.debian.org/pipermail/debtags-devel/2007-January/001567.html
+    - http://lists.alioth.debian.org/pipermail/debtags-devel/2007-February/001593.html
+  * Fix a couple of lintian warnings:
+    - debian/README.Debian: spelling-error-in-readme-debian
+    - debian/patches/030_manpage_fix.diff,
+      debian/patches/040_manpage_debian.diff: hyphen-used-as-minus-sign
+  * Bump Standards-Version to 3.8.3, no relevant changes
+  * Call autoconf and autoheader to regenerate buildsystem after patching
+  * Fix spelling error in debian/patches/040_manpage_debian.diff
+
+  [ Filippo Giunchedi ]
+  * Merge patch from Thorsten Glaser fixing also an RC bug, thanks!
+
+ -- Filippo Giunchedi <filippo@debian.org>  Sun, 10 Jan 2010 11:21:00 +0100
+
+autossh (1.4b-3) unstable; urgency=low
+
+  * Cosmetic changes to autossh wrapper
+  * Fix FTBFS on mips/mipsel by adding -fPIC to CFLAGS (Closes: #531937)
+
+ -- Filippo Giunchedi <filippo@debian.org>  Fri, 05 Jun 2009 19:08:51 +0200
+
+autossh (1.4b-2) unstable; urgency=low
+
+  * Include autossh-argv0 shamelessly copied/adapted from ssh-argv0
+  * Add debian/patches/040_manpage_debian.diff to reference README.Debian for
+    autossh debian-specific behavior (Closes: #523861)
+  * Install logcheck ignore rules into
+    /etc/logcheck/ignore.d.workstation/autossh (Closes: #505659)
+  * Add ${misc:Depends} as lintian requested
+  * Update to S-V 3.8.1, no changes needed
+
+ -- Filippo Giunchedi <filippo@debian.org>  Sat, 23 May 2009 19:08:46 +0200
+
+autossh (1.4b-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/patches/manpage_fix.diff: fix spurious .El (Closes: #447654)
+  * Report failure when unable to find a tunnel port (Closes: #443087) 
+
+ -- Filippo Giunchedi <filippo@debian.org>  Tue, 24 Jun 2008 13:01:25 +0200
+
+autossh (1.4a-3) unstable; urgency=low
+
+  * get command line handling of -M right.
+  * add NEWS file announcing the random guess feature
+
+ -- Filippo Giunchedi <filippo@debian.org>  Mon, 01 Oct 2007 23:34:18 +0200
+
+autossh (1.4a-2) unstable; urgency=low
+
+  * fix configure to properly handle --with-ssh
+  * pass --with-ssh=/usr/bin/ssh to configure
+  * improved the autossh wrapper while testing random ports
+
+ -- Filippo Giunchedi <filippo@debian.org>  Mon, 01 Oct 2007 23:26:06 +0200
+
+autossh (1.4a-1) unstable; urgency=low
+
+  * New upstream release (Closes: #389985)
+  * migration to cdbs
+  * split patch for overriding -M on commandline into debian/patches
+  * the autossh wrapper now tries random ports (Closes: #230780)
+  * fix typo in the manpage and the bullet list (Closes: #441035)
+
+ -- Filippo Giunchedi <filippo@debian.org>  Fri, 28 Sep 2007 11:57:04 +0200
+
+autossh (1.3-4) unstable; urgency=low
+
+  * explicitly depend on ssh-client | openssh-client (Closes: #315049)
+  * pass -M to ssh if used after --, patch by Paul Brook (Closes: #320280) 
+
+ -- Filippo Giunchedi <filippo@debian.org>  Thu, 15 Sep 2005 10:47:04 +0200
+
+autossh (1.3-3) unstable; urgency=low
+
+  * fixed weird bug when AUTOSSH_PORT and -M are present
+
+ -- Filippo Giunchedi <filippo@debian.org>  Sun, 26 Jun 2005 19:45:35 +0200
+
+autossh (1.3-2) unstable; urgency=low
+
+  * changed Depends: ssh to Depends: ssh-client since ssh is now a
+    transitional package (Closes: #315049)
+
+ -- Filippo Giunchedi <filippo@debian.org>  Mon, 20 Jun 2005 13:06:16 +0200
+
+autossh (1.3-1) unstable; urgency=low
+
+  * new upstream release
+  * fixed bad strcpy() usage
+  * backported default behaviour, -M overrides environment as expected
+
+ -- Filippo Giunchedi <filippo@debian.org>  Sat, 18 Jun 2005 21:48:14 +0200
+
+autossh (1.2g-3) unstable; urgency=low
+
+  * fixed strcpy() with overlapping strings as pointed out by Steve Langasek 
+
+ -- Filippo Giunchedi <filippo@debian.org>  Tue, 24 May 2005 18:31:24 +0200
+
+autossh (1.2g-2) unstable; urgency=low
+
+  * fixes important bug when AUTOSSH_PORT=0 (Closes: #309744)
+  * do not strip "f" from arguments passed to ssh (backported from autossh 1.3) 
+
+ -- Filippo Giunchedi <filippo@debian.org>  Thu, 19 May 2005 14:41:12 +0200
+
+autossh (1.2g-1) unstable; urgency=low
+
+  * New upstream release
+  * added sponsor martin f krafft as uploader
+  * -M from the commandline overrides enviroment AUTOSSH_PORT, this changes
+    upstram's behaviour. see #238148
+  * moved /usr/bin/autossh.real to /usr/lib/autossh/autossh and removed the
+    lintian override, thanks to martin f krafft 
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Mon, 16 Nov 2004 20:53:57 +0100
+
+autossh (1.2f-3) unstable; urgency=low
+
+  * fixed -M and AUTOSSH_PORT handling, this should now work as expected (i.e.
+    -M overrides enviroment)
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Fri,  2 Apr 2004 22:44:26 +0200
+
+autossh (1.2f-2) unstable; urgency=low
+
+  * changed autossh_wrapper to use AUTOSSH_PORT instead of -M and modified
+    autossh.c to -M always override AUTOSSH_PORT (Closes: #238148)
+  * fixed autossh chocking on empty (but set) AUTOSSH_PORT (Closes: #238150)
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Fri, 19 Mar 2004 17:34:19 +0100
+
+autossh (1.2f-1) unstable; urgency=low
+
+  * New upstream version, fixed -f behaviour
+  * increased timeout to 15 seconds, removed unused variable, fixed manpage
+    typo, patch by Michael Shields (Closes: #233567, #233568)
+  * added lintian override for autossh.real 
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Mon, 23 Feb 2004 12:10:18 +0100
+
+autossh (1.2e-2) unstable; urgency=low
+
+  * fixed argument passing in autossh wrapper plus exec, patch by Gael Queri
+    (Closes: #228371)
+  * updated Standards-Version and minor changes
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Sun, 19 Jan 2004 23:00:30 +0100
+
+autossh (1.2e-1) unstable; urgency=low
+
+  * New upstream release
+  * fixed -f handling in new release (Closes: #191719)
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Sat, 15 Nov 2003 14:02:58 +0100
+
+autossh (1.2d-1) unstable; urgency=low
+
+  * New upstream release
+  * /usr/bin/autossh is a wrapper to set autossh.real default port [21021]
+    (Closes: #177511)
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Fri, 20 Jun 2003 22:25:22 +0200
+
+autossh (1.2c-2) unstable; urgency=low
+
+  * updated Standards-Version
+  * removed dh_make boilerplate in copyright (now lintian error-free)
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Sat, 11 Jan 2003 17:56:41 +0100
+
+autossh (1.2c-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Filippo Giunchedi <filippo@esaurito.net>  Mon, 23 Dec 2002 16:36:39 +0000
+

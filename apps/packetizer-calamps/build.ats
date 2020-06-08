@@ -1,0 +1,32 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	QT_DIR="/usr/local/Trolltech/QtEmbedded-4.8.2-arm/"
+        ${QT_DIR}/bin/qmake ./packetizer-calamps.pro -r -spec qws/linux-redstone-g++
+
+	# Remove "-rpath" linker flag because it causes the dynamic linker to look in the wrong directories
+	# for shared objects.
+	cat Makefile|sed 's/,-rpath,[^ ]\+//' > Makefile.tmp && mv Makefile.tmp Makefile
+
+	make -e
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	APP='./packetizer-calamps'
+	${CROSS_COMPILE}strip $APP
+
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+		sudo cp -av "$APP" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+	fi
+exit 0

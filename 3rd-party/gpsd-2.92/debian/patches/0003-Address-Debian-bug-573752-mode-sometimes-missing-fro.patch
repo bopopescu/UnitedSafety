@@ -1,0 +1,1906 @@
+From: Eric S. Raymond <esr@thyrsus.com>
+Date: Sun, 14 Mar 2010 09:06:09 -0400
+Subject: [PATCH] Address Debian bug #573752 (mode sometimes missing from JSON.
+
+Also, include some additions of copyrights on the test logs that somehow
+wint missing from the last commit (probably git operator error).
+---
+ gpsd_json.c                                    |    7 +-
+ test/daemon/ac12.log                           |    4 +
+ test/daemon/ac12_binary.log                    |  Bin 25671 -> 25807 bytes
+ test/daemon/ait250.log                         |    3 +
+ test/daemon/blumax-gps009.log                  |    3 +
+ test/daemon/blumax-gps009.log.chk              |    6 +-
+ test/daemon/bt451.log                          |    3 +
+ test/daemon/bu303-climbing.log                 |  Bin 12805 -> 12942 bytes
+ test/daemon/bu303-moving.log                   |  Bin 13745 -> 13882 bytes
+ test/daemon/bu303-nofix.log                    |  Bin 3353 -> 3490 bytes
+ test/daemon/bu303-stillfix.log                 |  Bin 5061 -> 5198 bytes
+ test/daemon/bu303b-nofix.log                   |  Bin 3068 -> 3205 bytes
+ test/daemon/ch-4711.log                        |    4 +
+ test/daemon/com-1289.log                       |    4 +
+ test/daemon/eXplorist210.log                   |    3 +
+ test/daemon/garmin-geko201.log                 |    4 +
+ test/daemon/garmin17n.log                      |    4 +
+ test/daemon/garmin25lp.log                     |    4 +
+ test/daemon/garmin38.log                       |    4 +
+ test/daemon/garmin48.log                       |    4 +
+ test/daemon/gps-360.log                        |    4 +
+ test/daemon/gpslim236.log                      |    4 +
+ test/daemon/haicom-305N.log                    |    4 +
+ test/daemon/holux-gm-210.log                   |    4 +
+ test/daemon/humminbird-M37.log                 |    4 +
+ test/daemon/iTrek.log                          |    4 +
+ test/daemon/italk-binary.log                   |  Bin 31708 -> 31844 bytes
+ test/daemon/magellan-ec10.log                  |    3 +
+ test/daemon/magellan315.log                    |    4 +
+ test/daemon/mkt-3301.log                       |    3 +
+ test/daemon/motorola-t805.log                  |    3 +
+ test/daemon/navcom.log                         |  Bin 15031 -> 15167 bytes
+ test/daemon/nl402u.log                         |    4 +
+ test/daemon/nokia-ld-4w.log                    |    4 +
+ test/daemon/oncore.log                         |    4 +
+ test/daemon/pharos-360.log                     |    4 +
+ test/daemon/rgm3800.log                        |    2 +
+ test/daemon/rtcm2.log                          |    4 +
+ test/daemon/superstar2.log                     |  Bin 23908 -> 24044 bytes
+ test/daemon/tn200-all.log                      |    4 +
+ test/daemon/tn200-all.log.chk                  |   92 +++---
+ test/daemon/tn200.log                          |    4 +
+ test/daemon/tn204.log                          |    4 +
+ test/daemon/trimble-lassen_iq-3dfix.log        |  Bin 7425 -> 7562 bytes
+ test/daemon/trimble-lassen_iq-playacar.log     |  Bin 4346 -> 4483 bytes
+ test/daemon/trimble-lassen_iq-playacar.log.chk |   80 +++---
+ test/daemon/trimble-lassen_iq.log              |  Bin 10196 -> 10333 bytes
+ test/daemon/uBlox-aek-4t.log                   |  Bin 14593 -> 14729 bytes
+ test/daemon/uBlox-lea-4h.log                   |    4 +
+ test/daemon/uBlox-lea-4h.log.chk               |   26 +-
+ test/daemon/uBlox-lea-4s.log                   |    4 +
+ test/daemon/uBlox-lea-4t.log                   |  Bin 32463 -> 32600 bytes
+ test/daemon/uBlox-lea-4t.log.chk               |  406 ++++++++++++------------
+ test/daemon/uBlox-sirf1.log                    |  Bin 17353 -> 17490 bytes
+ test/daemon/zodiac.log                         |  Bin 5550 -> 5686 bytes
+ test/sample.aivdm                              |    3 +
+ test/sample.rtcm2                              |    6 +-
+ test/synthetic-ais.json                        |    4 +
+ test/synthetic-rtcm2.json                      |    4 +
+ 59 files changed, 447 insertions(+), 310 deletions(-)
+
+diff --git a/gpsd_json.c b/gpsd_json.c
+index becfe3e..9692ee5 100644
+--- a/gpsd_json.c
++++ b/gpsd_json.c
+@@ -170,10 +170,9 @@ void json_tpv_dump(const struct gps_data_t *gpsdata, struct gps_fix_t *fixp,
+ 	(void)snprintf(reply+strlen(reply),
+ 		       replylen-strlen(reply),
+ 		       "\"epc\":%.2f,", fixp->epc);
+-    if (fixp->mode > 0)
+-	(void)snprintf(reply+strlen(reply),
+-		       replylen-strlen(reply),
+-		       "\"mode\":%d,", fixp->mode);
++    (void)snprintf(reply+strlen(reply),
++		   replylen-strlen(reply),
++		   "\"mode\":%d,", fixp->mode);
+     if (reply[strlen(reply)-1] == ',')
+ 	reply[strlen(reply)-1] = '\0';	/* trim trailing comma */
+     (void)strlcat(reply, "}\r\n", sizeof(reply)-strlen(reply));
+diff --git a/test/daemon/ac12.log b/test/daemon/ac12.log
+index 22a68ad..391849e 100644
+--- a/test/daemon/ac12.log
++++ b/test/daemon/ac12.log
+@@ -3,6 +3,10 @@
+ # Submitted-by: Chris Kuethe <chris.kuethe@gmail.com>
+ # Date: 23 Dec 2007
+ # Location: Playa del Carmen, Mexico. 20.63N/87.07W
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGGA,193221.00,2037.72792,N,08704.08478,W,1,04,1.7,-30.40,M,-13.9,M,,*7D
+ $GPGSA,A,3,10,28,09,13,,,,,,,,,03.4,01.7,03.0*00
+ $GPGSV,3,1,12,28,14,150,41,09,15,254,41,10,43,192,47,13,06,081,36*7A
+diff --git a/test/daemon/ac12_binary.log b/test/daemon/ac12_binary.log
+index 53a49e951120640b52f82fda91a98e9a657f2e53..a25a3b0305a032c04a29f10e9207bac261debc40 100644
+GIT binary patch
+delta 149
+zcmX?pg7N%G#tEnEmARA^LNYRo71A<uQWb!-bACZ(QD%BZiGoJ5rh<`yp@BkDr9w$Y
+zs)Bn!u!}-LQGQlxatTnE6OdPuT9jL?kXTTVQ)#78oSF(&2R6ysKOoZ6&s`xi4=k3F
+oSzJ<-nN(VmnV+Xnl%HRskd|Mhkdn$#l9-uOtjDFi@l<Ux0R0a$XaE2J
+
+delta 34
+qcmX?qlJWQn#tEl+RNMoiTpV=_EsRZ#Cl@M;Pu`ozySbUsCm8_dm<&4r
+
+diff --git a/test/daemon/ait250.log b/test/daemon/ait250.log
+index e8dc319..6c8b782 100644
+--- a/test/daemon/ait250.log
++++ b/test/daemon/ait250.log
+@@ -8,6 +8,9 @@
+ # Device is described here:
+ # http://www.yachtronics.com/yachtronics/manuals/DIGITAL%20YACHT%20AIT250%20OPERATION.pdf
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,194907.00,A,5241.99815,N,00517.56525,E,0.005,,010809,,,A*7B
+ !AIVDO,1,1,,,B3aC3LP00063aj7RNpl03wSUwP06,0*43
+ !AIVDM,1,1,,B,13njCt031t0DA=lN2:jKmad60l1p,0*12
+diff --git a/test/daemon/blumax-gps009.log b/test/daemon/blumax-gps009.log
+index 002a1bb..b438139 100644
+--- a/test/daemon/blumax-gps009.log
++++ b/test/daemon/blumax-gps009.log
+@@ -4,6 +4,9 @@
+ # Date: 18 July 2008
+ # Location: Bielefeld, DE,  52=B0 01' N, 08=B0 31' O
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ # Following lines are
+ # `cat /dev/ttyACM0` at startup
+ $PSRFTXTVersion GSW3.2.2_3.1.00.12-SDK003P1.01a *78
+diff --git a/test/daemon/blumax-gps009.log.chk b/test/daemon/blumax-gps009.log.chk
+index 6361ab9..2d3f4a0 100644
+--- a/test/daemon/blumax-gps009.log.chk
++++ b/test/daemon/blumax-gps009.log.chk
+@@ -17,7 +17,7 @@ $GPGSV,3,3,12,18,15,251,,14,14,319,,28,08,059,,30,08,239,*77
+ $GPRMC,142816.359,V,,,,,,,180708,,,N*4C
+ $GPGGA,142817.299,,,,,0,00,,,M,0.0,M,,0000*5D
+ $GPGLL,,,,,142817.299,V,N*71
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+ $GPGSV,3,1,12,12,48,233,,17,39,066,,15,29,172,,22,19,291,*70
+ $GPGSV,3,2,12,26,17,161,28,09,81,300,,05,32,240,,29,31,171,*7A
+@@ -26,7 +26,7 @@ $GPGSV,3,3,12,18,15,251,,14,14,319,,28,08,059,,30,08,239,*77
+ $GPRMC,142817.299,V,,,,,,,180708,,,N*40
+ $GPGGA,142818.299,,,,,0,00,,,M,0.0,M,,0000*52
+ $GPGLL,,,,,142818.299,V,N*7E
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,,,*1E
+ $GPGSV,3,1,12,12,48,233,,17,39,066,,15,29,172,,22,19,291,*70
+ $GPGSV,3,2,12,26,17,161,29,09,81,300,,05,32,240,21,29,31,171,*78
+@@ -35,7 +35,7 @@ $GPGSV,3,3,12,18,15,251,,14,14,319,,28,08,059,,30,08,239,*77
+ $GPRMC,142818.299,V,,,,,,,180708,,,N*4F
+ $GPGGA,142818.899,5201.0687,N,00832.0645,E,0,04,,35.8,M,47.2,M,,0000*47
+ $GPGLL,5201.0687,N,00832.0645,E,142818.899,V,N*4E
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,26,22,12,15,,,,,,,,,,,*1D
+ $GPGSV,3,1,12,12,48,233,28,17,39,066,,15,29,172,33,22,19,290,23*7A
+ $GPGSV,3,2,12,26,17,161,31,09,81,300,,05,32,240,23,29,31,171,*73
+diff --git a/test/daemon/bt451.log b/test/daemon/bt451.log
+index d970e55..868872b 100644
+--- a/test/daemon/bt451.log
++++ b/test/daemon/bt451.log
+@@ -5,6 +5,9 @@
+ # Date: 9 Dec 2009
+ # Location: Lithuania, 55.8N 23.6E
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ # No fix, indoors
+ $GPTXT,01,01,02,u-blox ag - www.u-blox.com*50
+ $GPTXT,01,01,02,ANTARIS ATR062x HW 80040001*26
+diff --git a/test/daemon/bu303-climbing.log b/test/daemon/bu303-climbing.log
+index 6c337c1a51eeee88194487e3d023d856492c881c..83ca2fdcdf51e2753a8b32b55fd4859542c3badd 100644
+GIT binary patch
+delta 154
+zcmZoo=}Vn(rCym!Ss^4NvsfW5GbdF6NIT~jR2F5XXOt*tBx@=d85kNUBvmSuWTYy%
+z2L!t)6cpuWr6!jEbvXffC8<TZ#R`c91v!;g3dO0ZV0B=Voc#kLJ^kDjGV{P<DVfD3
+tMVU#ZC7Jno3Pt((B?@WzMG7gYoF$2wImLQh%3PBTxRo}3<2PjF0sxywGPVE!
+
+delta 15
+WcmeB6ZB3bQW%7JBrOkDW{DuHHvIY$R
+
+diff --git a/test/daemon/bu303-moving.log b/test/daemon/bu303-moving.log
+index cbd60813b7178cf7e02e91b4ef73ae79be95fd00..fd9cd135d9c8ea345899fed345970d03adcc3594 100644
+GIT binary patch
+delta 149
+zcmdm(y(?$JiF#!&WrdK8%wmPK%$!sOAnlxAP+63jo>8Kpk*uj;WMF8ZkW{Hql98(5
+z9uVxJP*9Ygm6}`v)a3-^m82Hs7Aqtc6y#J|DHNxsg4Kada`q31^z?IA$jk$arDPVD
+o6lErrmSpDVDHP@Bmnfv=7b&Eqa+D-y<`nC3DQ`Uf%7l>%0NKeh!~g&Q
+
+delta 11
+Scmdm$voU+ZiOm6wFHHa?It9D{
+
+diff --git a/test/daemon/bu303-nofix.log b/test/daemon/bu303-nofix.log
+index d8ecf043c33931d090d71df7c091efb87f9d6de0..6cefa7834cbd8e0b4960f17f86e9b1a5abb1d82d 100644
+GIT binary patch
+delta 149
+zcmbO!wMcrxp?YO5WrdK8%wmPK%$!sOAnlxAP+63jo>8Kpk*uj;WMF8ZkW{Hql98(5
+z9uVxJP*9Ygm6}`v)a3-^m82Hs7Aqtc6y#J|DHNxsg4Kada`q31^z?IA$jk$arDPVD
+o6lErrmSpDVDHP@Bmnfv=7b&Eqa+D-y<`nC3DQ`R&!NbS}09wT{EC2ui
+
+delta 15
+XcmZ1^JyUAJp~*fRshig`e&PlIG!_PL
+
+diff --git a/test/daemon/bu303-stillfix.log b/test/daemon/bu303-stillfix.log
+index 5b2ed99b6694fb215536f905efdfb4c18ac0ff0d..54e540469d7aa315d8b016ab949d1100bf988b90 100644
+GIT binary patch
+delta 149
+zcmX@AeokY;m3n0^WrdK8%wmPK%$!sOAnlxAP+63jo>8Kpk*uj;WMF8ZkW{Hql98(5
+z9uVxJP*9Ygm6}`v)a3-^m82Hs7Aqtc6y#J|DHNxsg4Kada`q31^z?IA$jk$arDPVD
+o6lErrmSpDVDHP@Bmnfv=7b&Eqa+D-y<`nC3DQ~>|Nr;gP0I7#EVgLXD
+
+delta 11
+ScmX@7aa4W6mCZ4XAB6xSXa!mT
+
+diff --git a/test/daemon/bu303b-nofix.log b/test/daemon/bu303b-nofix.log
+index d998a0f0ac914a3d6fd92dbb9d15ed22d40bd014..361d34ce3dbb393235fee1e88d45ba8b50b070e5 100644
+GIT binary patch
+delta 154
+zcmew(-YPkvuU?r;Ss^4NvsfW5GbdF6NIT~jR2F5XXOt*tBx@=d85kNUBvmSuWTYy%
+z2L!t)6cpuWr6!jEbvXffC8<TZ#R`c91v!;g3dO0ZV0B=Voc#kLJ^kDjGV{P<DVfD3
+tMVU#ZC7Jno3Pt((B?@WzMG7gYoF$2wImLQh%3PBRITJU&=jCSP0svh@GL!%S
+
+delta 15
+WcmZpb{3AZ0Z}MHH?9Gjg%-jGs4h8T4
+
+diff --git a/test/daemon/ch-4711.log b/test/daemon/ch-4711.log
+index 27f663c..f6bff4d 100644
+--- a/test/daemon/ch-4711.log
++++ b/test/daemon/ch-4711.log
+@@ -6,6 +6,10 @@
+ # Location = Moscow, Russia, 55.71N 37.41E
+ # Notes: Emits GLONASS sentences. Mostly 2D fixes but it loses
+ #	satellite lock near the end and the sentence mix changes.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GNGGA,135627.997,5543.0325,N,03724.7192,E,1,06,01.8,165.6,M,14.6,M,,*75
+ $GNRMC,135627.997,A,5543.0325,N,03724.7192,E,00.00,129.5,051209,,,A*7F
+ $PORZD,A,024.1*3B
+diff --git a/test/daemon/com-1289.log b/test/daemon/com-1289.log
+index a41d982..02c24b3 100644
+--- a/test/daemon/com-1289.log
++++ b/test/daemon/com-1289.log
+@@ -4,6 +4,10 @@
+ # Date: 10 Dec 2007
+ # Location: Rennes, Ile-etVilaine, France
+ #	Documentation says this chip emits ZDA and RMC in that order. 
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGSA,A,3,05,06,07,10,16,21,23,24,30,31,,,1.7,1.1,1.2*30
+ $GPGSV,3,1,11,01,06,230,35,05,16,114,43,06,65,063,50,07,72,061,47*79
+ $GPGSV,3,2,11,10,09,057,40,16,35,295,48,21,43,153,53,23,12,316,51*72
+diff --git a/test/daemon/eXplorist210.log b/test/daemon/eXplorist210.log
+index dc7cdea..9429b2c 100644
+--- a/test/daemon/eXplorist210.log
++++ b/test/daemon/eXplorist210.log
+@@ -4,6 +4,9 @@
+ # Date: 20 May 2006
+ # Location: Groningen, NL, 53.2N6.6E
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ # mode V2.1 GSA
+ # Lines up to but not including the first GPGLL are
+ # `cat /dev/ttyACM0` at startup 
+diff --git a/test/daemon/garmin-geko201.log b/test/daemon/garmin-geko201.log
+index 9641a92..66217d2 100644
+--- a/test/daemon/garmin-geko201.log
++++ b/test/daemon/garmin-geko201.log
+@@ -4,6 +4,10 @@
+ # Date: 14 Jun 2005
+ # Location: Madrid, Madrid, Spain (ES), 40.39N 03.64E
+ # Comments:  This is demo-mode data, with no actual fixes.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,214350,V,4023.8600,N,00339.1630,W,10.8,0.0,140605,2.5,W,S*21
+ $GPRMB,V,,,,,,,,,,,,A,S*0E
+ $GPGGA,214350,4023.8600,N,00339.1630,W,8,09,2.0,695.7,M,51.6,M,,*5A
+diff --git a/test/daemon/garmin17n.log b/test/daemon/garmin17n.log
+index f36aa09..ae1f2f8 100644
+--- a/test/daemon/garmin17n.log
++++ b/test/daemon/garmin17n.log
+@@ -3,6 +3,10 @@
+ # Submitted-by: Wojciech Kazubski <wk@ire.pw.edu.pl>
+ # Comment: Only emits GPRMC when it has a fix.
+ # Date: 12 Mar 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,093802,A,5213.1439,N,02100.6511,E,000.0,226.0,160305,004.2,E,D*15
+ $GPGGA,093802,5213.1439,N,02100.6511,E,2,10,0.9,137.2,M,36.2,M,,*43
+ $GPGSA,A,3,03,06,15,16,18,19,21,22,,27,29,,1.6,0.9,1.3*34
+diff --git a/test/daemon/garmin25lp.log b/test/daemon/garmin25lp.log
+index 0724e59..673a21d 100644
+--- a/test/daemon/garmin25lp.log
++++ b/test/daemon/garmin25lp.log
+@@ -2,6 +2,10 @@
+ # Chipset: Garmin proprietary, emits NMEA 2.0
+ # Submitted-by: Daniele Giangrazi <daniele.giangrazi@elital.net>
+ # Date: 22 Mar 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,120316,V,4221.4394,N,01321.9948,E,000.0,000.0,150305,001.4,E*63
+ $GPGSV,2,1,08,01,10,158,45,03,72,164,41,11,24,279,,14,30,119,48*76
+ $GPGSV,2,2,08,15,33,070,40,16,05,184,,18,20,046,,19,73,304,*7B
+diff --git a/test/daemon/garmin38.log b/test/daemon/garmin38.log
+index 3b42cb2..dad6e83 100644
+--- a/test/daemon/garmin38.log
++++ b/test/daemon/garmin38.log
+@@ -1,6 +1,10 @@
+ # Name: Garmin 38
+ # Submitted-by: "Pascal F. Martin" <pascal.martin@cox.net>
+ # Date: 18 Mar 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $PGRME,19.2,M,28.7,M,34.6,M*18
+ $GPGLL,3348.452,N,11821.142,W,142214,A*3B
+ $PGRMZ,125,f,3*1D
+diff --git a/test/daemon/garmin48.log b/test/daemon/garmin48.log
+index 8e787b8..c4a32bb 100644
+--- a/test/daemon/garmin48.log
++++ b/test/daemon/garmin48.log
+@@ -8,6 +8,10 @@
+ #
+ # Submitted-by: Hamish <hamish_nospam@yahoo.com>
+ # Date: 11 Mar 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,225308,A,4527.458,S,16709.165,E,000.0,094.5,060601,024.1,E*6D
+ $GPRMB,A,,,,,,,,,,,,V*71
+ $GPGGA,225308,4527.458,S,16709.165,E,1,05,2.1,14.7,M,1.1,M,,*53
+diff --git a/test/daemon/gps-360.log b/test/daemon/gps-360.log
+index 6e41b00..8224655 100644
+--- a/test/daemon/gps-360.log
++++ b/test/daemon/gps-360.log
+@@ -3,6 +3,10 @@
+ # Submitted-by: "Jeff Fisher" <guppy@techmonkeys.org>
+ # Date: 27 July 2006
+ # Location: Regina, Saskatchewan, Canada, 50N104W
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGSA,A,3,28,11,26,29,,,,,,,,,12.9,12.5,3.1*39
+ $GPRMC,021612.949,A,5029.3800,N,10441.0390,W,0.039560,189.06,280706,,*18
+ $GPGGA,021613.949,5029.3800,N,10441.0389,W,1,04,12.5,572.4,M,-20.3,M,0.0,0000*7E
+diff --git a/test/daemon/gpslim236.log b/test/daemon/gpslim236.log
+index 3aa3922..d237580 100644
+--- a/test/daemon/gpslim236.log
++++ b/test/daemon/gpslim236.log
+@@ -2,6 +2,10 @@
+ # Chipset: SiRF-III
+ # Submitted-by:  "K√©vin REDON" <kevredon@gmail.com>
+ # Date: 22 Jul 2006 
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGGA,185244.000,4854.2575,N,00219.9816,E,1,05,1.7,124.4,M,47.3,M,,0000*56
+ $GPGSA,A,3,14,01,30,06,09,,,,,,,,2.8,1.7,2.2*36
+ $GPGSV,3,1,11,30,79,308,20,05,54,079,16,06,43,204,29,14,39,247,41*75
+diff --git a/test/daemon/haicom-305N.log b/test/daemon/haicom-305N.log
+index a2f8592..97a1b40 100644
+--- a/test/daemon/haicom-305N.log
++++ b/test/daemon/haicom-305N.log
+@@ -4,6 +4,10 @@
+ # Location: 153E 27S
+ # Submitted by: "David Findlay" <david@davsoft.com.au>
+ # Description: Starts stationary, then moving 5m due west, 10m due south, then reversing course
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGSV,3,3,12,24,58,220,,26,17,053,,29,20,063,,30,60,311,44*7F
+ $GPRMC,095255.810,V,2712.6404,S,15303.1201,E,0.00,0.00,080407,,,A*6E
+ $GPVTG,0.00,T,,,0.00,N,0.00,K,A*70
+diff --git a/test/daemon/holux-gm-210.log b/test/daemon/holux-gm-210.log
+index e1f4deb..fd639d0 100644
+--- a/test/daemon/holux-gm-210.log
++++ b/test/daemon/holux-gm-210.log
+@@ -2,6 +2,10 @@
+ # Chipset: SiRF-II
+ # Submitted-by: "Patrick L. McGillan" <pmcgillan@pateri.com>
+ # Date: 4 Apr 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGGA,012519.563,4131.7353,N,09336.8150,W,0,00,50.0,280.2,M,-31.6,M,0.0,0000*7D
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPRMC,012519.563,V,4131.7353,N,09336.8150,W,0.00,,050405,,*14
+diff --git a/test/daemon/humminbird-M37.log b/test/daemon/humminbird-M37.log
+index ba192bf..bb17675 100644
+--- a/test/daemon/humminbird-M37.log
++++ b/test/daemon/humminbird-M37.log
+@@ -3,6 +3,10 @@
+ # Date: 16 September 2006
+ # Location: Connecticut River, New Hampshire, USA, 44N71W
+ # Comments: Powerboat track with NMEA depth (DPT) and water temperature (MTW) sentences
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $INDPT,2.2,0.0*47
+ $INRMC,194101,A,4426.1130,N,07140.5596,W,5.2,77.3,160906,15.8,W*60
+ $INDPT,2.1,0.0*44
+diff --git a/test/daemon/iTrek.log b/test/daemon/iTrek.log
+index faddf18..0a41fc6 100644
+--- a/test/daemon/iTrek.log
++++ b/test/daemon/iTrek.log
+@@ -6,6 +6,10 @@
+ # one captured without a fix (first three lines) and one with.
+ # This GPS emuits a badly malformed GSA when it has no fix, as
+ # you can see on the first two lines.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,151605.053,V,,,,,,,260705,,*29
+ $GPRMC,151606.055,V,,,,,,,260705,,*2C
+ $GPGSA,A,1,,,,*32
+diff --git a/test/daemon/italk-binary.log b/test/daemon/italk-binary.log
+index 32c700918545eb50962f0fa8efbba73b250c2af0..4813b1a88c6da6f4db73ecf31583f736425a4b28 100644
+GIT binary patch
+delta 149
+zcmccfo$<*J#tC2RmARA^LNYRo71A<uQWb!-bACZ(QD%BZiGoJ5rh<`yp@BkDr9w$Y
+zs)Bn!u!}-LQGQlxatTnE6OdPuT9jL?kXTTVQ)#78oSF(&2R6ysKOoZ6&s`xi4=k3F
+oSzJ<-nN(VmnV+Xnl%HRskd|Mhkdn$#l9-uOtjDFi@ym-U0AtfM#sB~S
+
+delta 13
+VcmaFzgYnLH#tC0H*D^k@0suM(2gv{c
+
+diff --git a/test/daemon/magellan-ec10.log b/test/daemon/magellan-ec10.log
+index 03a30c1..1f56c3e 100644
+--- a/test/daemon/magellan-ec10.log
++++ b/test/daemon/magellan-ec10.log
+@@ -6,6 +6,9 @@
+ # Roof-mounted stationary GPS.  This is about as dumb as NMEA gets.
+ # This log records a transition from no fix to 2D fix and then no fix.
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMB,V,,,,,,,,,,,,V*66
+ $GPRMC,205150.00,V,,,,,,,,,,,V*4a
+ $GPRMB,V,,,,,,,,,,,,V*66
+diff --git a/test/daemon/magellan315.log b/test/daemon/magellan315.log
+index bed527f..8a5c293 100644
+--- a/test/daemon/magellan315.log
++++ b/test/daemon/magellan315.log
+@@ -1,6 +1,10 @@
+ # Name: Magellan 315
+ # Submitted-by: √Ångel Marqu√©s Mateu <amarques@cgf.upv.es>
+ # Date: 12 Mar 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGLL,3908.8199,N,00023.0832,W,120824.758,A*22
+ $GPGGA,120824.76,3908.8199,N,00023.0832,W,1,06,2.1,00176,M,,,,*39
+ $GPRMC,120824.76,A,3908.8199,N,00023.0832,W,00.0,000.0,130305,01.,W*62
+diff --git a/test/daemon/mkt-3301.log b/test/daemon/mkt-3301.log
+index c856e02..fccf2d4 100644
+--- a/test/daemon/mkt-3301.log
++++ b/test/daemon/mkt-3301.log
+@@ -10,6 +10,9 @@
+ # Log created with Kermit logging from /dev/ttyUSB0 at 4800 baud
+ # Log shows entire power up to first fix sequence 
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ # power up
+ #
+ $PMTK010,001*2E
+diff --git a/test/daemon/motorola-t805.log b/test/daemon/motorola-t805.log
+index e4493a8..8300f49 100644
+--- a/test/daemon/motorola-t805.log
++++ b/test/daemon/motorola-t805.log
+@@ -6,6 +6,9 @@
+ # Date: 18 Dec 2007
+ # Location: Nozay, 48.66564N2.24812E
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ # Lines up to but not including the first GPGLL are
+ # `cat /dev/ttyACM0` at startup=20
+ # Following lines are
+diff --git a/test/daemon/navcom.log b/test/daemon/navcom.log
+index 01f4ae60f9f07f9fe1d5303457a1694878bc3329..b0b93a58dfa4828db6264407a6e0da95d5ce1fbf 100644
+GIT binary patch
+delta 147
+zcmdm9y1#5fXT36)vO-8kX0bwAW=^UCkao^5s4U7%&nQvQNY+#^GB7kyNUBsQ$w*aj
+z4+wTqC@9L$N=+^S>T&||N>Yn*ixm<J3UVr~6pB+*!Ro*!Ir|4hdiuF5WafdzQZkE6
+miZYW*OEUBG6pHfmOBB-bixg5)IZ6^UbBgu2ls9(hTLA!I$1$Y<
+
+delta 11
+ScmdmAw!L&h=Vn1hJu3hrbp)sY
+
+diff --git a/test/daemon/nl402u.log b/test/daemon/nl402u.log
+index 2724457..b3f0337 100644
+--- a/test/daemon/nl402u.log
++++ b/test/daemon/nl402u.log
+@@ -2,6 +2,10 @@
+ # Chipset: u-blox5 GPS & GALILEO SuperSense¬Æ
+ # Submitted-by: Klaus Pl√∂ger k.ploeger@gastradata.de
+ # Date: 2008:07:24
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPTXT,01,01,02,u-blox ag - www.u-blox.com*50
+ $GPTXT,01,01,02,HW  UBX-G5xxx  00040005 *1B
+ $GPTXT,01,01,02,EXT CORE 5.00 (28483) Jun  6 2008 14:42:32*5F
+diff --git a/test/daemon/nokia-ld-4w.log b/test/daemon/nokia-ld-4w.log
+index fda92b6..1db77cd 100644
+--- a/test/daemon/nokia-ld-4w.log
++++ b/test/daemon/nokia-ld-4w.log
+@@ -5,6 +5,10 @@
+ # Submitted-by: jussi.kivilinna@mbnet.fi
+ # Date: 5 Dec 2009
+ # Location: Oulu, FI, 65N 25E
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGGA,080315.000,6503.0241,N,02528.3627,E,1,07,1.2,9.9,M,21.6,M,,0000*58
+ $GPGSA,A,3,29,12,30,23,04,31,16,,,,,,2.2,1.2,1.9*32
+ $GPGSV,3,1,11,29,65,214,25,30,52,154,23,31,45,272,32,02,41,068,*7A
+diff --git a/test/daemon/oncore.log b/test/daemon/oncore.log
+index 7065a0b..1665e86 100644
+--- a/test/daemon/oncore.log
++++ b/test/daemon/oncore.log
+@@ -1,6 +1,10 @@
+ # Name: Oncore GT+
+ # Submitted-by: Wojciech Kazubski <wk@ire.pw.edu.pl>
+ # Date: 12 Apr 2005
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGSV,3,1,09,02,33,299,27,04,43,242,26,08,12,202,,13,85,356,*70
+ $GPGSV,3,2,09,16,22,059,,20,21,131,,23,54,074,,24,23,195,*71
+ $GPGSV,3,3,09,27,39,195,15,,,,,,,,,,,,*46
+diff --git a/test/daemon/pharos-360.log b/test/daemon/pharos-360.log
+index 492ca2d..ef7513f 100644
+--- a/test/daemon/pharos-360.log
++++ b/test/daemon/pharos-360.log
+@@ -3,6 +3,10 @@
+ # Submitted-by: "Jeff Fisher" <guppy@techmonkeys.org>
+ # Date: 27 July 2006
+ # Location: Regina, Saskatchewan, Canada, 50N104W
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGSA,A,3,28,11,26,29,,,,,,,,,12.9,12.5,3.1*39
+ $GPRMC,021612.949,A,5029.3800,N,10441.0390,W,0.039560,189.06,280706,,*18
+ $GPGGA,021613.949,5029.3800,N,10441.0389,W,1,04,12.5,572.4,M,-20.3,M,0.0,0000*7E
+diff --git a/test/daemon/rgm3800.log b/test/daemon/rgm3800.log
+index fd960b9..cf7b641 100644
+--- a/test/daemon/rgm3800.log
++++ b/test/daemon/rgm3800.log
+@@ -3,6 +3,8 @@
+ # Submitted-by: "Philipp Klenze" <hq.ks@web.de>
+ # Location: TU Munich, Garching, DE, 48.3N, 11.7E
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
+ #
+ # this log has been generated with the format set to 4:
+ # ./rgm3800.py -d /dev/ttyUSB0 format 4
+diff --git a/test/daemon/rtcm2.log b/test/daemon/rtcm2.log
+index 425a29b..07713d9 100644
+--- a/test/daemon/rtcm2.log
++++ b/test/daemon/rtcm2.log
+@@ -3,4 +3,8 @@
+ # Submitted-by: Wolfgang Rupprecht <wolfgang@dwsrcc.com>
+ # Has leading garbage, to test parity locking.  This is a truncated version
+ # of the sample.rtcm file used to test gpsdecode.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ YpgA_]qS@oglgyC|~oAxCJxqBHsDzu_FsHEfOXAdbwg@Es~]ywJ@x]Cxv^[_m_xRrLwzyBXQb`Z[@hMmOzbzjOXU}t_UUUEsHEfOXIfByS@oSpG|cBPAFvtGN}wl`xN@KsHEF}gV^]}g@EAx}~ywwWd\uv^{mrA¡‹◊Ù»Gm≈¡‰ﬁuLwzyBXye@bdWLhO{bz\pkJCE`jjJHsHEF}gZ\]Kl`_XHF|CNPAGvIxqBHSK{w_BsHEfOXUgB|__WSZ[{Iao~aJB`a@dPUrA
+diff --git a/test/daemon/superstar2.log b/test/daemon/superstar2.log
+index 859cd445765d6a6f3dccbb89f30986f5eb738725..462d425162da2474d99738bbdb262daad456b858 100644
+GIT binary patch
+delta 154
+zcmaE|i}B5F#tBpFmARA^LNYRo71A<uQWb!-bACZ(QD%BZiGoJ5rh<`yp@BkDr9w$Y
+zs)Bn!u!}-LQGQlxatTnE6OdPuT9jL?kXTTVQ)#78oSF(&2R6ysKOoZ6&s`xi4=k3F
+tSzJ<-nN(VmnV+Xnl%HRskd|Mhkdn$-l9-uOtjDFyHTfW~=*CsMVgT@MH0J;S
+
+delta 17
+ZcmaE}oAJpm#tBm=H?oRuHe%cr0{~582bTZ<
+
+diff --git a/test/daemon/tn200-all.log b/test/daemon/tn200-all.log
+index 3f69f74..1267246 100644
+--- a/test/daemon/tn200-all.log
++++ b/test/daemon/tn200-all.log
+@@ -5,6 +5,10 @@
+ # Location: Edmonton, Alberta, CA 53N113W
+ # Comments - Nearby airports include YEG and YXD. This capture was done
+ # at 57600 baud with all SiRF-supported NMEA messages set to 1Hz.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGGA,000452.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*75
+ $GPGLL,36000.0000,N,72000.0000,E,000452.981,V*10
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+diff --git a/test/daemon/tn200-all.log.chk b/test/daemon/tn200-all.log.chk
+index eb4f5ac..062c629 100644
+--- a/test/daemon/tn200-all.log.chk
++++ b/test/daemon/tn200-all.log.chk
+@@ -7,35 +7,35 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000453.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*74
+ $GPGLL,36000.0000,N,72000.0000,E,000453.981,V*11
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPRMC,000453.981,V,36000.0000,N,72000.0000,E,0.000000,,190120,,*33
+ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000454.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*73
+ $GPGLL,36000.0000,N,72000.0000,E,000454.981,V*16
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPRMC,000454.981,V,36000.0000,N,72000.0000,E,0.000000,,190120,,*34
+ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000455.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*72
+ $GPGLL,36000.0000,N,72000.0000,E,000455.981,V*17
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPRMC,000455.981,V,36000.0000,N,72000.0000,E,0.000000,,190120,,*35
+ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000456.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*71
+ $GPGLL,36000.0000,N,72000.0000,E,000456.981,V*14
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPRMC,000456.981,V,36000.0000,N,72000.0000,E,0.000000,,190120,,*36
+ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000457.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*70
+ $GPGLL,36000.0000,N,72000.0000,E,000457.981,V*15
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,00,13,77,000,00,08,71,000,,22,65,000,00*7F
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -45,7 +45,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000458.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7F
+ $GPGLL,36000.0000,N,72000.0000,E,000458.981,V*1A
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -55,7 +55,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000459.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7E
+ $GPGLL,36000.0000,N,72000.0000,E,000459.981,V*1B
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -65,7 +65,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000500.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*73
+ $GPGLL,36000.0000,N,72000.0000,E,000500.981,V*16
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -75,7 +75,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000501.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*72
+ $GPGLL,36000.0000,N,72000.0000,E,000501.981,V*17
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -85,7 +85,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000502.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*71
+ $GPGLL,36000.0000,N,72000.0000,E,000502.981,V*14
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -95,7 +95,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000503.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*70
+ $GPGLL,36000.0000,N,72000.0000,E,000503.981,V*15
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -105,7 +105,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,000504.981,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*77
+ $GPGLL,36000.0000,N,72000.0000,E,000504.981,V*12
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -115,7 +115,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204300.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7B
+ $GPGLL,36000.0000,N,72000.0000,E,204300.329,V*1E
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -125,7 +125,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204301.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7A
+ $GPGLL,36000.0000,N,72000.0000,E,204301.329,V*1F
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -135,7 +135,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204302.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*79
+ $GPGLL,36000.0000,N,72000.0000,E,204302.329,V*1C
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -145,7 +145,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204303.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*78
+ $GPGLL,36000.0000,N,72000.0000,E,204303.329,V*1D
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -155,7 +155,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204304.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7F
+ $GPGLL,36000.0000,N,72000.0000,E,204304.329,V*1A
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -165,7 +165,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204305.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7E
+ $GPGLL,36000.0000,N,72000.0000,E,204305.329,V*1B
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -175,7 +175,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204306.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7D
+ $GPGLL,36000.0000,N,72000.0000,E,204306.329,V*18
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -185,7 +185,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204307.329,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7C
+ $GPGLL,36000.0000,N,72000.0000,E,204307.329,V*19
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -195,7 +195,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204308.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*72
+ $GPGLL,36000.0000,N,72000.0000,E,204308.328,V*17
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -205,7 +205,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204309.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*73
+ $GPGLL,36000.0000,N,72000.0000,E,204309.328,V*16
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -215,7 +215,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204310.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7B
+ $GPGLL,36000.0000,N,72000.0000,E,204310.328,V*1E
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -225,7 +225,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204311.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7A
+ $GPGLL,36000.0000,N,72000.0000,E,204311.328,V*1F
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -235,7 +235,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204312.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*79
+ $GPGLL,36000.0000,N,72000.0000,E,204312.328,V*1C
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -245,7 +245,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204313.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*78
+ $GPGLL,36000.0000,N,72000.0000,E,204313.328,V*1D
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -255,7 +255,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204314.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7F
+ $GPGLL,36000.0000,N,72000.0000,E,204314.328,V*1A
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -265,7 +265,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204315.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7E
+ $GPGLL,36000.0000,N,72000.0000,E,204315.328,V*1B
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -275,7 +275,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204316.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7D
+ $GPGLL,36000.0000,N,72000.0000,E,204316.328,V*18
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -285,7 +285,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204317.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7C
+ $GPGLL,36000.0000,N,72000.0000,E,204317.328,V*19
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,48,13,77,000,00,08,71,000,,22,65,000,00*73
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -295,7 +295,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204318.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*73
+ $GPGLL,36000.0000,N,72000.0000,E,204318.328,V*16
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -305,7 +305,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204319.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*72
+ $GPGLL,36000.0000,N,72000.0000,E,204319.328,V*17
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -315,7 +315,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204320.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*78
+ $GPGLL,36000.0000,N,72000.0000,E,204320.328,V*1D
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -325,7 +325,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204321.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*79
+ $GPGLL,36000.0000,N,72000.0000,E,204321.328,V*1C
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -335,7 +335,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204322.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7A
+ $GPGLL,36000.0000,N,72000.0000,E,204322.328,V*1F
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -345,7 +345,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204323.328,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7B
+ $GPGLL,36000.0000,N,72000.0000,E,204323.328,V*1E
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,90,000,47,13,77,000,00,08,71,000,,22,65,000,00*7C
+ $GPGSV,3,2,12,09,65,000,00,26,40,000,,24,33,000,00,04,28,000,00*79
+@@ -355,7 +355,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204324.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*73
+ $GPGLL,36000.0000,N,72000.0000,E,204324.327,V*16
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,,25,41,000,*7C
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -365,7 +365,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204325.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*72
+ $GPGLL,36000.0000,N,72000.0000,E,204325.327,V*17
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,48,11,56,000,,14,47,000,00,25,41,000,*73
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -375,7 +375,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204326.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*71
+ $GPGLL,36000.0000,N,72000.0000,E,204326.327,V*14
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,00,25,41,000,*7C
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -385,7 +385,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204327.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*70
+ $GPGLL,36000.0000,N,72000.0000,E,204327.327,V*15
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,00,25,41,000,*7C
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -395,7 +395,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204328.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7F
+ $GPGLL,36000.0000,N,72000.0000,E,204328.327,V*1A
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,00,25,41,000,*7C
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -405,7 +405,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204329.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*7E
+ $GPGLL,36000.0000,N,72000.0000,E,204329.327,V*1B
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,00,25,41,000,*7C
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -415,7 +415,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204330.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*76
+ $GPGLL,36000.0000,N,72000.0000,E,204330.327,V*13
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,00,25,41,000,*7C
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -425,7 +425,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204331.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*77
+ $GPGLL,36000.0000,N,72000.0000,E,204331.327,V*12
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,40,25,41,000,*78
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -435,7 +435,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204332.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*74
+ $GPGLL,36000.0000,N,72000.0000,E,204332.327,V*11
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,41,25,41,000,*79
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+@@ -445,7 +445,7 @@ $GPVTG,,T,,M,0.000000,N,0.000000,K*4E
+ $GPMSS,0,0,0.000000,200,*5A
+ $GPGGA,204333.327,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*75
+ $GPGLL,36000.0000,N,72000.0000,E,204333.327,V*10
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPGSV,3,1,12,01,89,000,47,11,56,000,,14,47,000,40,25,41,000,*78
+ $GPGSV,3,2,12,19,21,000,00,20,21,000,,22,18,000,00,03,05,000,*7E
+diff --git a/test/daemon/tn200.log b/test/daemon/tn200.log
+index 71fc74b..20cb3a2 100644
+--- a/test/daemon/tn200.log
++++ b/test/daemon/tn200.log
+@@ -5,6 +5,10 @@
+ # Location: Edmonton, Alberta, CA 53N113W
+ # Comments - Nearby airports include YEG and YXD. This capture was done
+ # at 4800 baud with the SiRF default NMEA message set.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPGGA,000416.984,0000.0000,N,00000.0000,E,0,00,50.0,0.0,M,0.0,M,0.0,0000*70
+ $GPGSA,A,1,,,,,,,,,,,,,50.0,50.0,50.0*05
+ $GPRMC,000416.984,V,36000.0000,N,72000.0000,E,0.000000,,260120,,*3B
+diff --git a/test/daemon/tn204.log b/test/daemon/tn204.log
+index ff666e9..7a8a9df 100644
+--- a/test/daemon/tn204.log
++++ b/test/daemon/tn204.log
+@@ -4,6 +4,10 @@
+ # Date: 18 Mar 2005
+ #
+ # The NMEA looks like Garmin.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,230148,A,3348.605,N,11821.126,W,000.0,209.4,261002,013.8,E*6B
+ $GPRMB,A,,,,,,,,,,,,V*71
+ $GPGGA,230149,3348.605,N,11821.126,W,1,05,1.7,49.4,M,-32.4,M,,*4E
+diff --git a/test/daemon/trimble-lassen_iq-3dfix.log b/test/daemon/trimble-lassen_iq-3dfix.log
+index 2ca748713f10c3c36361ea59b9aac46fde705bcf..250099db3eab5845c180e17ba99baaa064f96655 100644
+GIT binary patch
+delta 149
+zcmZp)>aw2jzh0S3Ss^4NvsfW5GbdF6NIT~jR2F5XXOt*tBx@=d85kNUBvmSuWTYy%
+z2L!t)6cpuWr6!jEbvXffC8<TZ#R`c91v!;g3dO0ZV0B=Voc#kLJ^kDjGV{P<DVfD3
+oMVU#ZC7Jno3Pt((B?@WzMG7gY93_dFImLQh${YVN%P?{Q0EQwlaR2}S
+
+delta 11
+ScmeCOZnT>4e{(w{lMDbJNCasB
+
+diff --git a/test/daemon/trimble-lassen_iq-playacar.log b/test/daemon/trimble-lassen_iq-playacar.log
+index 80cfa9f7ffcf61e885c85a949f61af7366c58ee2..175030831870f12b548e11c8497eaf0664d03ac2 100644
+GIT binary patch
+delta 151
+zcmeyR*sQ#Pjj>*tOIaZ#BePf`Ei)%o0Z2RN7gQEyre~BWXe4VY7#SEEC?r)Xlw_nT
+zxCaEgC=?XsXQd{W0ChP5c_pbuxy1^J1qC^kRtm+bsbF<rlbrnnB0c@w6*BX{Vkw!$
+qB}JJ@r6rm9c?w1O`6UWz`9%sTsT?JVnK{LJT*{kS8Nc!~asdEj3^2(6
+
+delta 12
+TcmZox{-wBqjd61y;}?DaAO8ft
+
+diff --git a/test/daemon/trimble-lassen_iq-playacar.log.chk b/test/daemon/trimble-lassen_iq-playacar.log.chk
+index 365a2ae..be0624f 100644
+--- a/test/daemon/trimble-lassen_iq-playacar.log.chk
++++ b/test/daemon/trimble-lassen_iq-playacar.log.chk
+@@ -1,80 +1,80 @@
+ $GPRMC,000000,V,2037.7075,N,08704.0535,W,0.0000,0.000,000000,,*23
+-{"class":"TPV","tag":"ID84","lat":20.628457567,"lon":-87.067558169,"alt":12.892}
++{"class":"TPV","tag":"ID84","lat":20.628457567,"lon":-87.067558169,"alt":12.892,"mode":0}
+ $GPRMC,000000,V,2037.7075,N,08704.0535,W,0.0000,0.000,000000,,*23
+-{"class":"TPV","tag":"ID84","lat":20.628457697,"lon":-87.067558187,"alt":12.894}
++{"class":"TPV","tag":"ID84","lat":20.628457697,"lon":-87.067558187,"alt":12.894,"mode":0}
+ $GPRMC,000000,V,2037.7075,N,08704.0535,W,0.0000,0.000,000000,,*23
+-{"class":"TPV","tag":"ID84","lat":20.628457840,"lon":-87.067558197,"alt":12.896}
++{"class":"TPV","tag":"ID84","lat":20.628457840,"lon":-87.067558197,"alt":12.896,"mode":0}
+ $GPRMC,000000,V,2037.7075,N,08704.0535,W,0.0000,0.000,000000,,*23
+-{"class":"TPV","tag":"ID84","lat":20.628457990,"lon":-87.067558204,"alt":12.897}
++{"class":"TPV","tag":"ID84","lat":20.628457990,"lon":-87.067558204,"alt":12.897,"mode":0}
+ $GPRMC,040938,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*37
+-{"class":"TPV","tag":"ID84","time":1166760578.000,"ept":0.005,"lat":20.628458149,"lon":-87.067558205,"alt":12.899}
++{"class":"TPV","tag":"ID84","time":1166760578.000,"ept":0.005,"lat":20.628458149,"lon":-87.067558205,"alt":12.899,"mode":0}
+ $GPRMC,040939,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*36
+-{"class":"TPV","tag":"ID84","time":1166760579.000,"ept":0.005,"lat":20.628458307,"lon":-87.067558207,"alt":12.900}
++{"class":"TPV","tag":"ID84","time":1166760579.000,"ept":0.005,"lat":20.628458307,"lon":-87.067558207,"alt":12.900,"mode":0}
+ $GPRMC,040940,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*38
+-{"class":"TPV","tag":"ID84","time":1166760580.000,"ept":0.005,"lat":20.628458324,"lon":-87.067558207,"alt":12.900}
++{"class":"TPV","tag":"ID84","time":1166760580.000,"ept":0.005,"lat":20.628458324,"lon":-87.067558207,"alt":12.900,"mode":0}
+ $GPRMC,040941,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*39
+-{"class":"TPV","tag":"ID84","time":1166760581.000,"ept":0.005,"lat":20.628458343,"lon":-87.067558205,"alt":12.900}
++{"class":"TPV","tag":"ID84","time":1166760581.000,"ept":0.005,"lat":20.628458343,"lon":-87.067558205,"alt":12.900,"mode":0}
+ $GPRMC,040942,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*3A
+-{"class":"TPV","tag":"ID84","time":1166760582.000,"ept":0.005,"lat":20.628458362,"lon":-87.067558203,"alt":12.901}
++{"class":"TPV","tag":"ID84","time":1166760582.000,"ept":0.005,"lat":20.628458362,"lon":-87.067558203,"alt":12.901,"mode":0}
+ $GPRMC,040943,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*3B
+-{"class":"TPV","tag":"ID84","time":1166760583.000,"ept":0.005,"lat":20.628458558,"lon":-87.067558182,"alt":12.902}
++{"class":"TPV","tag":"ID84","time":1166760583.000,"ept":0.005,"lat":20.628458558,"lon":-87.067558182,"alt":12.902,"mode":0}
+ $GPRMC,040944,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*3C
+-{"class":"TPV","tag":"ID84","time":1166760584.000,"ept":0.005,"lat":20.628458758,"lon":-87.067558159,"alt":12.903}
++{"class":"TPV","tag":"ID84","time":1166760584.000,"ept":0.005,"lat":20.628458758,"lon":-87.067558159,"alt":12.903,"mode":0}
+ $GPRMC,040945,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*3D
+-{"class":"TPV","tag":"ID84","time":1166760585.000,"ept":0.005,"lat":20.628458957,"lon":-87.067558137,"alt":12.904}
++{"class":"TPV","tag":"ID84","time":1166760585.000,"ept":0.005,"lat":20.628458957,"lon":-87.067558137,"alt":12.904,"mode":0}
+ $GPRMC,040946,A,2037.7075,N,08704.0535,W,0.0000,0.000,221206,,*3E
+-{"class":"TPV","tag":"ID84","time":1166760586.000,"ept":0.005,"lat":20.628459152,"lon":-87.067558118,"alt":12.904}
++{"class":"TPV","tag":"ID84","time":1166760586.000,"ept":0.005,"lat":20.628459152,"lon":-87.067558118,"alt":12.904,"mode":0}
+ $GPRMC,040947,A,2037.7076,N,08704.0535,W,0.0000,0.000,221206,,*3C
+-{"class":"TPV","tag":"ID84","time":1166760587.000,"ept":0.005,"lat":20.628459346,"lon":-87.067558101,"alt":12.905}
++{"class":"TPV","tag":"ID84","time":1166760587.000,"ept":0.005,"lat":20.628459346,"lon":-87.067558101,"alt":12.905,"mode":0}
+ $GPRMC,040948,A,2037.7076,N,08704.0535,W,0.0000,0.000,221206,,*33
+-{"class":"TPV","tag":"ID84","time":1166760588.000,"ept":0.005,"lat":20.628459533,"lon":-87.067558088,"alt":12.905}
++{"class":"TPV","tag":"ID84","time":1166760588.000,"ept":0.005,"lat":20.628459533,"lon":-87.067558088,"alt":12.905,"mode":0}
+ $GPRMC,040949,A,2037.7076,N,08704.0535,W,0.0000,0.000,221206,,*32
+-{"class":"TPV","tag":"ID84","time":1166760589.000,"ept":0.005,"lat":20.628459708,"lon":-87.067558086,"alt":12.904}
++{"class":"TPV","tag":"ID84","time":1166760589.000,"ept":0.005,"lat":20.628459708,"lon":-87.067558086,"alt":12.904,"mode":0}
+ $GPRMC,040950,A,2037.7077,N,08704.0534,W,0.0000,0.000,221206,,*3A
+-{"class":"TPV","tag":"ID84","time":1166760590.000,"ept":0.005,"lat":20.628461879,"lon":-87.067556535,"alt":12.904}
++{"class":"TPV","tag":"ID84","time":1166760590.000,"ept":0.005,"lat":20.628461879,"lon":-87.067556535,"alt":12.904,"mode":0}
+ $GPRMC,040951,A,2037.7077,N,08704.0534,W,0.0000,0.000,221206,,*3B
+-{"class":"TPV","tag":"ID84","time":1166760591.000,"ept":0.005,"lat":20.628461935,"lon":-87.067556636,"alt":12.903}
++{"class":"TPV","tag":"ID84","time":1166760591.000,"ept":0.005,"lat":20.628461935,"lon":-87.067556636,"alt":12.903,"mode":0}
+ $GPRMC,040952,A,2037.7076,N,08704.0535,W,0.0000,0.000,221206,,*38
+-{"class":"TPV","tag":"ID84","time":1166760592.000,"ept":0.005,"lat":20.628459841,"lon":-87.067558434,"alt":12.902}
++{"class":"TPV","tag":"ID84","time":1166760592.000,"ept":0.005,"lat":20.628459841,"lon":-87.067558434,"alt":12.902,"mode":0}
+ $GPRMC,040953,A,2037.7059,N,08704.0550,W,0.0000,0.000,221206,,*37
+-{"class":"TPV","tag":"ID84","time":1166760593.000,"ept":0.005,"lat":20.628431397,"lon":-87.067584101,"alt":12.888}
++{"class":"TPV","tag":"ID84","time":1166760593.000,"ept":0.005,"lat":20.628431397,"lon":-87.067584101,"alt":12.888,"mode":0}
+ $GPRMC,040954,A,2037.7053,N,08704.0556,W,0.0000,0.000,221206,,*3C
+-{"class":"TPV","tag":"ID84","time":1166760594.000,"ept":0.005,"lat":20.628422135,"lon":-87.067592525,"alt":12.883}
++{"class":"TPV","tag":"ID84","time":1166760594.000,"ept":0.005,"lat":20.628422135,"lon":-87.067592525,"alt":12.883,"mode":0}
+ $GPRMC,040955,A,2037.7051,N,08704.0558,W,0.0000,0.000,221206,,*31
+-{"class":"TPV","tag":"ID84","time":1166760595.000,"ept":0.005,"lat":20.628417512,"lon":-87.067596726,"alt":12.881}
++{"class":"TPV","tag":"ID84","time":1166760595.000,"ept":0.005,"lat":20.628417512,"lon":-87.067596726,"alt":12.881,"mode":0}
+ $GPRMC,040956,A,2037.7049,N,08704.0559,W,0.0000,0.000,221206,,*3A
+-{"class":"TPV","tag":"ID84","time":1166760596.000,"ept":0.005,"lat":20.628414864,"lon":-87.067599151,"alt":12.879}
++{"class":"TPV","tag":"ID84","time":1166760596.000,"ept":0.005,"lat":20.628414864,"lon":-87.067599151,"alt":12.879,"mode":0}
+ $GPRMC,040957,A,2037.7048,N,08704.0560,W,0.0000,0.000,221206,,*30
+-{"class":"TPV","tag":"ID84","time":1166760597.000,"ept":0.005,"lat":20.628413245,"lon":-87.067600661,"alt":12.878}
++{"class":"TPV","tag":"ID84","time":1166760597.000,"ept":0.005,"lat":20.628413245,"lon":-87.067600661,"alt":12.878,"mode":0}
+ $GPRMC,040958,A,2037.7047,N,08704.0561,W,0.0000,0.000,221206,,*31
+-{"class":"TPV","tag":"ID84","time":1166760598.000,"ept":0.005,"lat":20.628412157,"lon":-87.067601693,"alt":12.878}
++{"class":"TPV","tag":"ID84","time":1166760598.000,"ept":0.005,"lat":20.628412157,"lon":-87.067601693,"alt":12.878,"mode":0}
+ $GPRMC,040959,A,2037.7047,N,08704.0561,W,0.0000,0.000,221206,,*30
+-{"class":"TPV","tag":"ID84","time":1166760599.000,"ept":0.005,"lat":20.628411442,"lon":-87.067602401,"alt":12.877}
++{"class":"TPV","tag":"ID84","time":1166760599.000,"ept":0.005,"lat":20.628411442,"lon":-87.067602401,"alt":12.877,"mode":0}
+ $GPRMC,041000,A,2037.7046,N,08704.0562,W,0.0000,0.000,221206,,*36
+-{"class":"TPV","tag":"ID84","time":1166760600.000,"ept":0.005,"lat":20.628410818,"lon":-87.067603019,"alt":12.877}
++{"class":"TPV","tag":"ID84","time":1166760600.000,"ept":0.005,"lat":20.628410818,"lon":-87.067603019,"alt":12.877,"mode":0}
+ $GPRMC,041001,A,2037.7046,N,08704.0562,W,0.0000,0.000,221206,,*37
+-{"class":"TPV","tag":"ID84","time":1166760601.000,"ept":0.005,"lat":20.628410348,"lon":-87.067603497,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760601.000,"ept":0.005,"lat":20.628410348,"lon":-87.067603497,"alt":12.876,"mode":0}
+ $GPRMC,041002,A,2037.7046,N,08704.0562,W,0.0000,0.000,221206,,*34
+-{"class":"TPV","tag":"ID84","time":1166760602.000,"ept":0.005,"lat":20.628409918,"lon":-87.067603928,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760602.000,"ept":0.005,"lat":20.628409918,"lon":-87.067603928,"alt":12.876,"mode":0}
+ $GPRMC,041003,A,2037.7046,N,08704.0563,W,0.0000,0.000,221206,,*34
+-{"class":"TPV","tag":"ID84","time":1166760603.000,"ept":0.005,"lat":20.628409633,"lon":-87.067604238,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760603.000,"ept":0.005,"lat":20.628409633,"lon":-87.067604238,"alt":12.876,"mode":0}
+ $GPRMC,041004,A,2037.7046,N,08704.0563,W,0.0000,0.000,221206,,*33
+-{"class":"TPV","tag":"ID84","time":1166760604.000,"ept":0.005,"lat":20.628409424,"lon":-87.067604483,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760604.000,"ept":0.005,"lat":20.628409424,"lon":-87.067604483,"alt":12.876,"mode":0}
+ $GPRMC,041005,A,2037.7046,N,08704.0563,W,0.0000,0.000,221206,,*32
+-{"class":"TPV","tag":"ID84","time":1166760605.000,"ept":0.005,"lat":20.628409303,"lon":-87.067604649,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760605.000,"ept":0.005,"lat":20.628409303,"lon":-87.067604649,"alt":12.876,"mode":0}
+ $GPRMC,041006,A,2037.7046,N,08704.0563,W,0.0000,0.000,221206,,*31
+-{"class":"TPV","tag":"ID84","time":1166760606.000,"ept":0.005,"lat":20.628409574,"lon":-87.067604517,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760606.000,"ept":0.005,"lat":20.628409574,"lon":-87.067604517,"alt":12.876,"mode":0}
+ $GPRMC,041007,A,2037.7046,N,08704.0562,W,0.0000,0.000,221206,,*31
+-{"class":"TPV","tag":"ID84","time":1166760607.000,"ept":0.005,"lat":20.628410134,"lon":-87.067604158,"alt":12.876}
++{"class":"TPV","tag":"ID84","time":1166760607.000,"ept":0.005,"lat":20.628410134,"lon":-87.067604158,"alt":12.876,"mode":0}
+ $GPRMC,041008,A,2037.7054,N,08704.0557,W,0.0000,0.000,221206,,*3B
+-{"class":"TPV","tag":"ID84","time":1166760608.000,"ept":0.005,"lat":20.628422923,"lon":-87.067595569,"alt":12.875}
++{"class":"TPV","tag":"ID84","time":1166760608.000,"ept":0.005,"lat":20.628422923,"lon":-87.067595569,"alt":12.875,"mode":0}
+ $GPRMC,041009,A,2037.7055,N,08704.0557,W,0.0000,0.000,221206,,*3B
+-{"class":"TPV","tag":"ID84","time":1166760609.000,"ept":0.005,"lat":20.628424397,"lon":-87.067594400,"alt":12.875}
++{"class":"TPV","tag":"ID84","time":1166760609.000,"ept":0.005,"lat":20.628424397,"lon":-87.067594400,"alt":12.875,"mode":0}
+ $GPRMC,041010,A,2037.7055,N,08704.0556,W,0.0000,0.000,221206,,*32
+-{"class":"TPV","tag":"ID84","time":1166760610.000,"ept":0.005,"lat":20.628425279,"lon":-87.067593686,"alt":12.875}
++{"class":"TPV","tag":"ID84","time":1166760610.000,"ept":0.005,"lat":20.628425279,"lon":-87.067593686,"alt":12.875,"mode":0}
+ $GPRMC,041011,A,2037.7056,N,08704.0556,W,0.0000,0.000,221206,,*30
+-{"class":"TPV","tag":"ID84","time":1166760611.000,"ept":0.005,"lat":20.628426358,"lon":-87.067593107,"alt":12.874}
++{"class":"TPV","tag":"ID84","time":1166760611.000,"ept":0.005,"lat":20.628426358,"lon":-87.067593107,"alt":12.874,"mode":0}
+ $GPRMC,041012,A,2037.7057,N,08704.0555,W,0.0000,0.000,221206,,*31
+-{"class":"TPV","tag":"ID84","time":1166760612.000,"ept":0.005,"lat":20.628427819,"lon":-87.067592123,"alt":12.874}
++{"class":"TPV","tag":"ID84","time":1166760612.000,"ept":0.005,"lat":20.628427819,"lon":-87.067592123,"alt":12.874,"mode":0}
+ $GPRMC,041013,A,2037.7058,N,08704.0555,W,0.0000,0.000,221206,,*3F
+-{"class":"TPV","tag":"ID84","time":1166760613.000,"ept":0.005,"lat":20.628429374,"lon":-87.067591015,"alt":12.874}
++{"class":"TPV","tag":"ID84","time":1166760613.000,"ept":0.005,"lat":20.628429374,"lon":-87.067591015,"alt":12.874,"mode":0}
+diff --git a/test/daemon/trimble-lassen_iq.log b/test/daemon/trimble-lassen_iq.log
+index 39d3e30fdbf838699b02d7d5fbeef7c123d8f48c..bea0d0197733ac41d45231ec7f74a1c24e0c91d0 100644
+GIT binary patch
+delta 149
+zcmccOe>Y&l|9WLEWrdK8%wmPK%$!sOAnlxAP+63jo>8Kpk*uj;WMF8ZkW{Hql98(5
+z9uVxJP*9Ygm6}`v)a3-^m82Hs7Aqtc6y#J|DHNxsg4Kada`q31^z?IA$jk$arDPVD
+o6lErrmSpDVDHP@Bmnfv=7b&Eqa+D-y<`nC3DR2CDO^uNY00FTx9smFU
+
+delta 11
+ScmcZ`aK(SZ|IO`;SJeO~?gkbB
+
+diff --git a/test/daemon/uBlox-aek-4t.log b/test/daemon/uBlox-aek-4t.log
+index da771d611c701733e70675eab32a3babe790e5e1..6d93fc465b3bfdbdff11e869b58d41075c471500 100644
+GIT binary patch
+delta 147
+zcmZoH>MWjcq+XdzSs^4NvsfW5GbdF6NIT~jR2F5XXOt*tBx@=d85kNUBvmSuWTYy%
+z2L!t)6cpuWr6!jEbvXffC8<TZ#R`c91v!;g3dO0ZV0B=Voc#kLJ^kDjGV{P<DVfD3
+mMVU#ZC7Jno3Pt((B?@WzMG7gY93_dFImLQh${P>cSpWb*P%*Xu
+
+delta 11
+ScmeAyZY-K`WU~*WtpxxeaRj*l
+
+diff --git a/test/daemon/uBlox-lea-4h.log b/test/daemon/uBlox-lea-4h.log
+index 70eb945..9c65f2c 100644
+--- a/test/daemon/uBlox-lea-4h.log
++++ b/test/daemon/uBlox-lea-4h.log
+@@ -4,6 +4,10 @@
+ # Submitted-by: "Dave Hylands" dhylands@gmail.com 
+ # Date: 10 Aug 2006
+ # Location: Surrey, British Columbia, Canada, 49.126356N 122.710015W
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPRMC,,V,,,,,,,,,,N*53
+ $GPVTG,,,,,,,,,N*30
+ $GPGGA,,,,,,0,00,99.99,,,,,,*48
+diff --git a/test/daemon/uBlox-lea-4h.log.chk b/test/daemon/uBlox-lea-4h.log.chk
+index 9c42152..afd8890 100644
+--- a/test/daemon/uBlox-lea-4h.log.chk
++++ b/test/daemon/uBlox-lea-4h.log.chk
+@@ -37,7 +37,7 @@ $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+ {"class":"TPV","tag":"GSA","mode":1}
+ $GPGSV,1,1,01,02,,,34*7D
+ $GPGLL,,,,,030744.57,V,N*4C
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPZDA,030744.57,,,,00,00*60
+ $GPRMC,030806.00,V,,,,,,,,,,N*70
+ $GPVTG,,,,,,,,,N*30
+@@ -45,7 +45,7 @@ $GPGGA,030806.00,,,,,0,00,99.99,,,,,,*6B
+ $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+ $GPGSV,1,1,02,04,,,48,02,,,33*71
+ $GPGLL,,,,,030806.00,V,N*47
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPZDA,030806.00,,,,00,00*6B
+ $GPRMC,030807.00,V,,,,,,,100806,,,N*7E
+ $GPVTG,,,,,,,,,N*30
+@@ -53,7 +53,7 @@ $GPGGA,030807.00,,,,,0,00,99.99,,,,,,*6A
+ $GPGSA,A,1,,,,,,,,,,,,,99.99,99.99,99.99*30
+ $GPGSV,1,1,02,04,,,47,02,,,33*7E
+ $GPGLL,,,,,030807.00,V,N*46
+-{"class":"TPV","tag":"GLL"}
++{"class":"TPV","tag":"GLL","mode":0}
+ $GPZDA,030807.00,10,08,2006,00,00*67
+ $GPRMC,030851.00,V,,,,,,,100806,,,N*7D
+ $GPVTG,,,,,,,,,N*30
+@@ -62,7 +62,7 @@ $GPGSA,A,1,28,04,02,,,,,,,,,,9.98,9.93,1.00*06
+ $GPGSV,1,1,03,28,28,095,33,04,30,150,46,02,07,178,32*4D
+ {"class":"SKY","tag":"GSV","vdop":1.00,"hdop":9.93,"pdop":9.98,"satellites":[{"PRN":28,"el":28,"az":95,"ss":33,"used":true},{"PRN":4,"el":30,"az":150,"ss":46,"used":true},{"PRN":2,"el":7,"az":178,"ss":32,"used":true}]}
+ $GPGLL,,,,,030851.00,V,N*45
+-{"class":"TPV","tag":"GLL","time":1155179331.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179331.000,"ept":0.005,"mode":0}
+ $GPZDA,030851.00,10,08,2006,00,00*64
+ $GPRMC,030852.00,V,,,,,,,100806,,,N*7E
+ $GPVTG,,,,,,,,,N*30
+@@ -71,7 +71,7 @@ $GPGSA,A,1,28,04,02,,,,,,,,,,9.98,9.93,1.00*06
+ $GPGSV,1,1,03,28,28,095,33,04,30,150,45,02,07,178,33*4F
+ {"class":"SKY","tag":"GSV","vdop":1.00,"hdop":9.93,"pdop":9.98,"satellites":[{"PRN":28,"el":28,"az":95,"ss":33,"used":true},{"PRN":4,"el":30,"az":150,"ss":45,"used":true},{"PRN":2,"el":7,"az":178,"ss":33,"used":true}]}
+ $GPGLL,,,,,030852.00,V,N*46
+-{"class":"TPV","tag":"GLL","time":1155179332.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179332.000,"ept":0.005,"mode":0}
+ $GPZDA,030852.00,10,08,2006,00,00*67
+ $GPRMC,030853.00,V,,,,,,,100806,,,N*7F
+ $GPVTG,,,,,,,,,N*30
+@@ -80,7 +80,7 @@ $GPGSA,A,1,28,04,02,,,,,,,,,,9.99,9.94,1.00*00
+ $GPGSV,1,1,03,28,28,095,33,04,30,150,45,02,07,178,32*4E
+ {"class":"SKY","tag":"GSV","vdop":1.00,"hdop":9.94,"pdop":9.99,"satellites":[{"PRN":28,"el":28,"az":95,"ss":33,"used":true},{"PRN":4,"el":30,"az":150,"ss":45,"used":true},{"PRN":2,"el":7,"az":178,"ss":32,"used":true}]}
+ $GPGLL,,,,,030853.00,V,N*47
+-{"class":"TPV","tag":"GLL","time":1155179333.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179333.000,"ept":0.005,"mode":0}
+ $GPZDA,030853.00,10,08,2006,00,00*66
+ $GPRMC,030857.00,V,,,,,,,100806,,,N*7B
+ $GPVTG,,,,,,,,,N*30
+@@ -89,7 +89,7 @@ $GPGSA,A,1,28,04,02,,,,,,,,,,10.01,9.96,1.00*3B
+ $GPGSV,1,1,03,28,28,095,33,04,30,150,45,02,07,178,32*4E
+ {"class":"SKY","tag":"GSV","vdop":1.00,"hdop":9.96,"pdop":10.01,"satellites":[{"PRN":28,"el":28,"az":95,"ss":33,"used":true},{"PRN":4,"el":30,"az":150,"ss":45,"used":true},{"PRN":2,"el":7,"az":178,"ss":32,"used":true}]}
+ $GPGLL,,,,,030857.00,V,N*43
+-{"class":"TPV","tag":"GLL","time":1155179337.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179337.000,"ept":0.005,"mode":0}
+ $GPZDA,030857.00,10,08,2006,00,00*62
+ $GPRMC,030858.00,A,4907.85331,N,12243.19743,W,1.049,323.14,100806,,,A*76
+ $GPVTG,323.14,T,,M,1.049,N,1.943,K,A*39
+@@ -135,7 +135,7 @@ $GPGSV,2,1,06,28,28,095,26,17,64,064,27,09,55,289,37,04,31,150,43*7C
+ $GPGSV,2,2,06,02,07,178,32,24,40,121,35*73
+ {"class":"SKY","tag":"GSV","vdop":4.05,"hdop":2.22,"pdop":4.62,"satellites":[{"PRN":28,"el":28,"az":95,"ss":26,"used":true},{"PRN":17,"el":64,"az":64,"ss":27,"used":true},{"PRN":9,"el":55,"az":289,"ss":37,"used":true},{"PRN":4,"el":31,"az":150,"ss":43,"used":true},{"PRN":2,"el":7,"az":178,"ss":32,"used":true},{"PRN":24,"el":40,"az":121,"ss":35,"used":false}]}
+ $GPGLL,,,,,031007.00,V,N*4F
+-{"class":"TPV","tag":"GLL","time":1155179407.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179407.000,"ept":0.005,"mode":0}
+ $GPZDA,031007.00,10,08,2006,00,00*6E
+ $GPRMC,031008.00,A,4907.58133,N,12242.60088,W,2.550,220.86,100806,,,A*72
+ $GPVTG,220.86,T,,M,2.550,N,4.724,K,A*34
+@@ -404,7 +404,7 @@ $GPGSV,3,2,10,02,10,178,16,24,42,117,20,05,23,288,,29,06,218,17*70
+ $GPGSV,3,3,10,26,10,222,,11,03,035,17*7C
+ {"class":"SKY","tag":"GSV","vdop":99.99,"hdop":99.99,"pdop":99.99,"satellites":[{"PRN":28,"el":25,"az":97,"ss":0,"used":false},{"PRN":17,"el":61,"az":62,"ss":19,"used":false},{"PRN":9,"el":57,"az":284,"ss":21,"used":false},{"PRN":4,"el":34,"az":148,"ss":13,"used":false},{"PRN":2,"el":10,"az":178,"ss":16,"used":false},{"PRN":24,"el":42,"az":117,"ss":20,"used":false},{"PRN":5,"el":23,"az":288,"ss":0,"used":false},{"PRN":29,"el":6,"az":218,"ss":17,"used":false},{"PRN":26,"el":10,"az":222,"ss":0,"used":false},{"PRN":11,"el":3,"az":35,"ss":17,"used":false}]}
+ $GPGLL,,,,,031659.00,V,N*42
+-{"class":"TPV","tag":"GLL","time":1155179819.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179819.000,"ept":0.005,"mode":0}
+ $GPZDA,031659.00,10,08,2006,00,00*63
+ $GPRMC,031700.00,V,,,,,,,100806,,,N*77
+ $GPVTG,,,,,,,,,N*30
+@@ -415,7 +415,7 @@ $GPGSV,3,2,10,02,10,178,16,24,42,117,20,05,23,288,,29,06,218,17*70
+ $GPGSV,3,3,10,26,10,222,,11,03,035,14*7F
+ {"class":"SKY","tag":"GSV","vdop":99.99,"hdop":99.99,"pdop":99.99,"satellites":[{"PRN":28,"el":25,"az":97,"ss":0,"used":false},{"PRN":17,"el":61,"az":62,"ss":19,"used":false},{"PRN":9,"el":57,"az":284,"ss":19,"used":false},{"PRN":4,"el":34,"az":148,"ss":13,"used":false},{"PRN":2,"el":10,"az":178,"ss":16,"used":false},{"PRN":24,"el":42,"az":117,"ss":20,"used":false},{"PRN":5,"el":23,"az":288,"ss":0,"used":false},{"PRN":29,"el":6,"az":218,"ss":17,"used":false},{"PRN":26,"el":10,"az":222,"ss":0,"used":false},{"PRN":11,"el":3,"az":35,"ss":14,"used":false}]}
+ $GPGLL,,,,,031700.00,V,N*4F
+-{"class":"TPV","tag":"GLL","time":1155179820.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179820.000,"ept":0.005,"mode":0}
+ $GPZDA,031700.00,10,08,2006,00,00*6E
+ $GPRMC,031701.00,V,,,,,,,100806,,,N*76
+ $GPVTG,,,,,,,,,N*30
+@@ -426,7 +426,7 @@ $GPGSV,3,2,10,02,10,178,16,24,42,117,20,05,23,288,,29,06,218,16*71
+ $GPGSV,3,3,10,26,10,222,,11,03,035,13*78
+ {"class":"SKY","tag":"GSV","vdop":99.99,"hdop":99.99,"pdop":99.99,"satellites":[{"PRN":28,"el":25,"az":97,"ss":0,"used":false},{"PRN":17,"el":61,"az":62,"ss":16,"used":false},{"PRN":9,"el":57,"az":284,"ss":14,"used":false},{"PRN":4,"el":34,"az":148,"ss":15,"used":false},{"PRN":2,"el":10,"az":178,"ss":16,"used":false},{"PRN":24,"el":42,"az":117,"ss":20,"used":false},{"PRN":5,"el":23,"az":288,"ss":0,"used":false},{"PRN":29,"el":6,"az":218,"ss":16,"used":false},{"PRN":26,"el":10,"az":222,"ss":0,"used":false},{"PRN":11,"el":3,"az":35,"ss":13,"used":false}]}
+ $GPGLL,,,,,031701.00,V,N*4E
+-{"class":"TPV","tag":"GLL","time":1155179821.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155179821.000,"ept":0.005,"mode":0}
+ $GPZDA,031701.00,10,08,2006,00,00*6F
+ $GPRMC,032534.00,V,,,,,,,100806,,,N*71
+ $GPVTG,,,,,,,,,N*30
+@@ -437,7 +437,7 @@ $GPGSV,3,2,11,02,14,177,,04,37,146,,28,22,100,,26,07,220,*75
+ $GPGSV,3,3,11,29,03,216,,11,01,034,,20,05,064,15*43
+ {"class":"SKY","tag":"GSV","vdop":99.99,"hdop":99.99,"pdop":99.99,"satellites":[{"PRN":5,"el":26,"az":289,"ss":0,"used":false},{"PRN":17,"el":58,"az":61,"ss":0,"used":false},{"PRN":9,"el":58,"az":277,"ss":0,"used":false},{"PRN":24,"el":44,"az":112,"ss":0,"used":false},{"PRN":2,"el":14,"az":177,"ss":0,"used":false},{"PRN":4,"el":37,"az":146,"ss":0,"used":false},{"PRN":28,"el":22,"az":100,"ss":0,"used":false},{"PRN":26,"el":7,"az":220,"ss":0,"used":false},{"PRN":29,"el":3,"az":216,"ss":0,"used":false},{"PRN":11,"el":1,"az":34,"ss":0,"used":false},{"PRN":20,"el":5,"az":64,"ss":15,"used":false}]}
+ $GPGLL,,,,,032534.00,V,N*49
+-{"class":"TPV","tag":"GLL","time":1155180334.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155180334.000,"ept":0.005,"mode":0}
+ $GPZDA,032534.00,10,08,2006,00,00*68
+ $GPRMC,032535.00,V,,,,,,,100806,,,N*70
+ $GPVTG,,,,,,,,,N*30
+@@ -448,5 +448,5 @@ $GPGSV,3,2,11,02,14,177,,04,37,146,,28,22,100,,26,07,220,*75
+ $GPGSV,3,3,11,29,03,216,,11,01,034,,20,05,064,*47
+ {"class":"SKY","tag":"GSV","vdop":99.99,"hdop":99.99,"pdop":99.99,"satellites":[{"PRN":5,"el":26,"az":289,"ss":0,"used":false},{"PRN":17,"el":58,"az":61,"ss":0,"used":false},{"PRN":9,"el":58,"az":277,"ss":0,"used":false},{"PRN":24,"el":44,"az":112,"ss":0,"used":false},{"PRN":2,"el":14,"az":177,"ss":0,"used":false},{"PRN":4,"el":37,"az":146,"ss":0,"used":false},{"PRN":28,"el":22,"az":100,"ss":0,"used":false},{"PRN":26,"el":7,"az":220,"ss":0,"used":false},{"PRN":29,"el":3,"az":216,"ss":0,"used":false},{"PRN":11,"el":1,"az":34,"ss":0,"used":false},{"PRN":20,"el":5,"az":64,"ss":0,"used":false}]}
+ $GPGLL,,,,,032535.00,V,N*48
+-{"class":"TPV","tag":"GLL","time":1155180335.000,"ept":0.005}
++{"class":"TPV","tag":"GLL","time":1155180335.000,"ept":0.005,"mode":0}
+ $GPZDA,032535.00,10,08,2006,00,00*69
+diff --git a/test/daemon/uBlox-lea-4s.log b/test/daemon/uBlox-lea-4s.log
+index a9f93b5..634e43a 100644
+--- a/test/daemon/uBlox-lea-4s.log
++++ b/test/daemon/uBlox-lea-4s.log
+@@ -3,6 +3,10 @@
+ # Submitted-by: "Ali Utku Selen" <selenau@kentkart.com.tr>
+ # Date: 11 Dec 2006
+ # Location: ƒ∞zmir, TR, 38N27E
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ $GPZDA,175503.00,11,12,2006,00,00*64
+ $GPRMC,175504.00,A,3825.60966,N,02708.53787,E,0.142,113.02,111206,,,A*6F
+ $GPVTG,113.02,T,,M,0.142,N,0.263,K,A*3C
+diff --git a/test/daemon/uBlox-lea-4t.log b/test/daemon/uBlox-lea-4t.log
+index 6dffdf9345d0556f9f9bb77c7304c91d9cd40e40..0c42dbaf2c87248dceced05b001827d3b5cffb02 100644
+GIT binary patch
+delta 149
+zcmX^Am+{6w#(HHgWrdK8%wmPK%$!sOAnlxAP+63jo>8Kpk*uj;WMF8ZkW{Hql98(5
+z9uVxJP*9Ygm6}`v)a3-^m82Hs7Aqtc6y#J|DHNxsg4Kada`q31^z?IA$jk$arDPVD
+o6lErrmSpDVDHP@Bmnfv=7b&Eqa+V}!<`nC3DRXT&U&qJ=0NsW%KmY&$
+
+delta 10
+RcmccdkMaCp#*H24>i{E!1}gvn
+
+diff --git a/test/daemon/uBlox-lea-4t.log.chk b/test/daemon/uBlox-lea-4t.log.chk
+index f749668..ea45fcc 100644
+--- a/test/daemon/uBlox-lea-4t.log.chk
++++ b/test/daemon/uBlox-lea-4t.log.chk
+@@ -1,203 +1,203 @@
+-$GPGGA,203543,5333.7954,N,11326.3727,W,1,08,,655.33,M,-19.872,M,,*64
+-$GPRMC,203543,A,5333.7954,N,11326.3727,W,0.0000,0.000,280109,,*31
+-$GPGSA,A,3,00,00,00,00,00,00,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0*32
+-{"class":"TPV","tag":"0x0106","time":1233174943.001,"ept":0.005,"lat":53.563256268,"lon":-113.439544853,"alt":655.331,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,11,21,73,276,33,24,56,094,46,15,40,113,30,18,40,217,43*7B
+-$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,33,10,21,056,38*70
+-$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,25*4E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.40,"hdop":1.15,"gdop":2.80,"pdop":2.42,"satellites":[{"PRN":21,"el":73,"az":276,"ss":33,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":30,"used":true},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":10,"el":21,"az":56,"ss":38,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203544,5333.7952,N,11326.3727,W,1,08,1.15,655.35,M,-19.872,M,,*78
+-$GPRMC,203544,A,5333.7952,N,11326.3727,W,0.0000,0.000,280109,,*30
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,,2.4,1.1,2.1*37
+-{"class":"TPV","tag":"0x0106","time":1233174944.001,"ept":0.005,"lat":53.563254093,"lon":-113.439545157,"alt":655.348,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,11,21,73,276,32,24,56,094,46,15,40,113,30,18,40,217,43*7A
+-$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,33,10,21,056,39*71
+-$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,26*4D
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.40,"hdop":1.15,"gdop":2.80,"pdop":2.42,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":30,"used":true},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":26,"used":false}]}
+-$GPGGA,203545,5333.7951,N,11326.3728,W,1,08,1.15,655.25,M,-19.872,M,,*74
+-$GPRMC,203545,A,5333.7951,N,11326.3728,W,0.0000,0.000,280109,,*3D
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,,2.4,1.1,2.1*37
+-{"class":"TPV","tag":"0x0106","time":1233174945.001,"ept":0.005,"lat":53.563252365,"lon":-113.439546320,"alt":655.254,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,11,21,73,276,32,24,56,094,46,15,40,113,31,18,40,217,43*7B
+-$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,32,10,21,056,39*70
+-$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,25*4E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.40,"hdop":1.15,"gdop":2.80,"pdop":2.42,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":31,"used":true},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203546,5333.7950,N,11326.3728,W,1,07,1.15,655.18,M,-19.872,M,,*77
+-$GPRMC,203546,A,5333.7950,N,11326.3728,W,0.0000,0.000,280109,,*3F
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.4,1.1,2.1*37
+-{"class":"TPV","tag":"0x0106","time":1233174946.001,"ept":0.005,"lat":53.563250640,"lon":-113.439547224,"alt":655.184,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,11,21,73,276,33,24,56,094,46,15,40,113,30,18,40,217,43*7B
+-$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,32,10,21,056,39*70
+-$GPGSV,3,3,11,22,09,225,30,27,06,055,24,07,05,000,25*46
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":33,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":30,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203547,5333.7949,N,11326.3729,W,1,07,1.21,655.14,M,-19.872,M,,*74
+-$GPRMC,203547,A,5333.7949,N,11326.3729,W,0.0000,0.000,280109,,*37
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174947.001,"ept":0.005,"lat":53.563249046,"lon":-113.439548267,"alt":655.141,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,11,21,73,276,33,24,56,094,46,15,40,113,29,18,40,217,43*73
+-$GPGSV,3,2,11,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*77
+-$GPGSV,3,3,11,22,09,225,30,27,06,055,25,07,05,000,25*47
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":33,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":29,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203548,5333.7948,N,11326.3730,W,1,07,1.21,655.09,M,-19.872,M,,*7E
+-$GPRMC,203548,A,5333.7948,N,11326.3730,W,0.0000,0.000,280109,,*31
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174948.001,"ept":0.005,"lat":53.563247427,"lon":-113.439549171,"alt":655.088,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,11,21,73,276,32,24,56,094,46,15,40,113,29,18,40,217,43*72
+-$GPGSV,3,2,11,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*77
+-$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,25*4E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":29,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203549,5333.7947,N,11326.3730,W,1,07,1.21,655.02,M,-19.872,M,,*7B
+-$GPRMC,203549,A,5333.7947,N,11326.3730,W,0.0000,0.000,280109,,*3F
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174949.001,"ept":0.005,"lat":53.563245784,"lon":-113.439549937,"alt":655.024,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,32,24,56,094,46,15,40,113,26,18,40,217,43*7E
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*74
+-$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,25,07,05,000,25*74
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":26,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203550,5333.7947,N,11326.3731,W,1,07,1.21,654.88,M,-19.872,M,,*71
+-$GPRMC,203550,A,5333.7947,N,11326.3731,W,0.0000,0.000,280109,,*36
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174950.001,"ept":0.005,"lat":53.563244339,"lon":-113.439551123,"alt":654.882,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,31,24,56,094,46,15,40,113,23,18,40,217,43*78
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,31,10,21,056,39*77
+-$GPGSV,3,3,12,03,10,317,24,22,09,225,30,27,06,055,25,07,05,000,26*76
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":23,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":24,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":26,"used":false}]}
+-$GPGGA,203551,5333.7946,N,11326.3731,W,1,07,1.21,654.80,M,-19.872,M,,*79
+-$GPRMC,203551,A,5333.7946,N,11326.3731,W,0.0000,0.000,280109,,*36
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174951.001,"ept":0.005,"lat":53.563242857,"lon":-113.439551871,"alt":654.805,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,31,24,56,094,46,15,40,113,25,18,40,217,43*7E
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*74
+-$GPGSV,3,3,12,03,10,317,24,22,09,225,30,27,06,055,25,07,05,000,26*76
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":24,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":26,"used":false}]}
+-$GPGGA,203552,5333.7945,N,11326.3731,W,1,07,1.21,654.84,M,-19.872,M,,*7D
+-$GPRMC,203552,A,5333.7945,N,11326.3731,W,0.0000,0.000,280109,,*36
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174952.001,"ept":0.005,"lat":53.563241243,"lon":-113.439552276,"alt":654.838,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,31,24,56,094,45,15,40,113,25,18,40,217,43*7D
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*74
+-$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,25,07,05,000,25*74
+-{"class":"SKY","tag":"0x0130","vdop":2.14,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203553,5333.7944,N,11326.3731,W,1,07,1.21,654.89,M,-19.872,M,,*70
+-$GPRMC,203553,A,5333.7944,N,11326.3731,W,0.0000,0.000,280109,,*36
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174953.001,"ept":0.005,"lat":53.563239698,"lon":-113.439552484,"alt":654.890,"epv":49.220,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,31,24,56,094,45,15,40,113,25,18,40,217,43*7D
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,40*7A
+-$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,24,07,05,000,25*75
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203554,5333.7943,N,11326.3732,W,1,07,1.21,654.98,M,-19.872,M,,*73
+-$GPRMC,203554,A,5333.7943,N,11326.3732,W,0.0000,0.000,280109,,*35
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174954.001,"ept":0.005,"lat":53.563238309,"lon":-113.439552968,"alt":654.979,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,32,24,56,094,45,15,40,113,24,18,40,217,43*7F
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,34,16,28,280,32,10,21,056,39*73
+-$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,24,07,05,000,25*75
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203555,5333.7942,N,11326.3732,W,1,07,1.21,655.09,M,-19.872,M,,*7A
+-$GPRMC,203555,A,5333.7942,N,11326.3732,W,0.0000,0.000,280109,,*35
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174955.001,"ept":0.005,"lat":53.563236952,"lon":-113.439553055,"alt":655.091,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,3,1,12,21,73,276,32,24,56,094,45,15,40,113,23,18,40,217,43*78
+-$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,33,10,21,056,39*75
+-$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,27,07,05,000,25*76
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":23,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203556,5333.7941,N,11326.3732,W,1,07,1.21,655.13,M,-19.872,M,,*71
+-$GPRMC,203556,A,5333.7941,N,11326.3732,W,0.0000,0.000,280109,,*35
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174956.001,"ept":0.005,"lat":53.563235688,"lon":-113.439553304,"alt":655.133,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,13,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,43*7A
+-$GPGSV,4,2,13,26,40,087,45,29,40,164,33,16,28,280,32,06,21,311,21*7C
+-$GPGSV,4,3,13,10,21,056,40,03,10,317,27,22,09,225,31,27,06,055,27*73
+-$GPGSV,4,4,13,07,05,000,25*4E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":6,"el":21,"az":311,"ss":21,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":27,"used":false},{"PRN":22,"el":9,"az":225,"ss":31,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
+-$GPGGA,203557,5333.7941,N,11326.3732,W,1,07,1.21,655.18,M,-19.872,M,,*7B
+-$GPRMC,203557,A,5333.7941,N,11326.3732,W,0.0000,0.000,280109,,*34
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174957.001,"ept":0.005,"lat":53.563234506,"lon":-113.439553414,"alt":655.180,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
+-$GPGSV,4,2,14,26,40,087,45,29,40,164,33,16,28,280,33,06,21,311,23*78
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,27,22,09,225,31,08,06,036,18*70
+-$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":6,"el":21,"az":311,"ss":23,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":27,"used":false},{"PRN":22,"el":9,"az":225,"ss":31,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
+-$GPGGA,203558,5333.7940,N,11326.3732,W,1,07,1.21,655.22,M,-19.872,M,,*7C
+-$GPRMC,203558,A,5333.7940,N,11326.3732,W,0.0000,0.000,280109,,*3A
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174958.001,"ept":0.005,"lat":53.563233539,"lon":-113.439553506,"alt":655.222,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
+-$GPGSV,4,2,14,26,40,087,45,29,40,164,33,16,28,280,33,06,21,311,25*7E
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,26,22,09,225,31,08,06,036,18*71
+-$GPGSV,4,4,14,27,06,055,26,07,05,000,24*7F
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":6,"el":21,"az":311,"ss":25,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":26,"used":false},{"PRN":22,"el":9,"az":225,"ss":31,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":26,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
+-$GPGGA,203559,5333.7940,N,11326.3733,W,1,07,1.21,655.22,M,-19.872,M,,*7C
+-$GPRMC,203559,A,5333.7940,N,11326.3733,W,0.0000,0.000,280109,,*3A
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174959.001,"ept":0.005,"lat":53.563232686,"lon":-113.439554175,"alt":655.218,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,34,16,28,280,31,06,21,311,25*7A
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,15*7E
+-$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":25,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":15,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
+-$GPGGA,203600,5333.7939,N,11326.3733,W,1,07,1.21,655.26,M,-19.872,M,,*79
+-$GPRMC,203600,A,5333.7939,N,11326.3733,W,0.0000,0.000,280109,,*3B
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174960.001,"ept":0.005,"lat":53.563232220,"lon":-113.439554904,"alt":655.256,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,23,18,40,217,44*7E
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,34,16,28,280,31,06,21,311,25*7A
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":23,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":25,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
+-$GPGGA,203601,5333.7939,N,11326.3733,W,1,06,1.21,655.20,M,-19.872,M,,*7F
+-$GPRMC,203601,A,5333.7939,N,11326.3733,W,0.0000,0.000,280109,,*3A
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174961.001,"ept":0.005,"lat":53.563231439,"lon":-113.439555338,"alt":655.196,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,24,18,40,217,44*79
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,34,16,28,280,31,06,21,311,28*77
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
+-{"class":"SKY","tag":"0x0130","vdop":3.55,"tdop":2.03,"hdop":1.47,"gdop":4.34,"pdop":3.84,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":false},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":28,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
+-$GPGGA,203602,5333.7939,N,11326.3734,W,1,07,1.47,655.19,M,-19.872,M,,*70
+-$GPRMC,203602,A,5333.7939,N,11326.3734,W,0.0000,0.000,280109,,*3E
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,3.8,1.5,3.5*3B
+-{"class":"TPV","tag":"0x0106","time":1233174962.001,"ept":0.005,"lat":53.563230854,"lon":-113.439555989,"alt":655.194,"epv":81.650,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,31,06,21,311,27*7F
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,28,07,05,000,21*74
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":21,"used":false}]}
+-$GPGGA,203603,5333.7938,N,11326.3734,W,1,07,1.21,655.18,M,-19.872,M,,*71
+-$GPRMC,203603,A,5333.7938,N,11326.3734,W,0.0000,0.000,280109,,*3E
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174963.001,"ept":0.005,"lat":53.563230468,"lon":-113.439556819,"alt":655.176,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,25,18,40,217,44*7B
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,30,06,21,311,27*7E
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,28,07,05,000,21*74
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":30,"used":true},{"PRN":6,"el":21,"az":311,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":21,"used":false}]}
+-$GPGGA,203604,5333.7938,N,11326.3735,W,1,07,1.21,655.23,M,-19.872,M,,*7F
+-$GPRMC,203604,A,5333.7938,N,11326.3735,W,0.0000,0.000,280109,,*38
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174964.001,"ept":0.005,"lat":53.563230108,"lon":-113.439557548,"alt":655.231,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,27,18,40,217,44*7A
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,32,16,28,280,31,06,21,311,27*7E
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,28,07,05,000,22*77
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":27,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":32,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":22,"used":false}]}
+-$GPGGA,203605,5333.7938,N,11326.3735,W,1,07,1.21,655.29,M,-19.872,M,,*74
+-$GPRMC,203605,A,5333.7938,N,11326.3735,W,0.0000,0.000,280109,,*39
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174965.001,"ept":0.005,"lat":53.563229839,"lon":-113.439558476,"alt":655.290,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,27,18,40,217,44*7A
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,30,06,21,311,28*71
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,28,07,05,000,23*76
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":27,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":30,"used":true},{"PRN":6,"el":21,"az":311,"ss":28,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":23,"used":false}]}
+-$GPGGA,203606,5333.7938,N,11326.3735,W,1,07,1.21,655.31,M,-19.872,M,,*7E
+-$GPRMC,203606,A,5333.7938,N,11326.3735,W,0.0000,0.000,280109,,*3A
+-$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
+-{"class":"TPV","tag":"0x0106","time":1233174966.001,"ept":0.005,"lat":53.563229443,"lon":-113.439558988,"alt":655.310,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
+-$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,27,18,40,217,44*79
+-$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,31,06,22,310,27*7D
+-$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
+-$GPGSV,4,4,14,27,06,055,28,07,05,000,23*76
+-{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":27,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":22,"az":310,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":23,"used":false}]}
++$GPGGA,203543,5333.7954,N,11326.3727,W,1,08,,655.33,M,-19.872,M,,*64
++$GPRMC,203543,A,5333.7954,N,11326.3727,W,0.0000,0.000,280109,,*31
++$GPGSA,A,3,00,00,00,00,00,00,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.0,0.0*32
++{"class":"TPV","tag":"0x0106","time":1233174943.001,"ept":0.005,"lat":53.563256268,"lon":-113.439544853,"alt":655.331,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,11,21,73,276,33,24,56,094,46,15,40,113,30,18,40,217,43*7B
++$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,33,10,21,056,38*70
++$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,25*4E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.40,"hdop":1.15,"gdop":2.80,"pdop":2.42,"satellites":[{"PRN":21,"el":73,"az":276,"ss":33,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":30,"used":true},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":10,"el":21,"az":56,"ss":38,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203544,5333.7952,N,11326.3727,W,1,08,1.15,655.35,M,-19.872,M,,*78
++$GPRMC,203544,A,5333.7952,N,11326.3727,W,0.0000,0.000,280109,,*30
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,,2.4,1.1,2.1*37
++{"class":"TPV","tag":"0x0106","time":1233174944.001,"ept":0.005,"lat":53.563254093,"lon":-113.439545157,"alt":655.348,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,11,21,73,276,32,24,56,094,46,15,40,113,30,18,40,217,43*7A
++$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,33,10,21,056,39*71
++$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,26*4D
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.40,"hdop":1.15,"gdop":2.80,"pdop":2.42,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":30,"used":true},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":26,"used":false}]}
++$GPGGA,203545,5333.7951,N,11326.3728,W,1,08,1.15,655.25,M,-19.872,M,,*74
++$GPRMC,203545,A,5333.7951,N,11326.3728,W,0.0000,0.000,280109,,*3D
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,,2.4,1.1,2.1*37
++{"class":"TPV","tag":"0x0106","time":1233174945.001,"ept":0.005,"lat":53.563252365,"lon":-113.439546320,"alt":655.254,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,11,21,73,276,32,24,56,094,46,15,40,113,31,18,40,217,43*7B
++$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,32,10,21,056,39*70
++$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,25*4E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.40,"hdop":1.15,"gdop":2.80,"pdop":2.42,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":31,"used":true},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203546,5333.7950,N,11326.3728,W,1,07,1.15,655.18,M,-19.872,M,,*77
++$GPRMC,203546,A,5333.7950,N,11326.3728,W,0.0000,0.000,280109,,*3F
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.4,1.1,2.1*37
++{"class":"TPV","tag":"0x0106","time":1233174946.001,"ept":0.005,"lat":53.563250640,"lon":-113.439547224,"alt":655.184,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,11,21,73,276,33,24,56,094,46,15,40,113,30,18,40,217,43*7B
++$GPGSV,3,2,11,26,40,087,45,29,40,164,34,16,28,280,32,10,21,056,39*70
++$GPGSV,3,3,11,22,09,225,30,27,06,055,24,07,05,000,25*46
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":33,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":30,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203547,5333.7949,N,11326.3729,W,1,07,1.21,655.14,M,-19.872,M,,*74
++$GPRMC,203547,A,5333.7949,N,11326.3729,W,0.0000,0.000,280109,,*37
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174947.001,"ept":0.005,"lat":53.563249046,"lon":-113.439548267,"alt":655.141,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,11,21,73,276,33,24,56,094,46,15,40,113,29,18,40,217,43*73
++$GPGSV,3,2,11,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*77
++$GPGSV,3,3,11,22,09,225,30,27,06,055,25,07,05,000,25*47
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":33,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":29,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203548,5333.7948,N,11326.3730,W,1,07,1.21,655.09,M,-19.872,M,,*7E
++$GPRMC,203548,A,5333.7948,N,11326.3730,W,0.0000,0.000,280109,,*31
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174948.001,"ept":0.005,"lat":53.563247427,"lon":-113.439549171,"alt":655.088,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,11,21,73,276,32,24,56,094,46,15,40,113,29,18,40,217,43*72
++$GPGSV,3,2,11,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*77
++$GPGSV,3,3,11,22,09,225,29,27,06,055,24,07,05,000,25*4E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":29,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":22,"el":9,"az":225,"ss":29,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203549,5333.7947,N,11326.3730,W,1,07,1.21,655.02,M,-19.872,M,,*7B
++$GPRMC,203549,A,5333.7947,N,11326.3730,W,0.0000,0.000,280109,,*3F
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174949.001,"ept":0.005,"lat":53.563245784,"lon":-113.439549937,"alt":655.024,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,32,24,56,094,46,15,40,113,26,18,40,217,43*7E
++$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*74
++$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,25,07,05,000,25*74
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":26,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203550,5333.7947,N,11326.3731,W,1,07,1.21,654.88,M,-19.872,M,,*71
++$GPRMC,203550,A,5333.7947,N,11326.3731,W,0.0000,0.000,280109,,*36
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174950.001,"ept":0.005,"lat":53.563244339,"lon":-113.439551123,"alt":654.882,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,31,24,56,094,46,15,40,113,23,18,40,217,43*78
++$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,31,10,21,056,39*77
++$GPGSV,3,3,12,03,10,317,24,22,09,225,30,27,06,055,25,07,05,000,26*76
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":23,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":24,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":26,"used":false}]}
++$GPGGA,203551,5333.7946,N,11326.3731,W,1,07,1.21,654.80,M,-19.872,M,,*79
++$GPRMC,203551,A,5333.7946,N,11326.3731,W,0.0000,0.000,280109,,*36
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174951.001,"ept":0.005,"lat":53.563242857,"lon":-113.439551871,"alt":654.805,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,31,24,56,094,46,15,40,113,25,18,40,217,43*7E
++$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*74
++$GPGSV,3,3,12,03,10,317,24,22,09,225,30,27,06,055,25,07,05,000,26*76
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":46,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":24,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":26,"used":false}]}
++$GPGGA,203552,5333.7945,N,11326.3731,W,1,07,1.21,654.84,M,-19.872,M,,*7D
++$GPRMC,203552,A,5333.7945,N,11326.3731,W,0.0000,0.000,280109,,*36
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174952.001,"ept":0.005,"lat":53.563241243,"lon":-113.439552276,"alt":654.838,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,31,24,56,094,45,15,40,113,25,18,40,217,43*7D
++$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,39*74
++$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,25,07,05,000,25*74
++{"class":"SKY","tag":"0x0130","vdop":2.14,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":25,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203553,5333.7944,N,11326.3731,W,1,07,1.21,654.89,M,-19.872,M,,*70
++$GPRMC,203553,A,5333.7944,N,11326.3731,W,0.0000,0.000,280109,,*36
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174953.001,"ept":0.005,"lat":53.563239698,"lon":-113.439552484,"alt":654.890,"epv":49.220,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,31,24,56,094,45,15,40,113,25,18,40,217,43*7D
++$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,32,10,21,056,40*7A
++$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,24,07,05,000,25*75
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203554,5333.7943,N,11326.3732,W,1,07,1.21,654.98,M,-19.872,M,,*73
++$GPRMC,203554,A,5333.7943,N,11326.3732,W,0.0000,0.000,280109,,*35
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174954.001,"ept":0.005,"lat":53.563238309,"lon":-113.439552968,"alt":654.979,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,32,24,56,094,45,15,40,113,24,18,40,217,43*7F
++$GPGSV,3,2,12,26,40,087,45,29,40,164,34,16,28,280,32,10,21,056,39*73
++$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,24,07,05,000,25*75
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":24,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203555,5333.7942,N,11326.3732,W,1,07,1.21,655.09,M,-19.872,M,,*7A
++$GPRMC,203555,A,5333.7942,N,11326.3732,W,0.0000,0.000,280109,,*35
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174955.001,"ept":0.005,"lat":53.563236952,"lon":-113.439553055,"alt":655.091,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,3,1,12,21,73,276,32,24,56,094,45,15,40,113,23,18,40,217,43*78
++$GPGSV,3,2,12,26,40,087,45,29,40,164,33,16,28,280,33,10,21,056,39*75
++$GPGSV,3,3,12,03,10,317,25,22,09,225,30,27,06,055,27,07,05,000,25*76
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":23,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":10,"el":21,"az":56,"ss":39,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203556,5333.7941,N,11326.3732,W,1,07,1.21,655.13,M,-19.872,M,,*71
++$GPRMC,203556,A,5333.7941,N,11326.3732,W,0.0000,0.000,280109,,*35
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174956.001,"ept":0.005,"lat":53.563235688,"lon":-113.439553304,"alt":655.133,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,13,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,43*7A
++$GPGSV,4,2,13,26,40,087,45,29,40,164,33,16,28,280,32,06,21,311,21*7C
++$GPGSV,4,3,13,10,21,056,40,03,10,317,27,22,09,225,31,27,06,055,27*73
++$GPGSV,4,4,13,07,05,000,25*4E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":43,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":32,"used":true},{"PRN":6,"el":21,"az":311,"ss":21,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":27,"used":false},{"PRN":22,"el":9,"az":225,"ss":31,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":25,"used":false}]}
++$GPGGA,203557,5333.7941,N,11326.3732,W,1,07,1.21,655.18,M,-19.872,M,,*7B
++$GPRMC,203557,A,5333.7941,N,11326.3732,W,0.0000,0.000,280109,,*34
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174957.001,"ept":0.005,"lat":53.563234506,"lon":-113.439553414,"alt":655.180,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
++$GPGSV,4,2,14,26,40,087,45,29,40,164,33,16,28,280,33,06,21,311,23*78
++$GPGSV,4,3,14,10,21,056,40,03,10,317,27,22,09,225,31,08,06,036,18*70
++$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":6,"el":21,"az":311,"ss":23,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":27,"used":false},{"PRN":22,"el":9,"az":225,"ss":31,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
++$GPGGA,203558,5333.7940,N,11326.3732,W,1,07,1.21,655.22,M,-19.872,M,,*7C
++$GPRMC,203558,A,5333.7940,N,11326.3732,W,0.0000,0.000,280109,,*3A
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174958.001,"ept":0.005,"lat":53.563233539,"lon":-113.439553506,"alt":655.222,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
++$GPGSV,4,2,14,26,40,087,45,29,40,164,33,16,28,280,33,06,21,311,25*7E
++$GPGSV,4,3,14,10,21,056,40,03,10,317,26,22,09,225,31,08,06,036,18*71
++$GPGSV,4,4,14,27,06,055,26,07,05,000,24*7F
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":45,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":33,"used":true},{"PRN":6,"el":21,"az":311,"ss":25,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":26,"used":false},{"PRN":22,"el":9,"az":225,"ss":31,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":26,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
++$GPGGA,203559,5333.7940,N,11326.3733,W,1,07,1.21,655.22,M,-19.872,M,,*7C
++$GPRMC,203559,A,5333.7940,N,11326.3733,W,0.0000,0.000,280109,,*3A
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174959.001,"ept":0.005,"lat":53.563232686,"lon":-113.439554175,"alt":655.218,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
++$GPGSV,4,2,14,26,40,087,44,29,40,164,34,16,28,280,31,06,21,311,25*7A
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,15*7E
++$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":25,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":15,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
++$GPGGA,203600,5333.7939,N,11326.3733,W,1,07,1.21,655.26,M,-19.872,M,,*79
++$GPRMC,203600,A,5333.7939,N,11326.3733,W,0.0000,0.000,280109,,*3B
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174960.001,"ept":0.005,"lat":53.563232220,"lon":-113.439554904,"alt":655.256,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,23,18,40,217,44*7E
++$GPGSV,4,2,14,26,40,087,44,29,40,164,34,16,28,280,31,06,21,311,25*7A
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":23,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":25,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
++$GPGGA,203601,5333.7939,N,11326.3733,W,1,06,1.21,655.20,M,-19.872,M,,*7F
++$GPRMC,203601,A,5333.7939,N,11326.3733,W,0.0000,0.000,280109,,*3A
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174961.001,"ept":0.005,"lat":53.563231439,"lon":-113.439555338,"alt":655.196,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,24,18,40,217,44*79
++$GPGSV,4,2,14,26,40,087,44,29,40,164,34,16,28,280,31,06,21,311,28*77
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,27,07,05,000,24*7E
++{"class":"SKY","tag":"0x0130","vdop":3.55,"tdop":2.03,"hdop":1.47,"gdop":4.34,"pdop":3.84,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":false},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":34,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":28,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":27,"used":false},{"PRN":7,"el":5,"az":0,"ss":24,"used":false}]}
++$GPGGA,203602,5333.7939,N,11326.3734,W,1,07,1.47,655.19,M,-19.872,M,,*70
++$GPRMC,203602,A,5333.7939,N,11326.3734,W,0.0000,0.000,280109,,*3E
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,3.8,1.5,3.5*3B
++{"class":"TPV","tag":"0x0106","time":1233174962.001,"ept":0.005,"lat":53.563230854,"lon":-113.439555989,"alt":655.194,"epv":81.650,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,24,18,40,217,44*7A
++$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,31,06,21,311,27*7F
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,28,07,05,000,21*74
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":24,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":21,"used":false}]}
++$GPGGA,203603,5333.7938,N,11326.3734,W,1,07,1.21,655.18,M,-19.872,M,,*71
++$GPRMC,203603,A,5333.7938,N,11326.3734,W,0.0000,0.000,280109,,*3E
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174963.001,"ept":0.005,"lat":53.563230468,"lon":-113.439556819,"alt":655.176,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,25,18,40,217,44*7B
++$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,30,06,21,311,27*7E
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,28,07,05,000,21*74
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.83,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":25,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":30,"used":true},{"PRN":6,"el":21,"az":311,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":21,"used":false}]}
++$GPGGA,203604,5333.7938,N,11326.3735,W,1,07,1.21,655.23,M,-19.872,M,,*7F
++$GPRMC,203604,A,5333.7938,N,11326.3735,W,0.0000,0.000,280109,,*38
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174964.001,"ept":0.005,"lat":53.563230108,"lon":-113.439557548,"alt":655.231,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,27,18,40,217,44*7A
++$GPGSV,4,2,14,26,40,087,44,29,40,164,32,16,28,280,31,06,21,311,27*7E
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,28,07,05,000,22*77
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":27,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":32,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":21,"az":311,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":22,"used":false}]}
++$GPGGA,203605,5333.7938,N,11326.3735,W,1,07,1.21,655.29,M,-19.872,M,,*74
++$GPRMC,203605,A,5333.7938,N,11326.3735,W,0.0000,0.000,280109,,*39
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174965.001,"ept":0.005,"lat":53.563229839,"lon":-113.439558476,"alt":655.290,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,32,24,56,094,45,15,40,113,27,18,40,217,44*7A
++$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,30,06,21,311,28*71
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,28,07,05,000,23*76
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":32,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":27,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":30,"used":true},{"PRN":6,"el":21,"az":311,"ss":28,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":23,"used":false}]}
++$GPGGA,203606,5333.7938,N,11326.3735,W,1,07,1.21,655.31,M,-19.872,M,,*7E
++$GPRMC,203606,A,5333.7938,N,11326.3735,W,0.0000,0.000,280109,,*3A
++$GPGSA,A,3,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,,,,,,,,,,,,,,,,2.5,1.2,2.1*35
++{"class":"TPV","tag":"0x0106","time":1233174966.001,"ept":0.005,"lat":53.563229443,"lon":-113.439558988,"alt":655.310,"epv":48.990,"track":0.0000,"speed":0.000,"climb":0.000,"mode":3}
++$GPGSV,4,1,14,21,73,276,31,24,56,094,45,15,40,113,27,18,40,217,44*79
++$GPGSV,4,2,14,26,40,087,44,29,40,164,33,16,28,280,31,06,22,310,27*7D
++$GPGSV,4,3,14,10,21,056,40,03,10,317,25,22,09,225,30,08,06,036,18*73
++$GPGSV,4,4,14,27,06,055,28,07,05,000,23*76
++{"class":"SKY","tag":"0x0130","vdop":2.13,"tdop":1.41,"hdop":1.21,"gdop":2.82,"pdop":2.45,"satellites":[{"PRN":21,"el":73,"az":276,"ss":31,"used":true},{"PRN":24,"el":56,"az":94,"ss":45,"used":true},{"PRN":15,"el":40,"az":113,"ss":27,"used":false},{"PRN":18,"el":40,"az":217,"ss":44,"used":true},{"PRN":26,"el":40,"az":87,"ss":44,"used":true},{"PRN":29,"el":40,"az":164,"ss":33,"used":true},{"PRN":16,"el":28,"az":280,"ss":31,"used":true},{"PRN":6,"el":22,"az":310,"ss":27,"used":false},{"PRN":10,"el":21,"az":56,"ss":40,"used":true},{"PRN":3,"el":10,"az":317,"ss":25,"used":false},{"PRN":22,"el":9,"az":225,"ss":30,"used":false},{"PRN":8,"el":6,"az":36,"ss":18,"used":false},{"PRN":27,"el":6,"az":55,"ss":28,"used":false},{"PRN":7,"el":5,"az":0,"ss":23,"used":false}]}
+diff --git a/test/daemon/uBlox-sirf1.log b/test/daemon/uBlox-sirf1.log
+index 00d0199bef49226ac979651a4f4b8d281c0cef42..a73f7007a22bdb3c5bad8df68b4ca0264becf9a7 100644
+GIT binary patch
+delta 151
+zcmX@v&UmSVal*BFWiDlfkc`Y?g|y6^R0SaIoL^8`l$oAUqM(tisbFMaXrPc(sZf%U
+zs^A_F?4nRml%JKFTmsbP1mu;Z7UdQzBo-9pR9Yz%r>26{flYGu4~X>ib63dB1B<0(
+q7MB!dCY6?C=I1FC<>!|uq~#YWq@;3`BxdFm>v1V>y!yq7kqZDLTQgz+
+
+delta 13
+UcmccA!FaNral*CDag3jx04>=DS^xk5
+
+diff --git a/test/daemon/zodiac.log b/test/daemon/zodiac.log
+index 13dcad411b3f6a852a787098fdf14ebd858bce24..61e61c44b06599f7ccb1e76c620060cf9beb7d58 100644
+GIT binary patch
+delta 146
+zcmZ3dy-jDr$$Bnjg^-NQVuiHKoKyuM?VMjwS(KTcQKF!ctf^pRU}&I_RH;ysk*eSx
+z5bUB*P?VpQnp^_Z<pkuFq!#5CD<l>a<WyQI6sM+w)qzcN_78~k^mA9p%ma(1WEPhc
+lWhRxDWaj576y@iaD5T{VDWs&9uqS5b6zg#*Z#@271OO4<G3)>U
+
+delta 11
+Scmdm{vrc=$$<2X`PelMARRt3O
+
+diff --git a/test/sample.aivdm b/test/sample.aivdm
+index c805fce..6888e49 100644
+--- a/test/sample.aivdm
++++ b/test/sample.aivdm
+@@ -1,6 +1,9 @@
+ # Sample AIVDM data sentences provided from real data by Kurt Schwehr
+ # Mike Greene, Neal Arundale, and AISHub.
+ #
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ # Type 1:
+ # From Kurt Schwehr.  Dump was attached.  Checked using the noaadata tools.  
+ !AIVDM,1,1,,A,15RTgt0PAso;90TKcjM8h6g208CQ,0*4A
+diff --git a/test/sample.rtcm2 b/test/sample.rtcm2
+index 88a475d..0095778 100644
+--- a/test/sample.rtcm2
++++ b/test/sample.rtcm2
+@@ -2,4 +2,8 @@
+ # Type: RTCM
+ # Submitted-by: Wolfgang Rupprecht <wolfgang@dwsrcc.com>
+ # Comments: Has leading garbage, to test parity locking
+-YpgA_]qS@oglgyC|~oAxCJxqBHsDzu_FsHEfOXAdbwg@Es~]ywJ@x]Cxv^[_m_xRrLwzyBXQb`Z[@hMmOzbzjOXU}t_UUUEsHEfOXIfByS@oSpG|cBPAFvtGN}wl`xN@KsHEF}gV^]}g@EAx}~ywwWd\uv^{mrA¡‹◊Ù»Gm≈¡‰ﬁuLwzyBXye@bdWLhO{bz\pkJCE`jjJHsHEF}gZ\]Kl`_XHF|CNPAGvIxqBHSK{w_BsHEfOXUgB|__WSZ[{Iao~aJB`a@dPUrAsHEfOXM``}[`^yXOE]eVpcJAK`jjjzLwzYpgb[}BlP@lyC|}o^|aIxqBHSeFt¡‹◊Ù»≈¡‰ﬁpLwzyBX}bBI`@@mQzZ{I\P~X]O`a@DbZ^CM|LwzYpg\Yq[`~MZKE]eQpMNlO`jjjzLwzYpgL^}Al`W^`F|c{onyNyGN}W^AGuwLwzyBXKeBG`@@leUdDbyouFYAt`}{w[VzG}LwzYpgd\u[`AihtzjZP@\z}G`jjJHs¡‹◊Ù»H≈¡‰ﬁEF}gxX}Nl`[B@yC|tonx^}GN}W^FFv_HsHEF}gX_}G`~}SJ[{}oMBGpK_BdzCVxgsLwzyBXwd`x[`aMSeDUeP@lMK`jjjzLwzYpgP]}{S@_l{F|CKPqFjExqBha}yJ@@sHEfOX_fB~_A@e]rZ{]somclvK_Bdzyg¡‹◊Ù»|≈¡‰›GLsHEF}G^_Kd_nibVzjZR@l}Mt_UUUEsHEfOxPebFl`GGPyC\IPqEbAxqBha{yH`CsHEfOxpcB@`~_oTBZ{]wo}bVzK_BDHAxCxOsHEF}GWX_|[`qL\nEUeT@lzmJ`jjjzLwzYpGG_}~S@_Bx_G|CvoNyWwGN}wl_XM@}¡‹◊Ù»L≈¡‰ﬁwzYpG{[}M`~_~Y\[{]LP\XJyK_BDHixAXEsHEfOxTb`Md_NdYNEUe_@LuC`jjJHsHEF}GsY}qS@_ZG`yCKw_^_vf@@GTwK@|aAsHEfOxlabu_A`GQLZ{]uoKagEt`}{wRF~gKsHEF}GCZ_x[`IJ]jEUeS@LyEy_UUuwL¡‹◊Ù»w≈¡‰ﬁzyBxbcBMl`[B`xCKA`qdqk@@GtEl~B^vLwzyBxRgBw_A`\d[{]DPdkGLt`}[EgxAxuLwzyBxJ``v[`IVXlEUEosGZI`jjjzLwzYpGe[]{S@_BX`F|Ts_V^y]xkHLC^vLwzyBxzbbp_APTYDZ{]yogPlCt`}{W_G|¡‹◊Ù»Gt≈¡‰ﬁLwzyBxff@y[`I}UTDUecKBjF`jjJHsHEF}GI^}vS@_rsG|TG`YeZ]xkHd@^sLwzyBxNebB`~oIYhZ{}KPHhIsK_BdZkFzGpLwzyBx^c@}[`Ik[HDUEU@tzEL`jjjzLwzYpG~X}sS@_J~G|tu_z[yb@@GTw{`~a¡‹◊Ù»≈¡‰ﬁLwzYpG^_}z_APiZH[{}voTQ|K_BDhbyCXFsHEfOxqd`Ed_vP~oEUe[@T{eF`jjJHsHEF}GV]}Fl`NU`F|tA`eaAh@@GtEH^D~|LwzYpGfY]N`~oLWPZ{]q_PW]@t`}{WYG~gwLwzyBxEa@z[`IoALzjZ`kAzx_UUuwLw¡‹◊Ù»z≈¡‰›yBxUebzS@_qj_xCKH`ueQn@@GtEPoA^|LwzYpGJ\]q_APsheDBs_hWkKt`}[eqyCXwLwzyBxmg@Md_vZumDUedkGzI`jjjzLwzYpGB_]pS@_iUHG|TB`mfE]x{Q@q~avLwzyBxCdBr_APKE@dDBL`[iHEt`}{WRGz¡‹◊Ù»G≈¡‰ﬁyLwzYpGl]@d_v]vEEUEg[FZr_UUUEsHEfOxKfBNl`BioxCk~_B[il@@Gd\hp{AFsHEfOxkaBG`~olE`dDBG`shpsK_BdZtFgKsHEF}GDZJd_NdyaDUeo[CZA`jjJHsHEF}GX\]|S@_uPhF|T_\ZUb@@GDn{wC~Bs¡‹◊Ù»H≈¡‰ﬁEfOxWgBK`~oZyW[{]F`}IK|K_BDhyAxxLwzYpGp__u[`q@@qzjzj{BZy_UUuwLwzyBx_dbxS@_[ShF|T_LYC_x{Q\HaNsHEF}G@]}AH@V_ZSo|W`kGzIIa}GNtDDXxLwzYp{_Y[`QtBe{jZf{Cfs_UUUEsH¡‹◊Ù»E≈¡‰ﬁfODpaBpS@_WoGyCK}_tZ]x{Qri|avLwzyBDHeBIH@fwfTPChW@d{Nv^BXCbDAXJsHEF}{g\_Id_^nI}{jzW@x{Y}_UUuwLwzyBDDgBS@xkgyCKv_dDXx{QVixatLwzyBDd`BvwyHjDQChn[CE}v^BXCndBx¡‹◊Ù»t≈¡‰ﬁLwzyBDtd`v[`AQEK{jZoGEFM`jjjzLwzYp{S]}uS@fcgyCkD`[AmTx[cNWD^MsHEF}{cY]}wE|cxQCHS@dxF{v^BXCYUBXyLwzYp{}^Jd_Ab|TDUe[@XYv_UUUEsHEfODRebuS@QkWxC\~oUfNMxqBXjnPH@~¡‹◊Ù»L≈¡‰ﬁwzYp{M\}LH@Z]gXPCHn{EYLIa}GNkTGXqLwzyBDjg`p[`^q~HEUeigAft_UUUEsHEfODz`BrS@QkOyC\KPJZ^BxqBxX~~vEsHEfODFdBAH@j]oHQCHW@xxA@Ia}g\ws{GAsHEfODVb`~[`nlGO{jZhW@FO`jjjzLwz¡‹◊Ù»Y≈¡‰ﬁp{qY]pS@vZ`F|c{ombnFxqBxXn~wwLwzyBDnaBtwuVROn|w`gBisv^BxQmr|gCsHEfOD~e@fdWbKHzjzU@hyEv_UUUEsHEfODacbzS@ez_F|C@PB\JsGN}gUaAuJsHEF}{nX}MH@rJPOn|w`gFfxv^BXcA]Ax¡‹◊Ù»q≈¡‰ﬁLwzyBDI``S[@hEKHzjzU@h|ew_UUUEsHEfODYdbAl@ZEHyC\JP\XrtGN}gUqar_~LwzYp{F]}xwmGZon|WY@XzQCIa}g\LC{GCsHEfODef`ndWVzwDUenwBZp_UUUEsHEfODuab~S@~|gF|CHPtYPpGN}gUyPp}Lw¡‹◊Ù»z≈¡‰ﬁYp{rZ}JH@B_oPQCHT@h{y~v\B`RZ_GtLwzyBD]c@X[@h~wDUenwEzN`jjjzLwzYp{|X}@l@mMdxC\|o[ULGN}GgZnH@|LwzYp{\_}IH@|[Rwn|whWCANIc}_j_GpLwzyBDsd@ddWitwDUE\@p{eI`jjjzLwz¡‹◊Ù»Y≈¡‰ﬁp{T]]Gl@{CLxC\{ogR~HxqBXjrOK@JsHEF}{dY}OH@\ubpPCh[@H~~KIc}_J^{GCsHEfODGa`[[@hj|wDUenOAZE`jjJHsHEF}{hZ]vS@_oB\yC|poOR}wGN}gUCPv_LwzYp{H\]BH@laipQCH_@H|~tv\B@`MaDxt¡‹◊Ù»Lw≈¡‰ﬁzyBDog@^[@hBHH{jzcOGzF`jjJHsHEF}{@_}qS@_E{]F|c{oWoDxqBxXKQq{LwzYp[[]qwsuhHPCHaODvxv\B`RR^{grLwzyBdPb`cdWkyWEUeS@Pyes_UUUEsHEfOdHfB@l`iDJxC|G`wOCxqBxX{Qr}L¡‹◊Ù»w≈¡‰ﬁzYp[W^}vwK_ghQChnwCRKIc}_B_{gKsHEF}[GZddWWNhzjz^@PzuH`jjjzLwzYp[[\}@l`SDzyC\G`{MoLxqBXj`oH@KsHEF}[kX]HH@dg`HQChewE\KIc}_|_{GLwzYp[s__[[@h@EhzjZl_DJ~_UUuwLwzy¡‹◊Ù»B≈¡‰ﬁd\dbvS@oeAfyC\C`sM]IxqBXJoNK@wLwzyBd|bBpw{LoXQChjO@xGIc}_mcaDXOsHEF}[]Y_Z[@HgGhzjZl_Aj_UUuwLwzyBdrabuS@ohIvyC\L`CLutGN}guhps_HsHEF}[uZ}AH@xSZko|WhODhpv\B@`s`DXv¡‹◊Ù»L≈¡‰ﬁwzyBdZc`adwL{WDUee_GJ|_UUuwLwzyBdFgBHlpNNnyC\O`MHaLxqBXJKwN@IsHEF}[Y_}~wg|otQCHX@p_GIc}_mKaDxzLwzYp[I[ldwRsWDUEW@@}UG`jjJHsHEF}[Q]]pS@w_DnyC|}_FpzIxqBXJCWO`OsHE¡‹◊Ù»F≈¡‰ﬁ}[aY]JH@hCXKn|WU@pF@pv\B@`[`DxCsHEfOdAa@T[@HyOh{jzhEJF`jjJHsHEF}[nZ}yS@wvD^yC\K`IHi@xqBxxZhwKsHEF}[N\]wwX\Co|w]@p~HIc}_D_{GwLwzyBdig`Q[@H^~gEUEE@@@jy_UUuwLwzy¡‹◊Ù»B≈¡‰ﬁdy`bAlhD@nyC|}_AqarGN}gunYr_KsHEF}[z[]MH@pGgrPCH`O@`xv\B`Rx^{g|LwzYp[j]_`dwy~gEUEE@@BRK`jjjzLwzYp[rY]qS@WlEAxC\G`VOz~GN}GGvfK@EsHEfOdmabGH@P_kJPChZ@H~Otv\B@`gaDxzL¡‹◊Ù»wz≈¡‰ﬁYp[BZX[@HB{gEUEE@@Eru_UUUEsHEfOdccbMlX|EQyC|L`jKHKxqBXJ\GM@IsHEF}[lX}zwoGezQChhwBtsv\B@`w`DXqLwzyBdK``ddwkJXzjZH@@GRx_UUuwLwzyBd[dBDlXmHayK\D@hxsBxqBxxwxw_Lw¡‹◊Ù»z≈¡‰ﬁYp[D]}OH@`jfVQCHZ@HyCDIc}_mO`@xEsHEfOdgf`Y[@HPOXzjZH@`BRN`jjjzLwzYp[
+\ No newline at end of file
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
++YpgA_]qS@oglgyC|~oAxCJxqBHsDzu_FsHEfOXAdbwg@Es~]ywJ@x]Cxv^[_m_xRrLwzyBXQb`Z[@hMmOzbzjOXU}t_UUUEsHEfOXIfByS@oSpG|cBPAFvtGN}wl`xN@KsHEF}gV^]}g@EAx}~ywwWd\uv^{mrA¡‹◊Ù»Gm≈¡‰ﬁuLwzyBXye@bdWLhO{bz\pkJCE`jjJHsHEF}gZ\]Kl`_XHF|CNPAGvIxqBHSK{w_BsHEfOXUgB|__WSZ[{Iao~aJB`a@dPUrAsHEfOXM``}[`^yXOE]eVpcJAK`jjjzLwzYpgb[}BlP@lyC|}o^|aIxqBHSeFt¡‹◊Ù»≈¡‰ﬁpLwzyBX}bBI`@@mQzZ{I\P~X]O`a@DbZ^CM|LwzYpg\Yq[`~MZKE]eQpMNlO`jjjzLwzYpgL^}Al`W^`F|c{onyNyGN}W^AGuwLwzyBXKeBG`@@leUdDbyouFYAt`}{w[VzG}LwzYpgd\u[`AihtzjZP@\z}G`jjJHs¡‹◊Ù»H≈¡‰ﬁEF}gxX}Nl`[B@yC|tonx^}GN}W^FFv_HsHEF}gX_}G`~}SJ[{}oMBGpK_BdzCVxgsLwzyBXwd`x[`aMSeDUeP@lMK`jjjzLwzYpgP]}{S@_l{F|CKPqFjExqBha}yJ@@sHEfOX_fB~_A@e]rZ{]somclvK_Bdzyg¡‹◊Ù»|≈¡‰›GLsHEF}G^_Kd_nibVzjZR@l}Mt_UUUEsHEfOxPebFl`GGPyC\IPqEbAxqBha{yH`CsHEfOxpcB@`~_oTBZ{]wo}bVzK_BDHAxCxOsHEF}GWX_|[`qL\nEUeT@lzmJ`jjjzLwzYpGG_}~S@_Bx_G|CvoNyWwGN}wl_XM@}¡‹◊Ù»L≈¡‰ﬁwzYpG{[}M`~_~Y\[{]LP\XJyK_BDHixAXEsHEfOxTb`Md_NdYNEUe_@LuC`jjJHsHEF}GsY}qS@_ZG`yCKw_^_vf@@GTwK@|aAsHEfOxlabu_A`GQLZ{]uoKagEt`}{wRF~gKsHEF}GCZ_x[`IJ]jEUeS@LyEy_UUuwL¡‹◊Ù»w≈¡‰ﬁzyBxbcBMl`[B`xCKA`qdqk@@GtEl~B^vLwzyBxRgBw_A`\d[{]DPdkGLt`}[EgxAxuLwzyBxJ``v[`IVXlEUEosGZI`jjjzLwzYpGe[]{S@_BX`F|Ts_V^y]xkHLC^vLwzyBxzbbp_APTYDZ{]yogPlCt`}{W_G|¡‹◊Ù»Gt≈¡‰ﬁLwzyBxff@y[`I}UTDUecKBjF`jjJHsHEF}GI^}vS@_rsG|TG`YeZ]xkHd@^sLwzyBxNebB`~oIYhZ{}KPHhIsK_BdZkFzGpLwzyBx^c@}[`Ik[HDUEU@tzEL`jjjzLwzYpG~X}sS@_J~G|tu_z[yb@@GTw{`~a¡‹◊Ù»≈¡‰ﬁLwzYpG^_}z_APiZH[{}voTQ|K_BDhbyCXFsHEfOxqd`Ed_vP~oEUe[@T{eF`jjJHsHEF}GV]}Fl`NU`F|tA`eaAh@@GtEH^D~|LwzYpGfY]N`~oLWPZ{]q_PW]@t`}{WYG~gwLwzyBxEa@z[`IoALzjZ`kAzx_UUuwLw¡‹◊Ù»z≈¡‰›yBxUebzS@_qj_xCKH`ueQn@@GtEPoA^|LwzYpGJ\]q_APsheDBs_hWkKt`}[eqyCXwLwzyBxmg@Md_vZumDUedkGzI`jjjzLwzYpGB_]pS@_iUHG|TB`mfE]x{Q@q~avLwzyBxCdBr_APKE@dDBL`[iHEt`}{WRGz¡‹◊Ù»G≈¡‰ﬁyLwzYpGl]@d_v]vEEUEg[FZr_UUUEsHEfOxKfBNl`BioxCk~_B[il@@Gd\hp{AFsHEfOxkaBG`~olE`dDBG`shpsK_BdZtFgKsHEF}GDZJd_NdyaDUeo[CZA`jjJHsHEF}GX\]|S@_uPhF|T_\ZUb@@GDn{wC~Bs¡‹◊Ù»H≈¡‰ﬁEfOxWgBK`~oZyW[{]F`}IK|K_BDhyAxxLwzYpGp__u[`q@@qzjzj{BZy_UUuwLwzyBx_dbxS@_[ShF|T_LYC_x{Q\HaNsHEF}G@]}AH@V_ZSo|W`kGzIIa}GNtDDXxLwzYp{_Y[`QtBe{jZf{Cfs_UUUEsH¡‹◊Ù»E≈¡‰ﬁfODpaBpS@_WoGyCK}_tZ]x{Qri|avLwzyBDHeBIH@fwfTPChW@d{Nv^BXCbDAXJsHEF}{g\_Id_^nI}{jzW@x{Y}_UUuwLwzyBDDgBS@xkgyCKv_dDXx{QVixatLwzyBDd`BvwyHjDQChn[CE}v^BXCndBx¡‹◊Ù»t≈¡‰ﬁLwzyBDtd`v[`AQEK{jZoGEFM`jjjzLwzYp{S]}uS@fcgyCkD`[AmTx[cNWD^MsHEF}{cY]}wE|cxQCHS@dxF{v^BXCYUBXyLwzYp{}^Jd_Ab|TDUe[@XYv_UUUEsHEfODRebuS@QkWxC\~oUfNMxqBXjnPH@~¡‹◊Ù»L≈¡‰ﬁwzYp{M\}LH@Z]gXPCHn{EYLIa}GNkTGXqLwzyBDjg`p[`^q~HEUeigAft_UUUEsHEfODz`BrS@QkOyC\KPJZ^BxqBxX~~vEsHEfODFdBAH@j]oHQCHW@xxA@Ia}g\ws{GAsHEfODVb`~[`nlGO{jZhW@FO`jjjzLwz¡‹◊Ù»Y≈¡‰ﬁp{qY]pS@vZ`F|c{ombnFxqBxXn~wwLwzyBDnaBtwuVROn|w`gBisv^BxQmr|gCsHEfOD~e@fdWbKHzjzU@hyEv_UUUEsHEfODacbzS@ez_F|C@PB\JsGN}gUaAuJsHEF}{nX}MH@rJPOn|w`gFfxv^BXcA]Ax¡‹◊Ù»q≈¡‰ﬁLwzyBDI``S[@hEKHzjzU@h|ew_UUUEsHEfODYdbAl@ZEHyC\JP\XrtGN}gUqar_~LwzYp{F]}xwmGZon|WY@XzQCIa}g\LC{GCsHEfODef`ndWVzwDUenwBZp_UUUEsHEfODuab~S@~|gF|CHPtYPpGN}gUyPp}Lw¡‹◊Ù»z≈¡‰ﬁYp{rZ}JH@B_oPQCHT@h{y~v\B`RZ_GtLwzyBD]c@X[@h~wDUenwEzN`jjjzLwzYp{|X}@l@mMdxC\|o[ULGN}GgZnH@|LwzYp{\_}IH@|[Rwn|whWCANIc}_j_GpLwzyBDsd@ddWitwDUE\@p{eI`jjjzLwz¡‹◊Ù»Y≈¡‰ﬁp{T]]Gl@{CLxC\{ogR~HxqBXjrOK@JsHEF}{dY}OH@\ubpPCh[@H~~KIc}_J^{GCsHEfODGa`[[@hj|wDUenOAZE`jjJHsHEF}{hZ]vS@_oB\yC|poOR}wGN}gUCPv_LwzYp{H\]BH@laipQCH_@H|~tv\B@`MaDxt¡‹◊Ù»Lw≈¡‰ﬁzyBDog@^[@hBHH{jzcOGzF`jjJHsHEF}{@_}qS@_E{]F|c{oWoDxqBxXKQq{LwzYp[[]qwsuhHPCHaODvxv\B`RR^{grLwzyBdPb`cdWkyWEUeS@Pyes_UUUEsHEfOdHfB@l`iDJxC|G`wOCxqBxX{Qr}L¡‹◊Ù»w≈¡‰ﬁzYp[W^}vwK_ghQChnwCRKIc}_B_{gKsHEF}[GZddWWNhzjz^@PzuH`jjjzLwzYp[[\}@l`SDzyC\G`{MoLxqBXj`oH@KsHEF}[kX]HH@dg`HQChewE\KIc}_|_{GLwzYp[s__[[@h@EhzjZl_DJ~_UUuwLwzy¡‹◊Ù»B≈¡‰ﬁd\dbvS@oeAfyC\C`sM]IxqBXJoNK@wLwzyBd|bBpw{LoXQChjO@xGIc}_mcaDXOsHEF}[]Y_Z[@HgGhzjZl_Aj_UUuwLwzyBdrabuS@ohIvyC\L`CLutGN}guhps_HsHEF}[uZ}AH@xSZko|WhODhpv\B@`s`DXv¡‹◊Ù»L≈¡‰ﬁwzyBdZc`adwL{WDUee_GJ|_UUuwLwzyBdFgBHlpNNnyC\O`MHaLxqBXJKwN@IsHEF}[Y_}~wg|otQCHX@p_GIc}_mKaDxzLwzYp[I[ldwRsWDUEW@@}UG`jjJHsHEF}[Q]]pS@w_DnyC|}_FpzIxqBXJCWO`OsHE¡‹◊Ù»F≈¡‰ﬁ}[aY]JH@hCXKn|WU@pF@pv\B@`[`DxCsHEfOdAa@T[@HyOh{jzhEJF`jjJHsHEF}[nZ}yS@wvD^yC\K`IHi@xqBxxZhwKsHEF}[N\]wwX\Co|w]@p~HIc}_D_{GwLwzyBdig`Q[@H^~gEUEE@@@jy_UUuwLwzy¡‹◊Ù»B≈¡‰ﬁdy`bAlhD@nyC|}_AqarGN}gunYr_KsHEF}[z[]MH@pGgrPCH`O@`xv\B`Rx^{g|LwzYp[j]_`dwy~gEUEE@@BRK`jjjzLwzYp[rY]qS@WlEAxC\G`VOz~GN}GGvfK@EsHEfOdmabGH@P_kJPChZ@H~Otv\B@`gaDxzL¡‹◊Ù»wz≈¡‰ﬁYp[BZX[@HB{gEUEE@@Eru_UUUEsHEfOdccbMlX|EQyC|L`jKHKxqBXJ\GM@IsHEF}[lX}zwoGezQChhwBtsv\B@`w`DXqLwzyBdK``ddwkJXzjZH@@GRx_UUuwLwzyBd[dBDlXmHayK\D@hxsBxqBxxwxw_Lw¡‹◊Ù»z≈¡‰ﬁYp[D]}OH@`jfVQCHZ@HyCDIc}_mO`@xEsHEfOdgf`Y[@HPOXzjZH@`BRN`jjjzLwzYp[
+diff --git a/test/synthetic-ais.json b/test/synthetic-ais.json
+index c145fbe..f3acd63 100644
+--- a/test/synthetic-ais.json
++++ b/test/synthetic-ais.json
+@@ -2,6 +2,10 @@
+ # These are JSON dumps of the packets in the Schwehr testload,
+ # with synthetic messages 12 and 14 added  
+ # FIXME: Needs a more complete set of test sentences.
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ {"class":"AIS","type":1,"repeat":0,"mmsi":371798000,"scaled":false,"status":0,"turn":-127,"speed":123,"accuracy":true,"lon":-74037230,"lat":29028980,"course":2240,"heading":215,"second":33,"maneuver":0,"raim":false,"radio":68034}
+ {"class":"AIS","type":1,"repeat":0,"mmsi":440348000,"scaled":false,"status":0,"turn":-128,"speed":0,"accuracy":false,"lon":-42454920,"lat":25848090,"course":934,"heading":511,"second":13,"maneuver":0,"raim":false,"radio":66548}
+ {"class":"AIS","type":2,"repeat":0,"mmsi":356302000,"scaled":false,"status":0,"turn":127,"speed":139,"accuracy":false,"lon":-42975686,"lat":24235415,"course":877,"heading":91,"second":41,"maneuver":0,"raim":false,"radio":98316}
+diff --git a/test/synthetic-rtcm2.json b/test/synthetic-rtcm2.json
+index 3b042d7..6bf0037 100644
+--- a/test/synthetic-rtcm2.json
++++ b/test/synthetic-rtcm2.json
+@@ -1,6 +1,10 @@
+ # This is a file of synthetic dumps of RTCM2 JSON designed to torture-test
+ # the library decoder. gpsdecode -e -j of this file should duplicate it.
+ # No messages 1 and 9 as those are generated by our binary sample
++#
++# This file is Copyright (c) 2010 by the GPSD project
++# BSD terms apply: see the file COPYING in the distribution root for details.
++#
+ {"class":"RTCM2","type":3,"station_id":268,"zcount":250.8,"seqnum":1,"length":5,"station_health":0,"x":222.18,"y":333.30,"z":444.36}
+ {"class":"RTCM2","type":4,"station_id":268,"zcount":252.6,"seqnum":3,"length":4,"station_health":0,"system":"GPS","sense":1,"datum":"WGS84","dx":25.6,"dy":30.1,"dz":32.7}
+ {"class":"RTCM2","type":5,"station_id":268,"zcount":253.8,"seqnum":4,"length":4,"station_health":0,"satellites":[{"ident":29,"iodl":false,"health":0,"snr":53,"health_en":false,"new_data":true,"los_warning":false,"tou":0},{"ident":12,"iodl":false,"health":0,"snr":26,"health_en":false,"new_data":false,"los_warning":true,"tou":0},{"ident":3,"iodl":false,"health":0,"snr":50,"health_en":false,"new_data":true,"los_warning":false,"tou":0},{"ident":15,"iodl":false,"health":0,"snr":41,"health_en":false,"new_data":false,"los_warning":true,"tou":0}]}
+-- 

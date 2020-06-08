@@ -1,0 +1,32 @@
+#!/bin/sh
+
+wait_for_ppp()
+{
+
+	while true
+	do
+		wait-for-interface 1000 -Ari -R240 ppp0 &> /dev/null
+
+		if [ 0 = "$?" ];then
+			break
+		fi
+
+		logger -t "$tag" "ERROR: No PPP connection, ipsec-monitor will not execute"
+		stop_work
+		exit 1
+
+	done
+}
+
+LOG="/var/log/"`echo -n $0|sed 's/.*\///'`".processlog"
+
+if [ 'OFF' = "$FEATURE" ];then
+	if [ -e "/home/root/log.enabled" ] ; then
+		echo "Unsetting $0" >> $LOG
+	fi
+	exit 0
+fi
+
+wait_for_ppp
+exec ipsec-monitor 
+exit 1

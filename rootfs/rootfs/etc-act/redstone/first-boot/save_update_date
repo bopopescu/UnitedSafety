@@ -1,0 +1,6 @@
+#!/bin/sh
+
+now=`date`
+ver=`tail -n 1 /version`
+echo "$now : $ver" >> /mnt/nvram/log/UpdateDate
+

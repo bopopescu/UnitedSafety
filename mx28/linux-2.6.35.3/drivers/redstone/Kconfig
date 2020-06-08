@@ -1,0 +1,146 @@
+menuconfig REDSTONE_DRIVERS
+	tristate "Redstone Drivers"
+	help
+	  Drivers for the Redstone M2M device.
+
+config REDSTONE_BUZZER_GPIO
+	tristate "GPIO driver for the buzzer"
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_SET_GPIO
+	tristate "GPIO driver for various TruLink devices (set-gpio)"
+	depends on REDSTONE_DRIVERS
+
+config TRULINK_IRIDIUM_EMULATOR
+	tristate "Build Iridium Emulator Driver"
+	default n
+	depends on REDSTONE_DRIVERS && m
+	help
+	  Builds the TRULink Iridium Emulator Driver module.
+	  This driver may only be built as a loadable module.
+
+config TRULINK_ETHERNET_PHY_SUSPEND
+	bool "Include support for suspending (powering down) the external Ethernet Phy."
+	default y
+	depends on REDSTONE_SET_GPIO
+	help
+	  Builds in support for suspending (powering down) the external Ethernet Phy.
+	  The Ethernet Phy normally used on the TRULINK is SMSC LAN8720/LAN8720Ai.
+
+config REDSTONE_EXAMPLE_SET_GPIO_COMMANDS
+	bool "Include example set-gpio functions/features"
+	default n
+	depends on REDSTONE_SET_GPIO
+	help
+	  Builds and includes example set-gpio functions/features for developers.
+	  This is useful for quickly learning/recalling custom RedStone API or feature sets.
+
+config REDSTONE_I2C_GPIO_EXPANDER_IRQ
+	tristate "I2C GPIO Expander IRQ"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_RESET_BUTTON
+	bool "Enable support for the RESET button"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_BATTERY_VOLTAGE
+	tristate "Battery voltage driver for TRULink devices"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_HID_VOLTAGE
+	tristate "Hardware ID voltage driver for TRULink devices"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_WIFITRAFFIC
+	tristate "WIFI Traffic Indicator driver for TRULink devices"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_LENS
+	tristate "ISC Lens support"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_LENS_URGENT_INTERRUPT
+	tristate "ISC LENS urgent interrupt driver for TRULink devices"
+	default y
+	depends on REDSTONE_DRIVERS
+
+config REDSTONE_CAN_ON_TX_CONTROL
+	bool "Allow enabling/disabling of CAN transceiver"
+	default y
+	depends on REDSTONE_SET_GPIO
+	help
+	  Allows one to enable/disable the CAN transceiver through the letter 'n' in "set-gpio".
+
+config REDSTONE_RS485_RS232_SWITCH
+	bool "Allow switch of RS485/RS232"
+	default y
+	depends on REDSTONE_SET_GPIO
+	help
+	  Allows one to switch the RS485 and RS232 through the letter 'd' in "set-gpio".
+
+config REDSTONE_RS485_RS232_DEN_CONTROL
+	bool "Allow control RS485 RS232 Den pin"
+	default y
+	depends on REDSTONE_SET_GPIO
+	help
+	  Allows one to control the RS485 and RS232 den ping through the letter 'e' in "set-gpio".
+
+config REDSTONE_RS485_RS232_RXEN_CONTROL
+	bool "Allow control RS485 RS232 RXEN pin"
+	default y
+	depends on REDSTONE_SET_GPIO
+	help
+	  Allows one to control the RS485 and RS232 RXEN ping through the letter 'f' in "set-gpio".
+
+config REDSTONE_CAN_ON_TX_CONTROL_DEFAULT_ENABLED
+	bool "CAN_ON TX control is initially high (enabled)"
+	default y
+	depends on REDSTONE_CAN_ON_TX_CONTROL
+	help
+	  Turn on (enable) CAN_ON TX control when Kernel starts up. It appears to take the CAN
+	  bus about 1.5 seconds to clear the "BUS HEAVY" error when CAN_ON is enabled. Having
+	  CAN_ON be enabled at start-up can save 1.5 to 2 seconds of boot-up time.
+
+config REDSTONE_USB0_ON_AT_STARTUP_WORKAROUND
+	bool "Work-around for USB devices not detecting with hot-swap"
+	default y
+	depends on REDSTONE_SET_GPIO
+	help
+	  USB0 does not detect devices (such as USB mass storage devices) when plugged in after the Kernel
+	  has booted. Say "yes" to work around this issue.
+
+config REDSTONE_RELAY_GPIO
+	bool "Enable control of external 12V relay via GPIO"
+	default n
+	depends on REDSTONE_SET_GPIO && !MMC_MXS
+	help
+	  Allows the GPIO on bank 2, pin 1 to control an external relay (used during development/testing
+	  to control a 12V relay).
+	  Say Yes if you intend to use this Kernel as a programmable power supply, otherwise say No.
+
+config REDSTONE_DAUGHTER_CARD
+	bool "Enable if daughter card is present"
+	default n
+	depends on REDSTONE_DRIVERS
+	help
+	  itracker.atsplace.com bug # 88
+
+config REDSTONE_USE_WIFI
+	bool "Enable if there is WiFi present on the RedStone"
+	default n
+	depends on REDSTONE_DAUGHTER_CARD
+	help
+	  This option is used to drive the TiWi or RaLink WiFi on the RedStone.
+
+config TRULINK_ACCELEROMETER
+   bool "Enable for reqiurement of Freescale Accelerometer MMA8453Q I2C repeated start Condition"
+	 default y
+	 depends on I2C_MXS 
+	 help
+	   itracker.atsplace.com feature #1795

@@ -1,0 +1,25 @@
+=======================================================================
+= Building sendip
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 11 Katya \n \l
+
+	bm2
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	// 1. Edit Makefile and set CC to ${CROSS_COMPILE}gcc
+	// 2. Remove the "-g" debug flag to reduce size of binary
+	// 3. Add the "-Os" CFLAGS option
+	// 4. Add the "-s" LDFLAGS option
+
+	make
+
+	// Building of the help system will fail, however that is not needed. Just use the generated "sendip" application and
+	// shared objects.
+

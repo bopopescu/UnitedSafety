@@ -1,0 +1,14 @@
+This patch will allow mutt -v to return a sorted list of patches
+
+Index: trunk/patchlist.sh
+===================================================================
+--- trunk.orig/patchlist.sh	2007-03-15 15:50:14.000000000 +0100
++++ trunk/patchlist.sh	2007-03-15 15:50:41.000000000 +0100
+@@ -15,6 +15,6 @@ EOF
+ 
+ while read patch ; do
+ 	echo "  puts (\"${patch}\");"
+-done
++done | LC_COLLATE=C sort
+ 
+ echo "}"

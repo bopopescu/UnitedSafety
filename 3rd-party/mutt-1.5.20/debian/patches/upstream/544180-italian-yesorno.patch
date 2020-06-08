@@ -1,0 +1,14 @@
+patch to fix a problem in the Italian translation, it was submitted to upstream
+on bugs http://bugs.mutt.org/3336
+
+--- a/po/it.po
++++ b/po/it.po
+@@ -3233,7 +3233,7 @@
+ 
+ #: muttlib.c:938
+ msgid "yna"
+-msgstr "yna"
++msgstr "snt"
+ 
+ #: muttlib.c:954
+ msgid "File is a directory, save under it?"

@@ -1,0 +1,55 @@
+#!/bin/sh
+app_name=$1
+app_exec=$2
+
+if [ 1 = "$REDSTONE_FIRST_BOOT" ];then
+
+	if [ '' != "$app_exec" ];then
+		eval "$app_exec"
+		exit $?
+	fi
+
+	exit 0
+fi
+
+i=0
+LOG="/var/log/"`echo -n "$app_name"|sed 's/.*\///'`".processlog"
+LAST_MSG=''
+
+if [ 'OFF' = "$FEATURE" ];then
+	if [ -e "/home/root/log.enabled" ] ; then
+		echo "Unsetting \"$app_name\"" >> $LOG
+	fi
+	eval "$app_exec"
+	exitcode=$?
+
+	if [ 0 != "$exitcode" ];then
+		echo "Exit code $exitcode returned while unsetting feature"
+	fi
+
+	exit 0
+fi
+
+while true
+do
+	i=`expr $i + 1`
+	
+	if [ -e "/home/root/log.enabled" ] ; then
+		uptime > $LOG
+		date >> $LOG
+		echo "starts: $i" >> $LOG
+		echo "lastmsg: $LAST_MSG" >> $LOG
+	fi
+	
+	eval "$app_exec"
+	exitcode=$?
+
+	if [ 0 = "$exitcode" ];then
+		break
+	fi
+
+	LAST_MSG="\"$app_name\" exited with code $exitcode, restarting..."
+	sleep 1
+done
+
+exit 0

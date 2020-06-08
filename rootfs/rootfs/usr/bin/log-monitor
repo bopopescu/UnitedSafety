@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# script to check the space on the rfs disk every hour.  If it is greater than 90% usage
+# we delete the lighttpd files in the log directory
+#
+oneHour=3600
+pctAvail=90
+
+mkdir /tmp/flags/log-monitor-running
+
+if [ 0 != "$?" ];then
+        exit 0
+fi
+
+while true
+do
+        let p=`df -k / | grep -v ^File | awk '{printf ("%i",$5); }'`
+  #  lighttpd directory is the only one that can grow unreasonably large
+        if [ "$p" -ge $pctAvail ]; then
+                rm  /home/root/system-log/lighttpd/*
+                sync
+        fi
+        sleep $oneHour
+done
+

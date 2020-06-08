@@ -1,0 +1,31 @@
+#!/bin/sh
+RTC_MONITOR_SOCKET='/var/run/redstone/rtc-monitor'
+four_hours=14400
+
+if [ 'OFF' = "$FEATURE" ];then
+	exit 0
+fi
+
+trigger_date=`db-config get -v global-powerup-schedule trigger_date`
+repeat_period=`db-config get -v global-powerup-schedule repeat_period`
+
+	if [ '' = "$trigger_date" ];then
+		trigger_date=$four_hours
+	fi
+
+	if [ '' = "$repeat_period" ];then
+		repeat_period=$trigger_date
+	fi
+
+	while true
+	do
+
+		if [ -e $RTC_MONITOR_SOCKET ];then
+			echo "sched key=global-powerup-schedule trigger_date=$trigger_date from_now=1 repeat_period=$repeat_period"|socat - UNIX-CONNECT:$RTC_MONITOR_SOCKET
+			break
+		fi
+
+		sleep 1
+	done
+
+exit 0

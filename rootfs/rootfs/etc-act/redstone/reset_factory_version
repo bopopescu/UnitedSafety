@@ -1,0 +1,17 @@
+#!/bin/sh
+
+
+ubiattach /dev/ubi_ctrl -m 8 -d 8
+mkdir -p "/tmp/factory"
+mount -t ubifs ubi8_0 "/tmp/factory" -o rw
+from_version=`head -n1 "/tmp/factory/version"|tr -d '\n'|tr -d '\r'`
+echo "existing from version is $from_version
+echo "Updating to 11!"
+echo 11 > /tmp/factory/version
+sync
+from_version=`head -n1 "$/tmp/factory/version"|tr -d '\n'|tr -d '\r'`
+echo "New from version is $from_version
+
+umount "/tmp/factory"
+rmdir "/tmp/factory"
+ubidetach /dev/ubi_ctrl -m 8

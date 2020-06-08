@@ -1,0 +1,5 @@
+*.swp
+moc
+obj
+bin
+Makefile

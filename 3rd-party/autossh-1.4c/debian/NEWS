@@ -1,0 +1,9 @@
+autossh (1.4a-3) unstable; urgency=low
+
+  Automatic (random) guess of the port has been introduced, this means you can
+  invoke autossh <host> without specifying -M <monitorport>.
+  
+  Backward compatibility is retained, you are free to use -M to force a
+  specific monitor port or use autossh -- -M <host> for passing -M to ssh.
+
+ -- Filippo Giunchedi <filippo@debian.org>  Mon, 08 Oct 2007 22:29:54 +0200

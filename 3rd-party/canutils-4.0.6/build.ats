@@ -1,0 +1,41 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	export KERNEL_DIR="${BUILD_DIR}/kernel"
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc libsocketcan_CFLAGS="-I${BUILD_DIR}/libsocketcan-0.0.8/include/" libsocketcan_LIBS="-L${BUILD_DIR}/libsocketcan-0.0.8/src/.libs -lsocketcan" CFLAGS="-I${KERNEL_DIR} -I${BUILD_DIR}/libsocketcan-0.0.8/include/"
+	make -j 4
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo cp -av "./src/candump" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"candump\""
+			exit 1
+		fi
+
+		sudo cp -av "./tools/canecho" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"canecho\""
+			exit 1
+		fi
+
+		sudo cp -av "./tools/cansend" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"cansend\""
+			exit 1
+		fi
+
+		sudo cp -av "./tools/cansequence" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"cansequence\""
+			exit 1
+		fi
+	fi
+exit 0

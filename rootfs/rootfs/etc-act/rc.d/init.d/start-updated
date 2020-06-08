@@ -1,0 +1,35 @@
+#!/bin/sh
+
+logger -s "===== start-updated ====="
+
+export HOME=/home/root
+flag='/mnt/update/update-ready-to-run'
+
+if [ -e "$flag" ];then
+	logger "$0: There is an update that is ready to run..."
+	rm -f "$flag"
+	logger "$0: Running update..."
+
+	fw_dir='/mnt/update/update-fw'
+	cd "$fw_dir"
+	./start.sh
+	errcode=$?
+
+	if [ 0 = "$errcode" ];then
+		logger "$0: Update complete, rebooting..."
+		cd /
+		rm -rf "$fw_dir"
+	else
+		logger "$0: Update completed with error code $errcode, rebooting..."
+	fi
+
+	reboot
+
+	while true
+	do
+		sleep 86400
+	done
+
+fi
+
+exit 0

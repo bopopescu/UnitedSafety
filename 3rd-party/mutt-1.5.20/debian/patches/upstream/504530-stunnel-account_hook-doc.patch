@@ -1,0 +1,16 @@
+Mention account-hook in the docs for $tunnel, see http://bugs.mutt.org/3237
+and http://bugs.debian.org/504530
+
+--- a/init.h
++++ b/init.h
+@@ -2410,6 +2410,10 @@
+   ** .pp
+   ** Note: For this example to work, you must be able to log in to the
+   ** remote machine without having to enter a password.
++  ** .pp
++  ** When set, Mutt uses the tunnel for all remote connections.
++  ** Please see ``$account-hook'' in the manual for how to use different
++  ** tunnel commands per connection.
+   */
+ #endif /* USE_SOCKET */
+   { "print",		DT_QUAD, R_NONE, OPT_PRINT, M_ASKNO },

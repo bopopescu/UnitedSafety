@@ -1,0 +1,25 @@
+=======================================================================
+= Building netcat
+=======================================================================
+Build Machine:
+	bm2
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	// 1. Edit Makefile and set CC to ${CROSS_COMPILE}gcc $(CFLAGS)
+	// 2. Remove the "-O" flag
+	// 3. Add the "-Os -Xlinker -s" CFLAGS option
+	// 4. Change the line:
+	//
+	//       make -e $(ALL) $(MFLAGS) XFLAGS='-DLINUX' STATIC=-static
+	//
+	//          TO
+	//
+	//       make -e $(ALL) $(MFLAGS) XFLAGS='-DLINUX'
+	//
+	//    This reduces the size of the binary.
+
+	make

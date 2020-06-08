@@ -1,0 +1,64 @@
+#!/bin/bash
+
+function ShowTitle
+{
+	echo -e " \033[32m"  # Green
+	echo -e $1
+	echo -e "\033[39m"  #default
+}
+
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	mkdir bin
+	mkdir bin/arm
+	mkdir bin/PC
+	# copying precompiled libraries into bin/arm to make sure they are available for build.
+	cp lib* bin/arm
+
+	ShowTitle UtilityLib
+	cd ../FastTrac/UtilityLib
+	make -e
+	cp bin/arm/libUtilityLib.a ../../Libs/bin/arm
+
+	ShowTitle FASTLib
+	cd ../FASTLib
+	make -e
+	cp bin/arm/libFASTLib.a ../../Libs/bin/arm
+	
+	ShowTitle command_line_parser
+	cd ../../command_line_parser
+	make -e
+	cp bin/arm/libcommand_line_parser.a ../Libs/bin/arm
+		
+	ShowTitle ats-common
+	cd ../ats-common
+	make -e
+	cp bin/arm/libats-common.a ../Libs/bin/arm
+
+	ShowTitle socket_interface
+	cd ../socket_interface
+	make -e
+	cp bin/arm/libsocket_interface.a ../Libs/bin/arm
+
+	ShowTitle state-machine
+	cd ../state-machine
+	make -e
+	cp bin/arm/libstate-machine.a ../Libs/bin/arm
+	
+	ShowTitle packetizer-lib
+	cd ../packetizer-lib
+	make -e
+	cp bin/arm/libpacketizer.a ../Libs/bin/arm
+	
+	ShowTitle db-monitor
+	cd ../db-monitor
+	make -e clean
+	make -e
+	cp bin/arm/libdb-monitor.a ../Libs/bin/arm
+	
+	ShowTitle iridium-monitor
+	cd ../iridium-monitor
+	./build.ats	
+	cp lib/bin/arm/libiridium.a ../Libs/bin/arm
+
+exit 0
+

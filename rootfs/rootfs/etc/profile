@@ -1,0 +1,16 @@
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin
+
+PPNI_REV=`cat /version|head -n 1`
+
+export HOME=/home/root
+
+export PATH
+
+alias ls='ls --color=always'
+alias ll='ls -l'
+alias la='ll -a'
+
+export PS1="\[\033[01;32m\]\u@\[\033[01;31m\]\h\[\033[01;34m\]($PPNI_REV) \w \$\[\033[00m\] "
+export PS2='> '
+export PS3='? '
+export PS4='[$LINENO]+'

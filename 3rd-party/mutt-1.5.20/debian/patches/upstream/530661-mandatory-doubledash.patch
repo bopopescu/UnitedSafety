@@ -1,0 +1,54 @@
+This patch is taken up from upstream http://bugs.mutt.org/3235
+The new way getopt is called broke the possibility to use
+"mutt -a attachfile recipient"
+now -- is mandatory to separate file and recipient, even if only
+a single file is attached, this patch fixes the documentation
+to make -- mandatory
+
+--- a/doc/mutt.man
++++ b/doc/mutt.man
+@@ -82,8 +82,10 @@
+ An expanded version of the given alias is passed to stdout.
+ .IP "-a \fIfile\fP [...]"
+ Attach a file to your message using MIME.
+-To attach multiple files, separating filenames and recipient addresses with
+-"\-\-" is mandatory, e.g. \fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
++When attaching single or multiple files, separating filenames and recipient addresses with
++"\-\-" is mandatory, e.g. \fBmutt \-a image.jpg \-\- addr1\fP or
++\fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
++The \-a option must be placed at the end of command line options.
+ .IP "-b \fIaddress\fP"
+ Specify a blind-carbon-copy (BCC) recipient
+ .IP "-c \fIaddress\fP"
+--- a/doc/manual.xml.head
++++ b/doc/manual.xml.head
+@@ -6995,9 +6995,6 @@
+ <arg choice="opt"><option>-F</option>
+ <replaceable>muttrc</replaceable>
+ </arg>
+-<arg choice="opt"><option>-a</option>
+-<replaceable>file</replaceable>
+-</arg>
+ <arg choice="opt"><option>-c</option>
+ <replaceable>address</replaceable>
+ </arg>
+@@ -7008,15 +7005,12 @@
+ <replaceable>subject</replaceable>
+ </arg>
+ <arg choice="opt">
+-<arg choice="opt" rep="repeat">
++<option>-a</option>
+ <replaceable>file</replaceable>
++<arg choice="opt" rep="repeat"/>
++--
+ </arg>
+-<arg choice="plain">--</arg>
+-</arg>
+-<arg choice="plain">
+-<replaceable>address</replaceable>
+-</arg>
+-<arg choice="opt" rep="repeat">
++<arg choice="plain" rep="repeat">
+ <replaceable>address</replaceable>
+ </arg>
+ </cmdsynopsis>

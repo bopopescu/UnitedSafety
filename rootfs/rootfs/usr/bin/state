@@ -1,0 +1,85 @@
+#!/bin/sh
+val=`date`
+echo -e "Current Time:: \033[32m $val \033[39m"
+val=`head -n 1 /version`
+echo -e "\nVersion:  \033[32m $val \033[39m"
+
+if [ "$1" = "-d" ]; then
+	ubiattach /dev/ubi_ctrl -m 8 -d 8 > /dev/null 2>&1
+	factory_dir="/tmp/factory.$$"
+	mkdir "$factory_dir"
+	mount -t ubifs ubi8_0 "$factory_dir" -o ro
+	val=`head -n 1 "$factory_dir"/version`
+	echo -e "Default Version:  \033[33m $val \033[39m"
+	umount "$factory_dir"
+	rmdir "$factory_dir"
+	ubidetach /dev/ubi_ctrl -m 8
+fi
+
+val=`get_micro_version`
+echo -e "Firmware Version: \033[32m $val \033[39m" 
+
+val=`db-config get -v wakeup mask`
+echo -e "\nIgnition Source: \033[32m $val \033[39m"
+val=`db-config get -v RedStone KeepAwakeMinutes`
+echo -e "Keep Awake: \033[32m $val \033[39m"
+
+val=`cat /tmp/logdir/wakeup.txt`
+echo -e "\nWoke up on: \033[32m $val \033[39m"
+
+val=`cat /tmp/logprev/reboot.txt`
+echo -e "\nPowered down on:"
+echo -e "\033[33m $val \033[39m"
+
+val=`ifconfig | grep -A3 ppp0  | grep inet | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}'`
+echo -e "\nPPP0:     \033[33m $val \033[39m"
+
+
+val=`ifconfig | grep -A3 ra0  | grep inet | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}'`
+echo -e "Wireless: \033[32m $val \033[39m"
+
+val=`ifconfig | grep -A3 eth0  | grep inet | awk -F ':' '{print $2}' | awk -F ' ' '{print $1}'`
+echo -e "Ethernet: \033[32m $val \033[39m"
+
+val=`db-config get -v Cellular carrier`
+echo -e "\nCellular APN: \033[32m $val \033[39m"
+val=`/usr/bin/get-rssi`
+echo -e "Current RSSI: \033[32m $val \033[39m"
+
+#display cams setup
+cams=`db-config get -v feature packetizer-cams`
+
+if [ "$cams" -eq "1" ]; then
+	val=`db-config get -v packetizer-cams host`
+	val2=`db-config get -v packetizer-cams port`
+	echo -e "\nCAMS host: \033[32m $val:$val2 \033[39m"
+	val=`sqlite3 /mnt/update/database/cams.db "Select count(mid) from message_table"`
+	echo -e "Cams database records: \033[32m $val \033[39m" 
+fi
+#display calamps setup
+cams=`db-config get -v feature packetizer-calamps`
+
+if [ "$cams" -eq "1" ]; then
+	val=`db-config get -v packetizer-calamps host`
+	val2=`db-config get -v packetizer-calamps port`
+	echo -e "\nCalamp host: \033[32m $val:$val2 \033[39m"
+	val=`sqlite3 /mnt/update/database/calamps.db "Select count(mid) from message_table"`
+	echo -e "Calamps database records: \033[32m $val \033[39m" 
+fi
+
+
+echo -e "\n    Outputs"
+feature | grep packetizer
+val=`iwconfig ra0 | grep SSID | awk -F '\"' '{print $2}'`
+echo -e "\nWiFi SSID: \033[32m $val \033[39m" 
+
+echo -e "\nWiFi Leases"
+echo -e " \033[32m"  # Green
+cat /var/state/dhcp/dhcpd.leases | grep client | sort | uniq
+echo -e "\033[39m"  #default
+
+echo -e "Power Monitor status"
+echo -e " \033[32m"  # Green
+echo -e 'PowerMonitorStateMachine stats' | nc -w 1 localhost 41009
+echo -e "\033[39m"  #default
+

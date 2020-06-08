@@ -1,0 +1,48 @@
+#!/bin/sh
+# SetDefaults - set the default user, APN, etc.  Only set values that are empty
+# Also unsets any db-config values that have become obsolete
+
+owner=`db-config get -b RedStone Owner`
+
+if [ ${#owner} -eq 0 ]; then
+	db-config set RedStone Owner ISC
+fi
+
+apn=`db-config get -b Cellular carrier`
+
+if [ ${#apn} -eq 0 ]; then
+	db-config set Cellular carrier m2mjde.telus.com
+fi
+
+#now remove any db-config values that are no longer needed.
+db-config unset Cellular DataPollRate
+db-config unset IgnitionMonitor UseIgnitionDebug
+db-config unset IgnitionMonitor ForceIgnition
+db-config unset IgnitionMonitor IgnitionOBDTimeoutSec
+db-config unset NMEA UseFakeSpeed
+db-config unset NMEA UseSystemTime
+db-config unset NMEA Logging
+db-config unset NMEA SaveInterval
+db-config unset RedStone SpeedSource
+db-config unset RedStone MaxValidSpeed
+db-config unset	RedStone EnableGPSReboot
+db-config unset	SER_GPS sendGPS
+db-config unset	SER_GPS Logging
+db-config unset	avl-monitor msg_enabled
+db-config unset RedStone SerialPortPower
+db-config unset PositionUpdate IncreaseStoppedReportTime
+db-config unset trip-monitor m_state_4_low_speed_kph
+db-config unset trip-monitor m_state_6_sound_buzzer_delay_seconds
+db-config unset trip-monitor m_state_14_sound_buzzer_delay_seconds
+db-config unset trip-monitor max_speed
+db-config unset trip-monitor StartupDistance
+db-config unset trip-monitor max_valid_speed
+db-config unset trip-monitor SpeedByRoad
+db-config unset power-monitor BattMonitorSetSize
+db-config unset power-monitor BattMonitorUpdatePeriod
+db-config unset power-monitor IgnitionDelay
+db-config unset packetizer-cams m_max_backlog
+db-config unset packetizer-cams retry_limit
+db-config unset packetizer-cams CellFailModeEnable
+db-config unset packetizer-cams FakeIridium
+

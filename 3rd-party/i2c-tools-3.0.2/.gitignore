@@ -1,0 +1,11 @@
+*.swp
+tools/i2cbusses.o
+tools/i2cdetect
+tools/i2cdetect.o
+tools/i2cdump
+tools/i2cdump.o
+tools/i2cget
+tools/i2cget.o
+tools/i2cset
+tools/i2cset.o
+tools/util.o

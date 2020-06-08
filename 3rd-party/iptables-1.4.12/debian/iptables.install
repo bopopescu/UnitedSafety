@@ -1,0 +1,8 @@
+usr/sbin/* sbin
+lib/xtables
+lib/lib*.so.*
+usr/share/man/man8
+iptables/iptables-apply.8 usr/share/man/man8
+iptables/iptables-apply usr/sbin
+iptables/iptables.xslt usr/share/iptables
+howtos/NAT*html debian/tmp/howtos/packet*html usr/share/doc/iptables/html

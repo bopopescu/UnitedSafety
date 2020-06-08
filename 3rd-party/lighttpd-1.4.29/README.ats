@@ -1,0 +1,14 @@
+=======================================================================
+= Building lighttpd 1.4.29
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./autogen.sh
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc LDFLAGS="-L`pwd`/../zlib-1.2.5 -L`pwd`/../bzip2-1.0.5 -L`pwd`/../pcre-8.31/" CFLAGS="-I`pwd`/../zlib-1.2.5 -I`pwd`/../bzip2-1.0.5 -I`pwd`/../pcre-8.31/" PCRECONFIG="`pwd`/../pcre-8.31/pcre-config"
+	make -j4 TRULINK_LOG="-DTRULINK_LOG"
+

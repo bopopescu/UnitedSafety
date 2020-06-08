@@ -1,0 +1,98 @@
+#!/bin/sh
+echo > /dev/watchdog
+logger -s "===== start-redstone ====="
+udevadm settle --timeout=2
+touch /tmp/.start-redstone
+export HOME='/home/root'
+export D='/etc/rc.d/init.d'
+
+. '/etc/rc.d/init.d/common'
+
+printf "nameserver 8.8.8.8\nnameserver 8.8.4.4\n" > /tmp/config/resolv.conf
+ifconfig lo up
+$D/setup-firewall 2>&1 > /dev/null
+
+$D/run-db-monitor&
+# $D/run-buzzer-monitor&
+echo > /dev/watchdog
+
+wait_for_app 'db-monitor' 41012 24 125000
+logger -s "===== run-db-monitor is active ====="
+echo > /dev/watchdog
+init-wakeup-signals&
+port-forward&
+
+# allow SSH over ra0
+ssh=`db-config get -v WiFi EnableSSH`       
+                                            
+if [ "$ssh" == "1" ]; then                  
+        iptables -I INPUT -i ra0 -p tcp --dport 22 -j ACCEPT 
+fi
+
+s=`get-wakeup-mask  | awk 'BEGIN {FS=","} {print $2}'`
+if [ "$s" == "accel" ];then
+	setup-accelerometer
+fi
+
+# wait_for_app 'buzzer-monitor' 41008 24 125000
+
+# turn on the USB hub
+echo V > /dev/set-gpio
+
+$D/run-avl-monitor&
+
+if [ -e /mnt/nvram/rom/sn.txt ];then
+	if [ ! -e /mnt/nvram/rom/UnitID.txt ];then
+		UnitID=`cat /mnt/nvram/rom/sn.txt|tr -d '\n'|tr -d '\r'`
+		UnitID=`expr $UnitID + 5000`
+		echo -n "$UnitID" > /mnt/nvram/rom/UnitID.txt
+#		echo "buzz start-redstone 10 50000 125000 350000"|telnet localhost 41008
+		usleep 350000
+	fi
+fi
+
+echo -n N > /dev/set-gpio # CAN_ON enabled
+echo > /dev/watchdog
+
+first_boot_dir='/etc/redstone/first-boot'
+
+if [ -e $first_boot_dir ];then
+echo > /dev/watchdog
+	echo "`date|tr -d '\n'`: Config first boot..." > /tmp/logdir/first-boot.txt
+	
+	cd $first_boot_dir
+
+	export REDSTONE_FIRST_BOOT=1
+
+	ls -1 $first_boot_dir |
+	while read fname
+	do
+		./$fname
+
+		if [ 0 != $? ];then
+			echo "`date|tr -d '\n'`: Config failed for command \"$fname\"" >> /tmp/logdir/first-boot.txt
+		fi
+
+	done
+
+	rm -rf $first_boot_dir;sync
+	echo "`date|tr -d '\n'`: Config complete" >> /tmp/logdir/first-boot.txt
+  >&2 echo -e " \033[7m\033[36mFIRST BOOT COMPLETE - Rebooting! (this is expected)\033[39m\033[0m"
+ 
+	sys_monitor
+	reboot
+fi
+echo > /dev/watchdog
+
+$D/redstone-startup-apps
+echo > /dev/watchdog
+
+if [ 0 = $? ];then
+	sys_monitor
+fi
+
+# for certification - turn on the Wifi since run-softap isn't running
+echo OLl > /dev/set-gpio
+
+unset D
+exit 0

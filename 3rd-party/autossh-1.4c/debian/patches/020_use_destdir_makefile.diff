@@ -1,0 +1,15 @@
+Support for $DESTDIR in the Makefile.
+
+Index: autossh/Makefile.in
+===================================================================
+--- autossh.orig/Makefile.in	2011-06-05 00:10:01.000000000 +0200
++++ autossh/Makefile.in	2011-06-05 00:26:15.000000000 +0200
+@@ -6,7 +6,7 @@
+ 
+ SSH=		@path_ssh@
+ 
+-prefix=		@prefix@
++prefix=		${DESTDIR}@prefix@
+ exec_prefix=	@exec_prefix@
+ bindir=		@bindir@
+ datadir=	@datadir@

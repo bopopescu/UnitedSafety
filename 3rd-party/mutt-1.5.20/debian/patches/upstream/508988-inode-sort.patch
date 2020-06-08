@@ -1,0 +1,41 @@
+fixed by http://dev.mutt.org/trac/ticket/3163
+changeset http://dev.mutt.org/trac/changeset/eb918af802ec
+resolves http://bugs.debian.org/508988
+
+This commit introduces an unconditional inode-sort to fix the slowness with big
+maildirs
+
+--- mutt-1.5.19/mh.c	2009-01-05 19:20:53.000000000 +0000
++++ mutt-7ddf1d1cc490/mh.c	2009-01-27 20:58:15.000000000 +0000
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 1996-2002,2007 Michael R. Elkins <me@mutt.org>
++ * Copyright (C) 1996-2002,2007,2009 Michael R. Elkins <me@mutt.org>
+  * Copyright (C) 1999-2005 Thomas Roessler <roessler@does-not-exist.org>
+  * 
+  *     This program is free software; you can redistribute it and/or modify
+@@ -1027,13 +1027,14 @@
+     if (!ctx->quiet && progress)
+       mutt_progress_update (progress, count, -1);
+ 
++    DO_SORT();
++
+     snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
+ 
+ #if USE_HCACHE
+     if (option(OPTHCACHEVERIFY))
+     {
+-      DO_SORT();
+-      ret = stat(fn, &lastchanged);
++       ret = stat(fn, &lastchanged);
+     }
+     else
+     {
+@@ -1057,7 +1058,6 @@
+     {
+ #endif /* USE_HCACHE */
+ 
+-    DO_SORT();
+     if (maildir_parse_message (ctx->magic, fn, p->h->old, p->h))
+     {
+       p->header_parsed = 1;

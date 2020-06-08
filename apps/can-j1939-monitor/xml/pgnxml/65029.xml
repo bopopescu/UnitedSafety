@@ -1,0 +1,19 @@
+<data>
+	<pgn>65029</pgn>
+	<spn>2452</spn>
+	<value>
+		<name>"Generator Total Real Power"</name>
+		<size>32</size>
+		<scale>1</scale>
+		<offset>-2000000000</offset>
+		<units>"W"</units>
+	</value>
+	<spn>2460</spn>
+	<value>
+		<name>"Generator Total Apparent Power"</name>
+		<size>32</size>
+		<scale>1</scale>
+		<offset>-2000000000</offset>
+		<units>"VA"</units>
+	</value>
+</data>

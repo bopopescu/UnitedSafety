@@ -1,0 +1,22 @@
+Author: Soren Hansen <soren@ubuntu.com>
+Description: Build a libipq_pic.a compiled with -fPIC (needed by other packages
+ to successfully build on AMD64).
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=358637
+
+Index: iptables-1.4.12/libipq/Makefile.am
+===================================================================
+--- iptables-1.4.12.orig/libipq/Makefile.am	2011-11-07 13:59:56.000000000 -0600
++++ iptables-1.4.12/libipq/Makefile.am	2011-11-07 14:13:47.000000000 -0600
+@@ -3,8 +3,11 @@
+ AM_CFLAGS = ${regular_CFLAGS}
+ AM_CPPFLAGS = ${regular_CPPFLAGS} -I${top_builddir}/include -I${top_srcdir}/include
+ 
++libipq_pic_la_CFLAGS = -fPIC ${regular_CFLAGS} -I${top_builddir}/include -I ${top_srcdir}/include
++
+ libipq_la_SOURCES = libipq.c
+-lib_LTLIBRARIES   = libipq.la
++libipq_pic_la_SOURCES = libipq.c
++lib_LTLIBRARIES   = libipq.la libipq_pic.la
+ man_MANS         = ipq_create_handle.3 ipq_destroy_handle.3 ipq_errstr.3 \
+                    ipq_get_msgerr.3 ipq_get_packet.3 ipq_message_type.3 \
+                    ipq_perror.3 ipq_read.3 ipq_set_mode.3 ipq_set_verdict.3 \

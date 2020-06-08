@@ -1,0 +1,13 @@
+# Gemalto EHS8 (Telit_HE910_Family_Ports_Arrangements_r4.pdf, Mod. 0810 2011-07 Rev.2)
+
+# Gemalto EHS8
+SUBSYSTEMS=="usb", DRIVERS=="usb", ATTRS{idVendor}=="1e2d", ATTRS{idProduct}=="0058", ENV{GEMALTO_EHS8_DETECTED}="1"
+
+# AT1 Access Point
+ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="00",  SYMLINK+="ttyModem", OWNER="telit", GROUP="telit", RUN+="/bin/sh /usr/bin/run-ppp.sh"
+
+# GPS (Not connected)
+ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="06", SYMLINK+="ttyGPS", OWNER="telit", GROUP="telit"
+ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="0a", SYMLINK+="ttyGPSAT", OWNER="telit", GROUP="telit", RUN+=/bin/sh /usr/bin/GetIMEI"
+ACTION=="add", ENV{GEMALTO_EHS8_DETECTED}=="1", ATTRS{bInterfaceNumber}=="08", SYMLINK+="ttyModemAT", OWNER="telit", GROUP="telit"
+

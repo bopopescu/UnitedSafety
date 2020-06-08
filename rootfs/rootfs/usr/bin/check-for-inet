@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# check-for-inet - check for a gateway in the route command.  Create /tmp/ramdisk/inet.good if it is there.
+# If it is not there 3 times in a row - remove the file.
+
+connected=0
+count=0
+
+while [ 1 ];
+do
+	route -n | grep UG  1>/dev/null
+	ret=$?
+	
+	if [ "$ret" -eq "0" ]; then
+		if [ "$connected" -eq "0" ]; then
+			connected=1
+			touch /tmp/ramdisk/inet.good
+			/usr/bin/testping
+			count=0
+		fi
+	else
+		count=`expr $count + 1`
+		
+		if [ "$count" == "3" ]; then  # remove the inet.good indicator after 30 seconds of no gateway
+			if [ -e "/tmp/ramdisk/inet.good" ]; then	
+				rm /tmp/ramdisk/inet.good
+				/usr/bin/testping
+			fi
+			connected=0
+		fi
+	fi
+	
+	sleep 10
+done

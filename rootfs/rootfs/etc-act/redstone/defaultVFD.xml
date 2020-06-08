@@ -1,0 +1,159 @@
+<data name="VFD" type="PLC">
+
+	<register name="40001" type="">
+		<definition>
+			<desc>"Bowl Drive running hours"</desc>
+			<pgn>40001</pgn>
+			<size>2</size>
+			<multiplier>0.1</multiplier>
+			<units>"hours"</units>
+			<hrange>429496729.4</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40003" type="">
+		<definition>
+			<desc>"Feed Pump running hours"</desc>
+			<pgn>40003</pgn>
+			<size>2</size>
+			<multiplier>0.1</multiplier>
+			<units>"hours"</units>
+			<hrange>429496729.4</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffffffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40005" type="">
+		<definition>
+			<desc>"Solids end vibrations"</desc>
+			<pgn>40005</pgn>
+			<size>1</size>
+			<multiplier>0.01</multiplier>
+			<units>"pecent"</units>
+			<hrange>327.67</hrange>
+			<lrange>-327.68</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40006" type="">
+		<definition>
+			<desc>"Solids end Temperatures"</desc>
+			<pgn>40006</pgn>
+			<size>1</size>
+			<multiplier>0.01</multiplier>
+			<units>"Deg c"</units>
+			<hrange>327.67</hrange>
+			<lrange>-327.68</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40007" type="">
+		<definition>
+			<desc>"Fluids end vibrations"</desc>
+			<pgn>40007</pgn>
+			<size>1</size>
+			<multiplier>0.01</multiplier>
+			<units>"pecent"</units>
+			<hrange>327.67</hrange>
+			<lrange>-327.68</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40008" type="">
+		<definition>
+			<desc>"Fluids end Temperature"</desc>
+			<pgn>40008</pgn>
+			<size>1</size>
+			<multiplier>0,01</multiplier>
+			<units>"Deg c"</units>
+			<hrange>327.67</hrange>
+			<lrange>-327.68</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40009" type="">
+		<definition>
+			<desc>"Fluids end vibrations MSB"</desc>
+			<pgn>40009</pgn>
+			<size>1</size>
+			<multiplier>0.01</multiplier>
+			<units>"pecent"</units>
+			<hrange>327.67</hrange>
+			<lrange>-327.68</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40010" type="">
+		<definition>
+			<desc>"Fluids end Temperature warning limit LSB"</desc>
+			<pgn>40010</pgn>
+			<size>1</size>
+			<multiplier>0.01</multiplier>
+			<units>"Deg c"</units>
+			<hrange>327.67</hrange>
+			<lrange>-327.68</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40011" type="">
+		<definition>
+			<desc>"Main Drive RPM"</desc>
+			<pgn>40011</pgn>
+			<size>1</size>
+			<multiplier>1</multiplier>
+			<units>"RPM"</units>
+			<hrange>65534.0</hrange>
+			<lrange>0.0</lrange>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+	<register name="40012" type="">
+		<definition>
+			<desc>"Operating mode state"</desc>
+			<pgn>40012</pgn>
+			<size>1</size>
+			<nadata>ffff</nadata>
+		</definition>
+		<config>
+			<type>63</type>
+		</config>
+	</register>
+
+</data>

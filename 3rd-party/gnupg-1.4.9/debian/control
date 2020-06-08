@@ -1,0 +1,75 @@
+Source: gnupg
+Section: utils
+Priority: important
+Maintainer: Ubuntu Core Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian GnuPG-Maintainers <pkg-gnupg-maint@lists.alioth.debian.org>
+Uploaders: Sune Vuorela <debian@pusling.com>,
+ Daniel Leidert (dale) <daniel.leidert@wgdd.de>,
+ Thijs Kinkhorst <thijs@debian.org>
+Standards-Version: 3.8.0
+Build-Depends: libz-dev, libldap2-dev, libbz2-dev,
+ libcap-dev [!kfreebsd-i386 !kfreebsd-amd64 !hurd-i386],
+ libusb-dev [!hurd-i386],
+ libreadline5-dev, file, gettext, dpatch, dpkg-dev (>= 1.13.12),
+ libcurl4-gnutls-dev
+Homepage: http://www.gnupg.org
+Vcs-Browser: http://svn.debian.org/wsvn/pkg-gnupg/gnupg/
+Vcs-Svn: svn://svn.debian.org/svn/pkg-gnupg/gnupg/trunk/
+
+Package: gnupg
+Architecture: any
+Depends: ${shlibs:Depends}, gpgv
+Recommends: ${shlibs:Recommends}
+Suggests: gnupg-doc, xloadimage | imagemagick | eog, libpcsclite1
+Conflicts: seahorse (<< 2.22.2-2)
+Description: GNU privacy guard - a free PGP replacement
+ GnuPG is GNU's tool for secure communication and data storage.
+ It can be used to encrypt data and to create digital signatures.
+ It includes an advanced key management facility and is compliant
+ with the proposed OpenPGP Internet standard as described in RFC2440.
+ .
+ GnuPG does not use any patented algorithms so it cannot be compatible
+ with PGP2 because it uses IDEA (which is patented worldwide).
+
+Package: gpgv
+Architecture: any
+Priority: important
+Depends: ${shlibs:Depends}
+Suggests: gnupg
+Replaces: gnupg (<< 1.4.5-2)
+Description: GNU privacy guard - signature verification tool
+ GnuPG is GNU's tool for secure communication and data storage.
+ .
+ gpgv is a stripped-down version of gnupg which is only able to check
+ signatures.  It is smaller than the full-blown gnupg and uses a
+ different (and simpler) way to check that the public keys used to
+ make the signature are trustworthy.
+
+Package: gnupg-udeb
+XC-Package-Type: udeb
+Section: debian-installer
+Priority: extra
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: GNU privacy guard - a free PGP replacement
+ GnuPG is GNU's tool for secure communication and data storage.
+ It can be used to encrypt data and to create digital signatures.
+ It includes an advanced key management facility and is compliant
+ with the proposed OpenPGP Internet standard as described in RFC2440.
+ .
+ This is GnuPG packaged in minimal form for use in debian-installer.
+
+Package: gpgv-udeb
+XC-Package-Type: udeb
+Section: debian-installer
+Priority: extra
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: minimal signature verification tool
+ GnuPG is GNU's tool for secure communication and data storage.
+ It can be used to encrypt data and to create digital signatures.
+ It includes an advanced key management facility and is compliant
+ with the proposed OpenPGP Internet standard as described in RFC2440.
+ .
+ This is GnuPG's signature verification tool, gpgv, packaged in minimal
+ form for use in debian-installer.

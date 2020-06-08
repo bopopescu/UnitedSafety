@@ -1,0 +1,39 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	./configure
+	export CC=${CROSS_COMPILE}gcc
+	export AR="${CROSS_COMPILE}ar rc"
+	export SFLAGS='-Os -fPIC'
+	export LDSHARED="$CC -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
+	export CFLAGS='-Os'
+	make -e -j$TRULINK_JOBS
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Build directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo cp -av libz.so.1.2.5 "$ROOTFS_DEF_DIR/usr/lib"
+		sudo chown root:root "$ROOTFS_DEF_DIR/usr/lib/libz.so.1.2.5"
+		cd "$ROOTFS_DEF_DIR/usr/lib"
+		sudo ln -s 'libz.so.1.2.5' 'libz.so'
+		sudo ln -s 'libz.so.1.2.5' 'libz.so.1'
+		cd -
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"zLib\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

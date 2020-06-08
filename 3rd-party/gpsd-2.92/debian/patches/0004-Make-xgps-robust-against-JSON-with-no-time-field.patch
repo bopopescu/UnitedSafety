@@ -1,0 +1,35 @@
+From: Eric S. Raymond <esr@thyrsus.com>
+Date: Sun, 14 Mar 2010 09:17:56 -0400
+Subject: [PATCH] Make xgps robust against JSON with no time field.
+
+---
+ xgps |    8 +++++++-
+ 1 files changed, 7 insertions(+), 1 deletions(-)
+
+diff --git a/xgps b/xgps
+index 3a89ea6..c4d7780 100755
+--- a/xgps
++++ b/xgps
+@@ -275,7 +275,7 @@ class AISView:
+ class Base:
+     gpsfields = (
+         # First column
+-        ("Time", lambda s, r: gps.isotime(r.time)),
++        ("Time", lambda s, r: s.update_time(r)),
+         ("Latitude", lambda s, r: s.update_latitude(r)),
+         ("Longitude", lambda s, r: s.update_longitude(r)),
+         ("Altitude", lambda s, r: s.update_altitude(r)),
+@@ -459,6 +459,12 @@ class Base:
+ 
+     # State updates
+ 
++    def update_time(self, data):
++        if hasattr(data, "time"):
++            return gps.isotime(data.time)
++        else:
++            return "n/a"
++
+     def update_latitude(self, data):
+         if data.mode >= gps.MODE_2D:
+             lat = gps.client.deg_to_str(self.deg_type, abs(data.lat))
+-- 

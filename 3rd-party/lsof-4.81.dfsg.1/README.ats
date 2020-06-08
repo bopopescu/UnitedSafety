@@ -1,0 +1,21 @@
+=======================================================================
+= Building lsof
+=======================================================================
+Build Machine:
+	bm2
+	Linux bm2 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	// Say "n" to build/check inventory. Select all defaults after that.
+	./Configure linux
+
+	// Modify the file "Makefile" and replace:
+	//	CFLAGS= ${CDEFS} ${INCL} ${DEP} ${DEBUG}
+	//
+	// with (make the "lsof" binary as small as possible):
+	//	CFLAGS= ${CDEFS} ${INCL} ${DEP} -Os -Xlinker -s
+
+	make -e

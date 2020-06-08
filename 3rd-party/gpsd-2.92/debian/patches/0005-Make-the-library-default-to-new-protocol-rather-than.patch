@@ -1,0 +1,27 @@
+From: Eric S. Raymond <esr@thyrsus.com>
+Date: Sun, 14 Mar 2010 18:59:02 -0400
+Subject: [PATCH] Make the library default to new protocol rather than old. Old-protocol support is still present.
+
+---
+ libgps_core.c |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/libgps_core.c b/libgps_core.c
+index 03ea3e1..aa5ff67 100644
+--- a/libgps_core.c
++++ b/libgps_core.c
+@@ -698,11 +698,9 @@ int gps_stream(struct gps_data_t *gpsdata,
+     char buf[GPS_JSON_COMMAND_MAX];
+ 
+     if ((flags & (WATCH_JSON|WATCH_OLDSTYLE|WATCH_NMEA|WATCH_RAW))== 0) {
+-	if (PRIVATE(gpsdata)->newstyle || (flags & WATCH_NEWSTYLE)!=0)
+-	    flags |= WATCH_JSON;
+-        else
+-	    flags |= WATCH_OLDSTYLE;
++	flags |= WATCH_JSON;
+     }
++
+     if (flags & POLL_NONBLOCK)
+ 	(void)fcntl(gpsdata->gps_fd, F_SETFL, O_NONBLOCK); 
+     if ((flags & WATCH_DISABLE) != 0) {
+-- 

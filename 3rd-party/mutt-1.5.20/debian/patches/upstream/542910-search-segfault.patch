@@ -1,0 +1,20 @@
+Fixes a segfault that happened when searching "~b something =", see upstream
+bugs http://bugs.mutt.org/3314 and http://bugs.mutt.org/3315
+
+--- a/pattern.c
++++ b/pattern.c
+@@ -822,7 +822,13 @@
+       case '%':
+       case '=':
+       case '~':
+-	if (*(ps.dptr + 1) == '(') 
++        if (!*(ps.dptr + 1))
++        {
++          snprintf (err->data, err->dsize, _("missing pattern: %s"), ps.dptr);
++          mutt_pattern_free (&curlist);
++          return NULL;
++        }
++        if (*(ps.dptr + 1) == '(')
+         {
+ 	  ps.dptr ++; /* skip ~ */
+ 	  p = find_matching_paren (ps.dptr + 1);

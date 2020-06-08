@@ -1,0 +1,10 @@
+#!/bin/sh -e
+
+if [ "$1" = remove ] ; then
+	dpkg-divert --remove --package mutt-patched --rename \
+		--divert /usr/bin/mutt.org /usr/bin/mutt
+fi
+
+#DEBHELPER#
+
+exit 0

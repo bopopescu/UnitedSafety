@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# MoveWiFi - moves the Wifi DB from /mnt/update/database to /mnt/nvram
+# Change brought in at 1.9.4 release
+
+if [ -e /mnt/nvram/config/wifi.db ]; then
+  exit
+fi
+
+if [ -e /mnt/update/database/wifi.db ]; then
+  mv /mnt/update/database/wifi.db /mnt/nvram/config/wifi.db
+fi
+

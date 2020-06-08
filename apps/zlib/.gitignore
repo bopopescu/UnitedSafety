@@ -1,0 +1,16 @@
+*.swp
+*.o
+*.lo
+example
+example64
+examplesh
+libz.a
+libz.so
+libz.so.1
+libz.so.1.2.5
+minigzip
+minigzip64
+minigzipsh
+zlib.pc
+Makefile
+zconf.h

@@ -1,0 +1,14 @@
+Open attachments as read-only so the editor won't be able to modify it;
+otherwise the user can believe that he/she can edit it and risk to lose his/her
+work (see upstream bug http://bugs.mutt.org/3261)
+
+--- a/attach.c
++++ b/attach.c
+@@ -494,6 +494,7 @@
+ 	goto return_error;
+     }
+ 
++    chmod (tempfile, 0400);
+     use_pipe = rfc1524_expand_command (a, tempfile, type,
+ 				       command, sizeof (command));
+     use_pager = entry->copiousoutput;

@@ -1,0 +1,48 @@
+#!/bin/sh
+
+message_assembler_port=41103
+modem_dev='/dev/ttyModem'
+
+return_command_result()
+{
+
+	if [ 0 = $? ];then
+		_ret=1
+	else
+		_ret=0
+	fi
+
+}
+
+wait_for_app()
+{
+	app=$1
+	port=$2
+	retry=$3
+	delay=$4
+	i=0
+
+	while true
+	do
+		i=`expr $i + 1`
+		netstat -nl|grep $port > /dev/null
+
+		if [ 0 = $? ];then
+			echo "$app ready in $i cycles" > "/var/log/$app-startup"
+			break
+		fi
+
+		if [ $retry = $i ];then
+			echo "ERROR: $app not ready after $i cycles" > "/var/log/$app-startup"
+			break
+		fi
+
+		usleep $delay
+	done
+}
+
+is_usb_telit_present()
+{
+	lsusb 2>&1 | grep '1bc7:0021' &> /dev/null
+	return_command_result
+}

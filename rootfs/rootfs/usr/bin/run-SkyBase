@@ -1,0 +1,113 @@
+#!/bin/sh
+
+basedir='/home/applet/.skybase'
+
+sleep_forever()
+{
+	while true
+	do
+		sleep 864000000
+	done
+}
+
+	url=`db-config get -v skybase url`
+
+	if [ '' = "$url" ];then
+		url='http://redstone.atsplace.com:38025/skybase'
+	fi
+
+	ubinfo -d 11
+
+	if [ 0 != $? ];then
+		ubiattach /dev/ubi_ctrl -m 11 -d 11
+
+		if [ 0 != $? ];then
+			flash_eraseall /dev/mtd11
+			ubiattach /dev/ubi_ctrl -m 11 -d 11
+
+			if [ 0 != $? ];then
+				logger "$0: Failed to attach UBI device 11"
+				sleep_forever
+			fi
+
+		fi
+
+	fi
+
+	if [ ! -e "$basedir/data" ];then
+		mkdir -p "$basedir/data"
+	fi
+
+	if [ ! -e "$basedir/mnt" ];then
+		mkdir -p "$basedir/mnt"
+	fi
+
+	mount|grep '^ubi11_0' &> /dev/null
+
+	if [ 0 != $? ];then
+		mount -t ubifs ubi11_0 "$basedir/data"
+
+		if [ 0 != $? ];then
+			ubidetach /dev/ubi_ctrl -d 11
+			flash_eraseall /dev/mtd11
+			ubiattach /dev/ubi_ctrl -m 11 -d 11
+
+			if [ 0 != $? ];then
+				logger "$0: Failed to attach UBI device 11"
+				sleep_forever
+			fi
+
+			ubimkvol /dev/ubi11 -n 0 -N data -m
+			mount -t ubifs ubi11_0 "$basedir/data"
+
+			if [ 0 != $? ];then
+				logger "$0: Failed to mount data partition on UBI device 11"
+				sleep_forever
+			fi
+
+		fi
+
+	fi
+
+	if [ ! -e "$basedir/data/ready" ];then
+
+		while true
+		do
+			rm -rf "$basedir/data/*"
+			wget -O "$basedir/data/roadspeeds.ctm1.bz2" "$url/roadspeeds.ctm1.bz2"
+
+			if [ 0 == $? ];then
+				sync
+				touch "$basedir/data/ready"
+				sync
+				break
+			fi
+
+			sleep 15
+		done
+
+	fi
+
+	if [ ! -e /tmp/.skybase/mounted ];then
+		mkdir -p /tmp/.skybase
+		mount -t ramfs ramfs "$basedir/mnt"
+		touch /tmp/.skybase/mounted
+	fi
+
+	if [ ! -e /tmp/.skybase/ready ];then
+		nice -n10 bunzip2 -c "$basedir/data/roadspeeds.ctm1.bz2" > "$basedir/mnt/roadspeeds.ctm1"
+
+		if [ 0 = $? ];then
+			touch /tmp/.skybase/ready
+		else
+			sleep 15
+			exit 1
+		fi
+
+	fi
+
+	roadfile=`db-config get -v -n skybase roadfile`
+	trace=`db-config get -v -n skybase trace`
+	exec SkyBase "roadfile=$roadfile" "trace=$trace"
+
+exit 1

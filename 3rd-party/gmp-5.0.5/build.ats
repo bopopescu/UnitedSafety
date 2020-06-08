@@ -1,0 +1,30 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./configure --host=arm-linux-gnu CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}ld AR=${CROSS_COMPILE}ar CLFAGS='-Os'
+	export KERNEL_SRC_DIR="${BUILD_DIR}/kernel"
+	make -j$TRULINK_JOBS
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		APP=libgmp.so.10
+		sudo cp -av .libs/libgmp.so.10.0.5 "$ROOTFS_DEF_DIR/usr/lib/$APP"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

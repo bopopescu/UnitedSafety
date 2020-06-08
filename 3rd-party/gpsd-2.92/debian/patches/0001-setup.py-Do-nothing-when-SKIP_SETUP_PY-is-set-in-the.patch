@@ -1,0 +1,24 @@
+From: Bernd Zeimetz <bernd@bzed.de>
+Date: Wed, 10 Mar 2010 21:23:32 +0100
+Subject: [PATCH] setup.py: Do nothing when SKIP_SETUP_PY is set in the environment.
+
+---
+ setup.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 465f15c..06a4e6b 100644
+--- a/setup.py
++++ b/setup.py
+@@ -7,6 +7,10 @@ from distutils.core import setup, Extension
+ import os
+ import sys
+ 
++# workaround to skip building Python related stuff
++if os.environ.get('SKIP_SETUP_PY'):
++    sys.exit(0)
++
+ # For VPATH builds, this script must be run from $(srcdir) with the
+ # abs_builddir environment variable set to the location of the build
+ # directory.  This is necessary because Python's distutils package
+-- 

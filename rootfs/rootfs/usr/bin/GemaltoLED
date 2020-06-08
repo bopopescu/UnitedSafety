@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# this will get the IMEI from the Gemalto - it can fail up to 10 times.  If it fails - no IMEI will be set
+# The IMEI is set in both 'db-config RedStone IMEI' and in /mnt/nvram/rom/imei
+#
+# This is usually called by check-for-IMEI on first boot and shouldn't need to be called directly.
+#
+
+#=========================================================================================
+WaitForModemPorts ()
+{
+ready=0
+count=0
+#wait for ttyGPSAT to appear
+while [ "$ready" == "0"	]
+do
+	if [ -e /dev/ttyGPSAT ]; then
+		ready=1
+		echo -e "ate0\r" > /dev/ttyGPSAT
+	else
+		sleep 1
+		count=`expr $count + 1`
+
+		if [ "$#" -eq "1"  ]; then
+			if [ "$count" -ge "$1" ]; then
+				exit
+			fi
+		fi
+	fi
+done
+
+}
+
+#=========================================================================================
+SetGemaltoLED ()
+{
+	echo -e "AT^SCFG=\"GPIO/mode/SYNC\",\"std\"\r" > $1
+	sleep 1
+	echo -e "AT^SLED=1\r" > $1
+	sleep 1
+	echo -e "AT&W\r" > $1
+}
+
+#=========================================================================================
+#main
+
+
+
+WaitForModemPorts 30
+
+
+SetGemaltoLED /dev/ttyGPSAT
+
+

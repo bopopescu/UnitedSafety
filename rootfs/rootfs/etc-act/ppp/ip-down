@@ -1,0 +1,7 @@
+#!/bin/sh
+echo 'ppp_down' | socat - unix-connect:/var/run/redstone/telit-monitor
+
+if [ -f /var/run/pluto/pluto.pid ];then
+	echo -e stop | telnet localhost 41013 2>/dev/null &
+fi
+

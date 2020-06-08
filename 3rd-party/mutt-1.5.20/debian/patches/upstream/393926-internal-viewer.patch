@@ -1,0 +1,21 @@
+Display text/x-diff with the internal viewer, see upstream bug
+http://bugs.mutt.org/3246
+
+--- a/muttlib.c
++++ b/muttlib.c
+@@ -622,11 +622,11 @@
+   switch (m->type)
+   {
+     case TYPETEXT:
+-
+       if (!ascii_strcasecmp ("plain", m->subtype) ||
+-	  !ascii_strcasecmp ("rfc822-headers", m->subtype) ||
+-	  !ascii_strcasecmp ("enriched", m->subtype))
+-	return 0;
++         !ascii_strcasecmp ("rfc822-headers", m->subtype) ||
++         !ascii_strcasecmp ("enriched", m->subtype) ||
++         !ascii_strcasecmp ("x-diff", m->subtype))
++       return 0;
+       break;
+ 
+     case TYPEAPPLICATION:

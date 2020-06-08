@@ -1,0 +1,10 @@
+15_free_caps
+16_min_privileges
+24_gpgv_manpage_cleanup
+25_de.po_fixes
+25_it.po_fixes
+25_fr.po_fixes
+50_disable_mlock_test
+55_curl_typefix
+61_use_agent_default
+99_yat2m_fix_samp_handling

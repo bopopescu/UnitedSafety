@@ -1,0 +1,29 @@
+message cache partially invalid after network problem
+fixed by http://dev.mutt.org/trac/ticket/3163
+changeset http://dev.mutt.org/trac/changeset/da94a92c3ba0
+resolves http://bugs.debian.org/500016
+
+--- mutt-1.5.19/bcache.c	2009-01-05 19:20:53.000000000 +0000
++++ mutt-7ddf1d1cc490/bcache.c	2009-01-27 20:58:15.000000000 +0000
+@@ -136,6 +136,13 @@
+   snprintf (path, sizeof (path), "%s%s%s", bcache->path, id,
+             tmp ? ".tmp" : "");
+ 
++  if ((fp = safe_fopen (path, "w+")))
++    goto out;
++
++  if (errno == EEXIST)
++    /* clean up leftover tmp file */
++    mutt_unlink (path);
++
+   s = strchr (path + 1, '/');
+   while (!(fp = safe_fopen (path, "w+")) && errno == ENOENT && s)
+   {
+@@ -147,6 +154,7 @@
+     s = strchr (s + 1, '/');
+   }
+ 
++  out:
+   dprint (3, (debugfile, "bcache: put: '%s'\n", path));
+ 
+   return fp;

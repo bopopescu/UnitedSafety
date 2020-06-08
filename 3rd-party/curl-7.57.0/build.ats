@@ -1,0 +1,26 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./autogen.sh
+	./configure --host=arm-linux-gnu CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}ld AR=${CROSS_COMPILE}ar \
+		--with-ssl=/tmp/$(whoami)/openssl  --prefix=/tmp/dave/bin/arm \
+	--disable-shared \
+	--disable-ftp \
+	--disable-tftp \
+	--disable-file \
+	--disable-pop3 \
+	--disable-ct \
+	--disable-gopher \
+	--disable-rtsp \
+	--disable-smtp \
+	--disable-telnet \
+	--disable-dict \
+	--disable-imap
+
+	make -e
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+	make install
+exit 0

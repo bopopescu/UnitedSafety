@@ -1,0 +1,6 @@
+*.swp
+*.o
+Makefile
+packetizer-iridium
+packetizer-iridium.pro.user
+

@@ -1,0 +1,148 @@
+#!/bin/sh
+# early-start - mount the disks
+#
+#		Disk		Mount Point
+#
+#		ubi10		/mnt/update
+#		ubi4		/mnt/nvram
+#		ubi11		/mnt/logs
+#
+	echo > /dev/watchdog
+
+#------------------------------------------------------------------
+# mount ubi10 to /mnt/update
+	update_repair_flag='/.repair-updatefs'
+
+	if [ -e /home/root/.count-updatefs ]; then
+		update_count=`cat /home/root/.count-updatefs`
+	else
+		update_count=0;
+	fi
+
+	if [ -e "$update_repair_flag" ];then
+		flash_eraseall /dev/mtd10
+		ubiattach /dev/ubi_ctrl -m 10 -d 10
+		ubimkvol /dev/ubi10 -n 0 -N wrk_rootfs -m
+		rm "$update_repair_flag"
+		update_count=$(expr $update_count + 1)
+		echo $update_count > /home/root/.count-updatefs
+	else
+		ubiattach /dev/ubi_ctrl -m 10 -d 10
+
+		if [ 0 != $? ];then
+			touch "$update_repair_flag"
+			reboot
+		fi
+	fi
+
+	mount -t ubifs ubi10_0 /mnt/update/
+
+	if [ ! -e /mnt/update/database ];then
+		mkdir /mnt/update/database
+	fi
+
+	printf 'db_dir_ready\r' | socat - unix-connect:/var/run/redstone/rtc-monitor
+	
+#------------------------------------------------------------------
+# mount ubi4 to /mnt/nvram
+	nvram_repair_flag='/.repair-nvramfs'
+	if [ -e /home/root/.count-nvramfs ]; then
+		nvram_count=`cat /home/root/.count-nvramfs`
+	else
+		nvram_count=0;
+	fi
+
+	if [ -e "$nvram_repair_flag" ];then
+		flash_eraseall /dev/mtd4
+		ubiattach /dev/ubi_ctrl -m 4 -d 4
+		ubimkvol /dev/ubi4 -n 0 -N nvram_rootfs -m
+		rm "$nvram_repair_flag"
+		nvram_count=$(expr $nvram_count + 1)
+		echo $nvram_count > /home/root/.count-nvramfs
+	else
+		ubiattach /dev/ubi_ctrl -m 4 -d 4
+
+		if [ 0 != $? ];then
+			touch "$nvram_repair_flag"
+			reboot
+		fi
+	fi
+	
+	mount -t ubifs ubi4_0 /mnt/nvram/
+ 
+	if [ ! -d /mnt/logs ]; then
+		mkdir /mnt/logs
+	fi
+
+	if [ ! -h /home/root/system-log ]; then
+		rm -rf /home/root/system-log
+		ln -s /mnt/logs /home/root/system-log
+	fi
+
+#------------------------------------------------------------------
+# mount ubi11 to /mnt/logs for logging.
+	logs_repair_flag='/.repair-logsfs'
+	if [ -e /home/root/.count-logsfs ]; then
+		logs_count=`cat /home/root/.count-logsfs`
+	else
+		logs_count=0;
+	fi
+
+	if [ -e "$logs_repair_flag" ];then
+		flash_eraseall /dev/mtd11
+		ubiattach /dev/ubi_ctrl -m 11 -d 11
+		ubimkvol /dev/ubi11 -n 0 -N data -m
+		rm "$logs_repair_flag"
+		logs_count=$(expr $logs_count + 1)
+		echo $logs_count > /home/root/.count-logsfs
+	else
+		ubiattach /dev/ubi_ctrl -m 11 -d 11
+
+		if [ 0 != $? ];then
+			touch "$logs_repair_flag"
+			reboot
+		fi
+	fi
+
+	mount -t ubifs ubi11_0 /mnt/logs/
+
+	#test for messages being a symlink to the /tmp/messages file
+	if [ ! -h /mnt/logs/messages ]; then
+		rm -f /mnt/logs/messages
+		ln -s /tmp/messages /mnt/logs/messages
+	fi
+
+
+	if [ -e /mnt/logs/roadspeeds.ctm1.bz2 ]; then
+		rm /mnt/logs/roadspeeds.ctm1.bz2
+	fi
+
+	if [ ! -e /mnt/nvram/config ];then
+		mkdir /mnt/nvram/config
+	fi
+#------------------------------------------------------------------
+# disk mounting complete - now do a bunch of other stuff.
+	/etc/rc.d/init.d/m2m-init-logging
+	get-wakeup >> /tmp/logdir/wakeup.txt;sync
+	echo 45000 65535 > /proc/sys/net/ipv4/ip_local_port_range
+
+	/usr/bin/app-monitor
+	/usr/bin/system-watchdog
+
+	if [ -d /tmp/autorun ];then
+		cd /tmp/autorun/
+		ls -1 /tmp/autorun/ |
+		while read fname
+		do
+			./$fname &> /dev/null &
+		done
+
+	fi
+
+	ls -1 /etc/redstone/early-start |
+	while read fname
+	do
+		$fname &> /dev/null &
+	done
+
+exit 0

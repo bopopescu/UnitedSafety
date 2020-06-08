@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Gemalto setup - Turns on the LED and pulls the IMEI if it isn't already set
+
+/usr/bin/GemaltoLED
+
+/usr/bin/GetIMEI
+/usr/bin/GetCCID
+
+

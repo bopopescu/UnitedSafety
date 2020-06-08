@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<settings>
+	<server type='input/output'>
+		<name>CalAmp</name>
+		<host>redstone.atsplace.com</host>
+		<port>51001</port>
+		<timeout>30000</timeout>
+	</server>
+</settings>

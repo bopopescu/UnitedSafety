@@ -1,0 +1,14 @@
+Small fix in a German translation, the original bug submission was amended after
+consulting a native speaker (gregoa@)
+
+--- a/po/de.po
++++ b/po/de.po
+@@ -1648,7 +1648,7 @@
+ 
+ #: curs_main.c:1317 curs_main.c:1361
+ msgid "No undeleted messages."
+-msgstr "Alle Nachrichten gelöscht."
++msgstr "Keine ungelöschten Nachrichten."
+ 
+ #: curs_main.c:1354 curs_main.c:1378
+ msgid "You are on the first message."

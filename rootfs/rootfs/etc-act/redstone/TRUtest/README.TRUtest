@@ -1,0 +1,23 @@
+This is a description of all of the tests found in the TRUtest directory.
+
+If you add a test please update this file!
+
+
+1)  1000_sleep.tst 		- test that a unit will wake up from the heartbeat and that it can be forced to sleep using the go-to-sleep flag and power-monitor commands.
+2)  1853_modbus.tst 		- test that modbus and can-obd2 are mutually exclusive (only one is on, but one of them is always on)
+3)  2057_IridiumOnOff.tst	- test that both the On and the Off messages go out the Iridium.
+4)  2066_Inputs.tst 		- test that both the Input messages are sent out as defined in the LCM.
+5)  2071_MsgTimeouts.tst 	- test that confirms that message priority affects shutdown properly.
+6)  gps_sim.tst 			- test that PositionUpdate is reporting properly by having the device replay a simulated GPS route
+7)  hid.tst 			- test that the hardware id value is correct
+8)  modbus_message_priority	- test that only modbus machine hour can be transmitted over Iridium
+9)  Proxy.tst			- send a bunch of messages to the proxy server via cams to make sure that all messages are being handled properly.  Do it both via cell/ethernet and via Iridium.  
+10) RoutePrimary/RouteSecondary - test the NTPC Primary/Secondary setup.  Requires multiple TruLinks
+11) sleep_wifi			- test that a unit will stay awake when the LCM accesses the system
+12) sleep_zigbee		- test that a unit will stay awake when a zigbee (SLP) connects to the system
+13) wakeup_can			- test that a unit will wakeup on CAN bus activity
+14) wakeup_ignition		- test that a unit will wakeup on the Ignition switch
+15) wakeup_rtc			- test that a unit will wakeup on the RTC heartbeat
+16) wakeup_voltage		- test that a unit will wakeup on the voltage switch
+17) wifi			- test message transmission over WiFi client (apcli0)
+18) zigbee_simulator.tst	- test that SLP messages are being passed properly - inject each SLP message into the system

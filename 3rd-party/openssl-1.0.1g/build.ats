@@ -1,0 +1,19 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./Configure --prefix=/tmp/$(whoami)/openssl linux-armv4:gcc:-Os
+	make
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	make install
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make install\" failed"
+		exit $ret
+	fi
+exit 0

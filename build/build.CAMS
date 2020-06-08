@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# Simply call ./build to build a version 3.0.0.#  where# is the incremented number from build.cnt
+
+git checkout CAMS
+rev_name="2.0.1"
+./BuildNum
+
+
+rev=`cat build.num`
+
+GREEN='\033[32m'
+YELLOW='\033[33m'
+NORMAL='\033[39m\033[0m'
+
+cd ..
+cwd=`pwd`
+
+
+# check for file system changes that need to be repacked into the rootfs-def.tar file.
+cd $cwd/rootfs
+sudo ./repack
+if [  "$?" -ne "0" ]; then
+	echo "Changes pending in root file system - commit before building."
+	exit 1
+fi
+
+cd $cwd
+
+export PASSPHRASE_FILE=/home/dave/pass.txt
+
+
+echo -e $GREEN "Creating CAMS release $rev_name.$rev..." $NORMAL
+echo -e $GREEN "BUILDING rev $rev" $NORMAL
+
+#sudo rm -rf ~/redstone/builddir
+#mkdir -p ~/redstone/builddir
+sudo rm -rf ~/trulink/builddir
+mkdir -p ~/trulink/builddir/Libs/bin/arm
+
+cd ~/RedStone/Software/build
+echo -e $GREEN "Running -> $YELLOW ./build.pl srcdir=$cwd revName=$rev_name rev=$rev norev" $NORMAL
+./build.pl srcdir=$cwd revName=$rev_name rev=$rev norev
+
+if [ $? -ne 0 ]; then
+	exit 1
+fi
+
+echo -e $GREEN "Creating release..." $NORMAL
+cd ~/RedStone/Software/create-release
+echo -e $GREEN "Running -> $YELLOW ./create-release.pl upload=1 uboot=1 install-rootfs=1 factory-install=1 test-factory-install=1 /home/dave/trulink/builddir" $NORMAL
+./create-release.pl upload=1 uboot=1 install-rootfs=1 factory-install=1 test-factory-install=1 /home/dave/trulink/builddir
+echo -e $GREEN "Factory release built to /tmp directory" $NORMAL
+echo -e $GREEN "Committing to SVN..." $NORMAL
+
+mkdir -p /home/dave/RedStone/Software/releases/$rev_name/$rev
+cp  /tmp/*$rev*.bin /home/dave/RedStone/Software/releases/$rev_name/$rev
+cp  /home/dave/trulink/builddir/firmware/* /home/dave/RedStone/Software/releases/$rev_name/$rev
+
+echo -e $GREEN "Creating patches..." $NORMAL
+
+cd /home/dave/RedStone/Software/create-release
+echo -e $GREEN "Running -> $YELLOW $cwd/build/patches.sh $rev_name $rev" $NORMAL
+$cwd/build/patches.sh $rev_name $rev
+
+echo -e $GREEN "Creating MFG Site entries..." $NORMAL
+echo -e $GREEN "Running -> $YELLOW ssh -t -p 2209 trulink@redstone.atsplace.com "sudo sh /var/www/redstone-update-server/autoupdate/rls/makepatch5000.sh $rev_name.$rev"" $NORMAL
+ssh -t -p 2209 trulink@redstone.atsplace.com "sudo sh /var/www/redstone-update-server/autoupdate/rls/makepatch5000.sh $rev_name.$rev"
+
+echo -e $GREEN "Version $rev_name.$rev build is complete and available via the mfg website." $NORMAL
+

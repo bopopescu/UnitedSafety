@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -e "/dev/ttyGPSAT" ]; then
+	echo AT^SGPSC="NMEA/Interface","usb3" > /dev/ttyGPSAT
+	sleep 2 
+	echo AT^SGPSC="Engine","3" > /dev/ttyGPSAT
+	sleep 1
+	echo AT^SGPSC="NMEA/Output","on" > /dev/ttyGPSAT
+fi
+
+

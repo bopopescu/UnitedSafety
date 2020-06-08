@@ -1,0 +1,31 @@
+<data>
+	<pgn>65028</pgn>
+	<spn>2456</spn>
+	<value>
+		<name>"Generator Total Reactive Power"</name>
+		<size>32</size>
+		<scale>1</scale>
+		<offset>-2000000000</offset>
+		<units>"VA"</units>
+	</value>
+	<spn>2464</spn>
+	<value>
+		<name>"Generator Overall Power Factor"</name>
+		<size>16</size>
+		<scale>0.000061035</scale>
+		<offset>-1</offset>
+		<units>"VA"</units>
+	</value>
+	<spn>2518</spn>
+	<value>
+		<name>"Generator Overall Power Factor Lagging"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<value>
+		<name>ignor</name>
+		<size>6</size>
+	</value>
+</data>

@@ -1,0 +1,43 @@
+<data>
+	<pgn>65269</pgn>
+	<spn>108</spn>
+	<value>
+		<name>"Barometric Pressure"</name>
+		<size>8</size>
+		<scale>0.5</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>170</spn>
+	<value>
+		<name>"Cab Interior Temperature"</name>
+		<size>16</size>
+		<scale>0.03125</scale>
+		<offset>-273</offset>
+		<units>"deg C"</units>
+	</value>
+	<spn>171</spn>
+	<value>
+		<name>"Ambient Air Temperature"</name>
+		<size>16</size>
+		<scale>0.03125</scale>
+		<offset>-273</offset>
+		<units>"deg C"</units>
+	</value>
+	<spn>172</spn>
+	<value>
+		<name>"Engine Air Intake Temperature"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-40</offset>
+		<units>"deg C"</units>
+	</value>
+	<spn>79</spn>
+	<value>
+		<name>"Road Surface Temperature"</name>
+		<size>16</size>
+		<scale>0.03125</scale>
+		<offset>-273</offset>
+		<units>"deg C"</units>
+	</value>
+</data>

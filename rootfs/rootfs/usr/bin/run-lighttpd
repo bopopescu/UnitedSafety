@@ -1,0 +1,40 @@
+#!/bin/sh
+i=0
+PROG_NAME='lighttpd'
+LOG="/var/log/"`echo -n $0|sed 's/.*\///'`".processlog"
+LAST_MSG=''
+if [ 'OFF' = "$FEATURE" ];then
+	if [ -e "/home/root/log.enabled" ] ; then
+		echo "Unsetting $0" >> $LOG
+	fi
+	exit 0
+fi
+
+mkdir -p /var/log/lighttpd
+chown -R www-data:www-data /var/log/lighttpd
+mkdir -p /var/run/lighttpd
+chown -R www-data:www-data /var/run/lighttpd
+mkdir -p /var/www/www-app
+chown -R www-data:www-data /var/www/www-app
+mkdir -p /tmp/webconfig
+chown -R www-data:www-data /tmp/webconfig
+
+if [ ! -f /usr/bin/php5-cgi ];then
+  ln -s /usr/bin/php-cgi /usr/bin/php5-cgi
+fi
+
+while true
+do
+	i=`expr $i + 1`
+	if [ -e "/home/root/log.enabled" ] ; then
+		uptime > $LOG
+		date >> $LOG
+		echo "starts: $i" >> $LOG
+		echo "lastmsg: $LAST_MSG" >> $LOG
+	fi
+	
+	lighttpd -D -f /etc/lighttpd/lighttpd.conf
+	LAST_MSG="$PROG_NAME exited with code $?, restarting..."
+	sleep 1
+done
+exit 0

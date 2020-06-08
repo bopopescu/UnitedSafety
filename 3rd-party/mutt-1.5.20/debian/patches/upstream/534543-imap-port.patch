@@ -1,0 +1,21 @@
+a bug in 1.5.20 upstream prevented mutt from correctly parsing the port
+in an IMAP url (imap[s]://...:<port>), this was fixed by upstream bug
+3264 and backported to the Debian package in 534543
+
+Index: mutt/url.c
+===================================================================
+--- mutt.orig/url.c	2009-06-25 12:37:59.000000000 +0200
++++ mutt/url.c	2009-06-25 12:39:05.000000000 +0200
+@@ -143,9 +143,11 @@
+   
+   if ((p = strchr (t, ':')))
+   {
++    int t;
+     *p++ = '\0';
+-    if (mutt_atos (p, (short*) &ciss->port) < 0)
++    if (mutt_atoi (p, &t) < 0 || t < 0 || t > 0xffff)
+       return NULL;
++    ciss->port = (unsigned short)t;
+   }
+   else
+     ciss->port = 0;

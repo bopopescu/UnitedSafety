@@ -1,0 +1,109 @@
+# vi: ft=diff
+This is the sensible browser position patch by Haakon Riiser.
+
+  * Found in: <20050309162127.GA5656@s>
+    http://lists.df7cb.de/mutt/message/20050309.162127.a244a894.en.html
+
+== END PATCH
+Index: mutt/menu.c
+===================================================================
+--- mutt.orig/menu.c	2009-06-25 12:35:36.000000000 +0200
++++ mutt/menu.c	2009-06-25 12:36:19.000000000 +0200
+@@ -853,8 +853,17 @@
+ 
+ int mutt_menuLoop (MUTTMENU *menu)
+ {
++  static int last_position = -1;
+   int i = OP_NULL;
+ 
++  if ( menu->max && menu->is_mailbox_list ) {
++    if ( last_position > (menu->max-1) ) {
++      last_position = -1;
++    } else if (last_position >= 0) {
++      menu->current = last_position;
++    }
++  }
++
+   FOREVER
+   {
+     if (option (OPTMENUCALLER))
+@@ -1082,6 +1091,8 @@
+ 	break;
+ 
+       default:
++        if (menu->is_mailbox_list)
++          last_position = menu->current;
+ 	return (i);
+     }
+   }
+Index: mutt/browser.c
+===================================================================
+--- mutt.orig/browser.c	2009-06-25 12:35:37.000000000 +0200
++++ mutt/browser.c	2009-06-25 12:36:19.000000000 +0200
+@@ -55,6 +55,7 @@
+   int num;
+ } FOLDER;
+ 
++static char OldLastDir[_POSIX_PATH_MAX] = "";
+ static char LastDir[_POSIX_PATH_MAX] = "";
+ static char LastDirBackup[_POSIX_PATH_MAX] = "";
+ 
+@@ -519,9 +520,13 @@
+   menu->tagged = 0;
+   
+   if (buffy)
++  {
++    menu->is_mailbox_list = 1;
+     snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
++  }
+   else
+   {
++    menu->is_mailbox_list = 0;
+     strfcpy (path, LastDir, sizeof (path));
+     mutt_pretty_mailbox (path, sizeof (path));
+ #ifdef USE_IMAP
+@@ -530,8 +535,22 @@
+ 	      path, NONULL (Mask.pattern));
+   else
+ #endif
+-    snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
+-	      path, NONULL(Mask.pattern));
++     {
++       char *p = strrchr (OldLastDir, '/');
++       if (p && p - OldLastDir == mutt_strlen (LastDir) &&
++          mutt_strncmp (LastDir, OldLastDir, p - OldLastDir) == 0)
++       {
++        /* If we get here, it means that LastDir is the parent directory of
++         * OldLastDir.  I.e., we're returning from a subdirectory, and we want
++         * to position the cursor on the directory we're returning from. */
++        int i;
++        for (i = 0; i < state->entrymax; i++)
++          if (mutt_strcmp (state->entry[i].name, p + 1) == 0)
++            menu->current = i;
++       }
++       snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
++                path, NONULL(Mask.pattern));
++     }
+   }
+   menu->redraw = REDRAW_FULL;
+ }
+@@ -714,7 +733,6 @@
+ #endif
+ 	    )
+ 	  {
+-	    char OldLastDir[_POSIX_PATH_MAX];
+ 
+ 	    /* save the old directory */
+ 	    strfcpy (OldLastDir, LastDir, sizeof (OldLastDir));
+Index: mutt/mutt_menu.h
+===================================================================
+--- mutt.orig/mutt_menu.h	2009-06-25 12:35:44.000000000 +0200
++++ mutt/mutt_menu.h	2009-06-25 12:36:19.000000000 +0200
+@@ -49,6 +49,7 @@
+   int offset;	/* which screen row to start the index */
+   int pagelen;	/* number of entries per screen */
+   int tagprefix;
++  int is_mailbox_list;
+ 
+   /* Setting dialog != NULL overrides normal menu behaviour. 
+    * In dialog mode menubar is hidden and prompt keys are checked before

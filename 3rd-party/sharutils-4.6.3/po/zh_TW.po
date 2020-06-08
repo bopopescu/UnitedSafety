@@ -1,0 +1,965 @@
+# Translation of `sharutils' messages to Chinese (traditional).
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Yuan-Chen Cheng <ycheng@sinica.edu.tw>, 2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sharutils 4.3.73\n"
+"Report-Msgid-Bugs-To: bug-gnu-utils@gnu.org\n"
+"POT-Creation-Date: 2006-06-03 12:18-0700\n"
+"PO-Revision-Date: 2002-08-03 20:13 +8\n"
+"Last-Translator: Yuan-Chen Cheng <ycheng@sinica.edu.tw>\n"
+"Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=Big5\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/error.c:131 lib/error.c:159
+msgid "Unknown system error"
+msgstr "未知的系統錯誤"
+
+#: lib/getopt.c:694
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s：選項 `%s' 是不明確的\n"
+
+#: lib/getopt.c:719
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s：選項 `--%s' 不允許一個參數\n"
+
+#: lib/getopt.c:724
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s：選項 `%c%s' 不允許一個參數\n"
+
+#: lib/getopt.c:742 lib/getopt.c:915
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s：選項`%s' 需要一個參數\n"
+
+#: lib/getopt.c:771
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s：無法辨認選項 `--%s'\n"
+
+#: lib/getopt.c:775
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s：無法辨認的選項 `%c%s'\n"
+
+#: lib/getopt.c:801
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s：非法的選項 -- %c\n"
+
+#: lib/getopt.c:804
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s：無效的選項 -- %c\n"
+
+#: lib/getopt.c:834 lib/getopt.c:964
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s：選項需要一個參數 -- %c\n"
+
+#: lib/getopt.c:881
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s：選項 `-W %s' 是不明確的\n"
+
+#: lib/getopt.c:899
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s：選項 `-W %s' 不允許一個參數\n"
+
+#: lib/xmalloc.c:66
+msgid "memory exhausted"
+msgstr "記憶用盡"
+
+#: src/shar.c:606
+#, fuzzy
+msgid "Note: not verifying md5sums.  Consider installing GNU coreutils."
+msgstr "警告：不恢復 timestamps。考慮拿給和"
+
+#: src/shar.c:641
+msgid "WARNING: not restoring timestamps.  Consider getting and"
+msgstr "警告：不恢復 timestamps。考慮拿給和"
+
+#: src/shar.c:643
+#, fuzzy
+msgid "installing GNU `touch'\\'', distributed in GNU coreutils..."
+msgstr "安裝的 GNU \\`touch'，分布在GNU檔案工具裡面..."
+
+#: src/shar.c:650
+msgid "lock directory '${lock_dir}' exists"
+msgstr ""
+
+#: src/shar.c:655
+#, fuzzy
+msgid "failed to create lock directory"
+msgstr "無法建立鎖上的目錄"
+
+#: src/shar.c:659
+#, fuzzy, c-format
+msgid "x - created lock directory `'%s\\''."
+msgstr "無法建立鎖上的目錄"
+
+#: src/shar.c:661
+#, fuzzy, c-format
+msgid "x - failed to create lock directory `'%s\\''."
+msgstr "無法建立鎖上的目錄"
+
+#: src/shar.c:669
+msgid "yes"
+msgstr ""
+
+#: src/shar.c:669
+#, fuzzy
+msgid "overwrite this file"
+msgstr "改寫"
+
+#: src/shar.c:670
+msgid "no"
+msgstr ""
+
+#: src/shar.c:670
+msgid "skip this file"
+msgstr ""
+
+#: src/shar.c:671
+msgid "all"
+msgstr ""
+
+#: src/shar.c:671
+#, fuzzy
+msgid "overwrite all files"
+msgstr "改寫"
+
+#: src/shar.c:672
+msgid "none"
+msgstr ""
+
+#: src/shar.c:672
+#, fuzzy
+msgid "overwrite no files"
+msgstr "改寫"
+
+#: src/shar.c:673
+msgid "help"
+msgstr ""
+
+#: src/shar.c:673
+msgid "explain choices"
+msgstr ""
+
+#: src/shar.c:674
+msgid "quit"
+msgstr ""
+
+#: src/shar.c:674
+msgid "exit immediately"
+msgstr ""
+
+#: src/shar.c:716
+msgid "Too many directories for mkdir generation"
+msgstr "對mkdir來說太多的目錄要產生"
+
+#: src/shar.c:735
+#, fuzzy, c-format
+msgid "x - created directory `%s'\\''."
+msgstr "無法建立鎖上的目錄"
+
+#: src/shar.c:737
+#, fuzzy, c-format
+msgid "x - failed to create directory `%s'\\''."
+msgstr "無法建立鎖上的目錄"
+
+#: src/shar.c:804 src/shar.c:1055
+#, c-format
+msgid "Cannot access %s"
+msgstr "不能存取 %s"
+
+#: src/shar.c:858
+msgid "-C is being deprecated, use -Z instead"
+msgstr "-C 被宣告為不適用，使用 -Z 代替"
+
+#: src/shar.c:899 src/unshar.c:377
+msgid "Cannot get current directory name"
+msgstr "不能得到目前子目錄名字"
+
+#: src/shar.c:963
+msgid ""
+"Archives must be unpacked in sequence!\n"
+"Please unpack part '`cat ${lock_dir}/seq`' next."
+msgstr ""
+
+#: src/shar.c:974 src/shar.c:1381
+#, c-format
+msgid "New file, remaining %s, "
+msgstr "新檔案，還有%s, "
+
+#: src/shar.c:975 src/shar.c:1382
+#, c-format
+msgid "Limit still %s\n"
+msgstr "限度仍有 %s\n"
+
+#: src/shar.c:981 src/shar.c:1556 src/shar.c:1572
+#, fuzzy, c-format
+msgid "restore of %s failed"
+msgstr "恢復的"
+
+#: src/shar.c:985
+#, fuzzy, c-format
+msgid "End of part %d, continue with part %d"
+msgstr "以部分接續"
+
+#: src/shar.c:999 src/shar.c:1475
+#, c-format
+msgid "Starting file %s\n"
+msgstr "開始檔案 %s\n"
+
+#: src/shar.c:1050
+#, c-format
+msgid "%s: Not a regular file"
+msgstr "%s：不是一個正常的檔案"
+
+#: src/shar.c:1065
+#, c-format
+msgid "In shar: remaining size %s\n"
+msgstr "在 shar：保持大小 %s\n"
+
+#: src/shar.c:1084
+msgid "empty"
+msgstr "空的"
+
+#: src/shar.c:1085
+msgid "(empty)"
+msgstr "(空的)"
+
+#: src/shar.c:1109
+#, c-format
+msgid "Cannot open file %s"
+msgstr "不能打開檔案 %s"
+
+#: src/shar.c:1146
+msgid "compressed"
+msgstr "壓縮的"
+
+#: src/shar.c:1147
+msgid "gzipped"
+msgstr "gzip壓縮的"
+
+#: src/shar.c:1148
+#, fuzzy
+msgid "bzipped"
+msgstr "gzip壓縮的"
+
+#: src/shar.c:1149
+msgid "binary"
+msgstr "二進位"
+
+#: src/shar.c:1150
+msgid "(compressed)"
+msgstr "(壓縮)"
+
+#: src/shar.c:1151
+msgid "(gzipped)"
+msgstr "(gzip壓縮的)"
+
+#: src/shar.c:1152
+#, fuzzy
+msgid "(bzipped)"
+msgstr "(gzip壓縮的)"
+
+#: src/shar.c:1153
+msgid "(binary)"
+msgstr "(二進位)"
+
+#: src/shar.c:1166
+msgid "Could not fork"
+msgstr "不能 fork"
+
+#: src/shar.c:1171 src/shar.c:1231
+#, c-format
+msgid "File %s (%s)"
+msgstr "檔案 %s (%s)"
+
+#: src/shar.c:1225
+msgid "text"
+msgstr "文本"
+
+#: src/shar.c:1226
+msgid "(text)"
+msgstr "(文本)"
+
+#: src/shar.c:1249
+#, fuzzy, c-format
+msgid "overwriting %s"
+msgstr "改寫"
+
+#: src/shar.c:1251
+#, fuzzy, c-format
+msgid "overwrite %s"
+msgstr "改寫"
+
+#: src/shar.c:1255
+#, fuzzy, c-format
+msgid "SKIPPING %s"
+msgstr "略過"
+
+#: src/shar.c:1256
+msgid "extraction aborted"
+msgstr "放棄取出"
+
+#: src/shar.c:1260
+#, fuzzy, c-format
+msgid "SKIPPING %s (file already exists)"
+msgstr "(檔案已經存在)"
+
+#: src/shar.c:1270
+#, c-format
+msgid "Saving %s (%s)"
+msgstr "儲存 %s (%s)"
+
+#: src/shar.c:1274
+#, fuzzy, c-format
+msgid "x - extracting %s %s"
+msgstr "取出"
+
+#: src/shar.c:1390
+#, fuzzy, c-format
+msgid "restore of %s failed\n"
+msgstr "恢復的"
+
+#: src/shar.c:1399
+#, fuzzy, c-format
+msgid "End of part %ld, continue with part %ld"
+msgstr "以部分接續"
+
+#: src/shar.c:1405
+#, fuzzy, c-format
+msgid "End of %s part %d"
+msgstr "部分的終點"
+
+#: src/shar.c:1406
+msgid "archive"
+msgstr "存檔"
+
+#: src/shar.c:1410
+#, fuzzy, c-format
+msgid "File %s is continued in part %d"
+msgstr "接續在部份"
+
+#: src/shar.c:1454
+msgid "Please unpack part 1 first!"
+msgstr "請先解開部分 1！"
+
+#: src/shar.c:1458
+#, fuzzy
+msgid "Please unpack part '${shar_sequence}' next!"
+msgstr "請先解開部分 1！"
+
+#: src/shar.c:1469
+#, fuzzy, c-format
+msgid "STILL SKIPPING %s"
+msgstr "仍是略過"
+
+#: src/shar.c:1477
+#, fuzzy, c-format
+msgid "continuing file %s"
+msgstr "繼續檔案"
+
+#: src/shar.c:1495
+#, fuzzy, c-format
+msgid "File %s is complete"
+msgstr "是完全的"
+
+#: src/shar.c:1502
+#, fuzzy, c-format
+msgid "uudecoding file %s"
+msgstr "解開檔案"
+
+#: src/shar.c:1512
+#, fuzzy, c-format
+msgid "uncompressing file %s"
+msgstr "解壓縮檔案"
+
+#: src/shar.c:1520
+#, fuzzy, c-format
+msgid "gunzipping file %s"
+msgstr "gzip解壓縮檔案"
+
+#: src/shar.c:1528
+#, fuzzy, c-format
+msgid "bunzipping file %s"
+msgstr "gzip解壓縮檔案"
+
+#: src/shar.c:1583
+msgid "MD5 check failed"
+msgstr "MD5 檢查失敗"
+
+#: src/shar.c:1639
+#, c-format
+msgid "'restoration warning:  size of %s is not %s'\n"
+msgstr ""
+
+#: src/shar.c:1691
+msgid "allocating output file name"
+msgstr ""
+
+#: src/shar.c:1697
+#, c-format
+msgid "Opening `%s'"
+msgstr "打開 `%s'"
+
+#: src/shar.c:1708
+#, c-format
+msgid "Closing `%s'"
+msgstr "關閉 `%s'"
+
+#: src/shar.c:1720 src/unshar.c:313 src/uudecode.c:439 src/uuencode.c:204
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "嘗試  `%s --help' 以讀取更多資訊.\n"
+
+#: src/shar.c:1724 src/unshar.c:317
+#, c-format
+msgid "Usage: %s [OPTION]... [FILE]...\n"
+msgstr "使用：%s [參數] 。。。[檔案]。。。\n"
+
+#: src/shar.c:1725
+msgid ""
+"Mandatory arguments to long options are mandatory for short options too.\n"
+msgstr "對長型的選項所提供的參數格式與對短行的選項一樣。\n"
+
+#: src/shar.c:1728
+msgid ""
+"\n"
+"Giving feedback:\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"  -q, --quiet, --silent   do not output verbose messages locally\n"
+msgstr ""
+"\n"
+"提供回饋:\n"
+"      --help      顯示本頁求助資訊後離開\n"
+"      --version   輸出版本資訊後離開\n"
+"  -q, --quiet, --silent   輸出較少的訊息\n"
+
+#: src/shar.c:1736
+msgid ""
+"\n"
+"Selecting files:\n"
+"  -p, --intermix-type     allow -[BTzZ] in file lists to change mode\n"
+"  -S, --stdin-file-list   read file list from standard input\n"
+msgstr ""
+"\n"
+"選擇檔案:\n"
+"  -p, --intermix-type     在檔案清單中允許使用 -[BTzZ] 來改便模式\n"
+"  -S, --stdin-file-list   由標準輸入讀取檔案清單\n"
+
+#: src/shar.c:1743
+#, fuzzy
+msgid ""
+"\n"
+"Selecting files:\n"
+"  -p, --intermix-type     allow -[BTz] in file lists to change mode\n"
+"  -S, --stdin-file-list   read file list from standard input\n"
+msgstr ""
+"\n"
+"選擇檔案:\n"
+"  -p, --intermix-type     在檔案清單中允許使用 -[BTzZ] 來改便模式\n"
+"  -S, --stdin-file-list   由標準輸入讀取檔案清單\n"
+
+#: src/shar.c:1750
+msgid ""
+"\n"
+"Splitting output:\n"
+"  -o, --output-prefix=PREFIX    output to file PREFIX.01 through PREFIX.NN\n"
+"  -l, --whole-size-limit=SIZE   split archive, not files, to SIZE kilobytes\n"
+"  -L, --split-size-limit=SIZE   split archive, or files, to SIZE kilobytes\n"
+msgstr ""
+"\n"
+"切開輸出:\n"
+"  -o, --output-prefix=PREFIX    檔案輸出由檔案 PREFIX.01 到 PREFIX.NN\n"
+"  -l, --whole-size-limit=SIZE   將 archive, 非檔案, 到 SIZE 千 bytes\n"
+"  -L, --split-size-limit=SIZE   將 archive, 或檔案, 到 SIZE 千 bytes\n"
+
+#: src/shar.c:1757
+#, fuzzy
+msgid ""
+"\n"
+"Controlling the shar headers:\n"
+"  -n, --archive-name=NAME   use NAME to document the archive\n"
+"  -s, --submitter=ADDRESS   override the submitter name\n"
+"  -a, --net-headers         output Submitted-by: & Archive-name: headers\n"
+"  -c, --cut-mark            start the shar with a cut line\n"
+"  -t, --translate           translate messages in the script\n"
+"\n"
+"Selecting how files are stocked:\n"
+"  -M, --mixed-uuencode         dynamically decide uuencoding (default)\n"
+"  -T, --text-files             treat all files as text\n"
+"  -B, --uuencode               treat all files as binary, use uuencode\n"
+"  -z, --gzip                   gzip and uuencode all files\n"
+"  -g, --level-for-gzip=LEVEL   pass -LEVEL (default 9) to gzip\n"
+"  -j, --bzip2                  bzip2 and uuencode all files\n"
+msgstr ""
+"\n"
+"控制 shar 標頭:\n"
+"  -n, --archive-name=NAME   使用 NAME 來敘述該檔案櫃\n"
+"  -s, --submitter=ADDRESS   覆寫提交者名稱\n"
+"  -a, --net-headers         輸出提交者方式: & 檔案櫃名稱: 標頭\n"
+"  -c, --cut-mark            使用一個 cut 行來開始 shar\n"
+"\n"
+"選擇檔案堆疊的方式:\n"
+"  -M, --mixed-uuencode         動態決定編碼方式 (預設)\n"
+"  -T, --text-files             將所有檔案當作文字檔處理\n"
+"  -B, --uuencode               將所有檔案使用二進位檔，使用 uuencode\n"
+"  -z, --gzip                   gzip 壓縮並 uuencode 編碼所有的檔案\n"
+"  -g, --level-for-gzip=LEVEL   將壓縮比 -LEVEL (預設是 9) 給 gzip壓縮程式\n"
+
+#: src/shar.c:1775
+msgid ""
+"  -Z, --compress               compress and uuencode all files\n"
+"  -b, --bits-per-code=BITS     pass -bBITS (default 12) to compress\n"
+msgstr ""
+"  -Z, --compress               將所有檔案 compress 並 uuencode\n"
+"  -b, --bits-per-code=BITS     將參數 -bBITS (預設 12) 給 compress\n"
+
+#: src/shar.c:1780
+msgid ""
+"\n"
+"Protecting against transmission:\n"
+"  -w, --no-character-count      do not use `wc -c' to check size\n"
+"  -D, --no-md5-digest           do not use `md5sum' digest to verify\n"
+"  -F, --force-prefix            force the prefix character on every line\n"
+"  -d, --here-delimiter=STRING   use STRING to delimit the files in the shar\n"
+"\n"
+"Producing different kinds of shars:\n"
+"  -V, --vanilla-operation   produce very simple and undemanding shars\n"
+"  -P, --no-piping           exclusively use temporary files at unshar time\n"
+"  -x, --no-check-existing   blindly overwrite existing files\n"
+"  -X, --query-user          ask user before overwriting files (not for Net)\n"
+"  -m, --no-timestamp        do not restore file modification dates & times\n"
+"  -Q, --quiet-unshar        avoid verbose messages at unshar time\n"
+"  -f, --basename            restore in one directory, despite hierarchy\n"
+"      --no-i18n             do not produce internationalized shell script\n"
+msgstr ""
+"\n"
+"在轉換過程中的保護:\n"
+"  -w, --no-character-count      不使用 `wc -c' 來檢查大小\n"
+"  -D, --no-md5-digest           不使用 `md5sum' 摘要來確認\n"
+"  -F, --force-prefix            強迫在每一行前面加字元\n"
+"  -d, --here-delimiter=STRING   使用 STRING 在 shar 裡面做為檔案的分隔\n"
+"\n"
+"產生不同種類的 shar:\n"
+"  -V, --vanilla-operation   產生非常簡單且對環境要求不高的的 shar\n"
+"  -P, --no-piping           在 shar 展開時使用暫存檔\n"
+"  -x, --no-check-existing   不檢查地覆寫現有檔案\n"
+"  -X, --query-user          在覆寫檔案前詢問使用者 (非為 Net 設計)\n"
+"  -m, --no-timestamp        並不回復檔案的修改日期與時間\n"
+"  -Q, --quiet-unshar        在解開 shar 時避免顯示出詳細的訊息\n"
+"  -f, --basename            不管原有的目錄結構，在一個目錄下回存檔案\n"
+"      --no-i18n             不產生國際化的 shell 程式\n"
+
+#: src/shar.c:1798
+msgid ""
+"\n"
+"Option -o is required with -l or -L, option -n is required with -a.\n"
+msgstr ""
+"\n"
+"使用 -l 或 -L 時需要加 -o 參數，使用 -a 參數時需要 -n 參數。\n"
+
+#: src/shar.c:1802
+msgid "Option -g implies -z, option -b implies -Z.\n"
+msgstr "參數 -g 包函 -z, 參數 -b 包含 -Z.\n"
+
+#: src/shar.c:1805
+msgid "Option -g implies -z.\n"
+msgstr "參數 -g 包函 -z.\n"
+
+#. TRANSLATORS: add the contact address for your translation team!
+#: src/shar.c:1809 src/unshar.c:332 src/uudecode.c:450 src/uuencode.c:214
+#, c-format
+msgid "Report bugs to <%s>.\n"
+msgstr "將程式錯誤報告送到 <%s>, 翻譯錯誤報告送到 zh-l10n@linux.org.tw.\n"
+
+#: src/shar.c:1867
+#, c-format
+msgid "invalid file size limit `%s'"
+msgstr ""
+
+#: src/shar.c:1903
+#, c-format
+msgid "invalid format (count field too wide): '%s'\n"
+msgstr ""
+
+#: src/shar.c:1964
+msgid "DEBUG was not selected at compile time"
+msgstr "除錯選項在編譯時沒有被選擇"
+
+#: src/shar.c:1984
+#, c-format
+msgid "Hard limit %s\n"
+msgstr "強的限度 %s\n"
+
+#: src/shar.c:2026
+msgid "This system doesn't support -Z ('compress'), use -z instead"
+msgstr "此系統不支援 -Z ('compress'), 請改用 -z"
+
+#: src/shar.c:2059
+#, c-format
+msgid "Soft limit %s\n"
+msgstr "弱的限度 %s\n"
+
+#: src/shar.c:2074
+#, c-format
+msgid "illegal output prefix\n"
+msgstr ""
+
+#: src/shar.c:2121 src/unshar.c:415 src/uudecode.c:488 src/uuencode.c:254
+#, fuzzy, c-format, no-wrap
+msgid ""
+"Copyright (C) %s Free Software Foundation, Inc.\n"
+"This is free software; see the source for copying conditions.  There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr ""
+"版權所有 (C) %s 自由軟體基金會\n"
+"這是一個自由軟體; 關於複制條件請閱讀源碼. 沒有擔保;\n"
+"但不包含就適售性以及特定目的的適用性.\n"
+
+#: src/shar.c:2168
+msgid "WARNING: No user interaction in vanilla mode"
+msgstr "警告: 在簡易模式中不支援使用者互動"
+
+#: src/shar.c:2180
+msgid "WARNING: Non-text storage options overridden"
+msgstr "警告: 非文字儲存參數覆寫"
+
+#: src/shar.c:2236
+msgid "No input files"
+msgstr "沒有輸入的檔案"
+
+#: src/shar.c:2242
+msgid "Cannot use -a option without -n"
+msgstr "不能使用 -a 選項而沒有 -n"
+
+#: src/shar.c:2248
+msgid "Cannot use -l or -L option without -o"
+msgstr "不能使用 -l 或 -L 選項而沒有 -o"
+
+#: src/shar.c:2260
+msgid "PLEASE avoid -X shars on Usenet or public networks"
+msgstr "請避免 -X shars 上 Usenet 或公用網路"
+
+#: src/shar.c:2301
+msgid "You have unpacked the last part"
+msgstr "你已經解開最後部分"
+
+#: src/shar.c:2303
+#, c-format
+msgid "Created %d files\n"
+msgstr "建立 %d 檔案\n"
+
+#: src/shar.c:2308
+#, fuzzy, c-format
+msgid "x - removed lock directory `'%s\\''."
+msgstr "無法建立鎖上的目錄"
+
+#: src/shar.c:2310
+#, fuzzy, c-format
+msgid "x - failed to remove lock directory `'%s\\''."
+msgstr "無法建立鎖上的目錄"
+
+#: src/unshar.c:169
+#, c-format
+msgid "Found no shell commands in %s"
+msgstr "找不到 shell 命令，在 %s "
+
+#: src/unshar.c:185
+#, c-format
+msgid "%s looks like raw C code, not a shell archive"
+msgstr "%s看起來像原始的 C 程式碼，不一個 Shell 檔案夾"
+
+#: src/unshar.c:221
+#, c-format
+msgid "Found no shell commands after `cut' in %s"
+msgstr "在 %s 裡面的 `cut' 之後找不到 shell 命令"
+
+#: src/unshar.c:242
+#, c-format
+msgid "%s is probably not a shell archive"
+msgstr "%s 可能不是一個 shell 檔案夾"
+
+#: src/unshar.c:243
+#, c-format
+msgid "The `cut' line was followed by: %s"
+msgstr " `cut' 所在那一行在: %s 之後"
+
+#: src/unshar.c:269
+msgid "Starting `sh' process"
+msgstr "啟動 `sh' 程序"
+
+#: src/unshar.c:318
+msgid ""
+"Mandatory arguments to long options are mandatory for short options too.\n"
+"\n"
+"  -d, --directory=DIRECTORY   change to DIRECTORY before unpacking\n"
+"  -c, --overwrite             pass -c to shar script for overwriting files\n"
+"  -e, --exit-0                same as `--split-at=\"exit 0\"'\n"
+"  -E, --split-at=STRING       split concatenated shars after STRING\n"
+"  -f, --force                 same as `-c'\n"
+"      --help                  display this help and exit\n"
+"      --version               output version information and exit\n"
+"\n"
+"If no FILE, standard input is read.\n"
+msgstr ""
+"對長型的選項所提供的參數格式與對短行的選項一樣\n"
+"\n"
+"  -d, --directory=DIRECTORY   在解開前改變目錄到 DIRECTORY\n"
+"  -c, --overwrite             將 -c 傳給 shar 檔案櫃來設定覆寫檔案\n"
+"  -e, --exit-0                與 `--split-at=\"exit 0\"' 相同\n"
+"  -E, --split-at=STRING       在 STRING 之後分割合併過的 shar\n"
+"  -f, --force                 與 `-c' 相同\n"
+"      --help                  顯示本頁資訊後離開\n"
+"      --version               顯示版本資訊後離開\n"
+"\n"
+"如果沒有 FILE, 由標準輸入讀入.\n"
+
+#: src/unshar.c:395
+#, c-format
+msgid "Cannot chdir to `%s'"
+msgstr "無法切入目錄 `%s'"
+
+#: src/unshar.c:446 src/unshar.c:508
+msgid "allocate file name buffer"
+msgstr ""
+
+#: src/unshar.c:467
+msgid "standard input"
+msgstr "標準輸入"
+
+#: src/unshar.c:529
+msgid "allocate file buffer"
+msgstr ""
+
+#: src/uudecode.c:123 src/uudecode.c:427
+#, c-format
+msgid "%s: Write error"
+msgstr "%s: 寫出錯誤"
+
+#: src/uudecode.c:141 src/uudecode.c:229
+#, c-format
+msgid "%s: Short file"
+msgstr "%s: 短檔案"
+
+#: src/uudecode.c:177
+#, c-format
+msgid "%s: No `end' line"
+msgstr "%s: 沒有 `end' 那一行"
+
+#: src/uudecode.c:238
+#, c-format
+msgid "%s: data following `=' padding character"
+msgstr "%s: 資料跟隨在 `=' 這個填充字元之後"
+
+#: src/uudecode.c:262 src/uudecode.c:270 src/uudecode.c:284
+#, c-format
+msgid "%s: illegal line"
+msgstr "%s: 非法的一行"
+
+#: src/uudecode.c:324
+#, c-format
+msgid "%s: No `begin' line"
+msgstr "%s: 在該行內沒有 `begin'"
+
+#: src/uudecode.c:356
+#, c-format
+msgid "%s: Illegal ~user"
+msgstr "%s: 非法使用者 ~user"
+
+#: src/uudecode.c:363
+#, c-format
+msgid "%s: No user `%s'"
+msgstr "%s: 不存在使用者 `%s'"
+
+#: src/uudecode.c:387
+#, c-format
+msgid "cannot access %s"
+msgstr "不能存取 %s"
+
+#: src/uudecode.c:392
+#, c-format
+msgid "denied writing FIFO (%s)"
+msgstr "拒絕寫出 FIFO (%s)"
+
+#: src/uudecode.c:397
+#, c-format
+msgid "not following symlink (%s)"
+msgstr "並不跟隨 symlink (%s)"
+
+#: src/uudecode.c:405
+#, fuzzy, c-format
+msgid "freopen of %s"
+msgstr "打開 `%s'"
+
+#: src/uudecode.c:411
+#, c-format
+msgid "chmod of %s"
+msgstr ""
+
+#: src/uudecode.c:443
+#, c-format
+msgid "Usage: %s [FILE]...\n"
+msgstr "使用方法：%s [檔案]...\n"
+
+#: src/uudecode.c:444
+msgid ""
+"Mandatory arguments to long options are mandatory to short options too.\n"
+"  -o, --output-file=FILE   direct output to FILE\n"
+"      --help               display this help and exit\n"
+"      --version            output version information and exit\n"
+msgstr ""
+"對長型的選項所提供的參數格式與對短行的選項一樣。\n"
+"  -o, --output-file=FILE   直接輸出到檔案 FILE\n"
+"      --help               顯示本頁資訊後離開\n"
+"      --version            輸出版本資訊後離開\n"
+
+#: src/uuencode.c:135 src/uuencode.c:303 src/uuencode.c:310
+msgid "Write error"
+msgstr "寫出錯誤"
+
+#: src/uuencode.c:157 src/uuencode.c:188 src/uuencode.c:190
+msgid "Read error"
+msgstr "讀取錯誤"
+
+#: src/uuencode.c:208
+#, c-format
+msgid "Usage: %s [INFILE] REMOTEFILE\n"
+msgstr "使用方法:%s [輸入檔案] 遠端檔案\n"
+
+#: src/uuencode.c:209
+msgid ""
+"\n"
+"  -m, --base64    use base64 encoding as of RFC1521\n"
+"      --help      display this help and exit\n"
+"      --version   output version information and exit\n"
+msgstr ""
+"\n"
+"  -m, --base64    使用 base64 編碼如同 RFC1521\n"
+"      --help      顯示本頁求助資訊後離開\n"
+"      --version   輸出版本資訊後離開\n"
+
+#: src/uuencode.c:275
+#, fuzzy, c-format
+msgid "fopen-ing %s"
+msgstr "打開 `%s'"
+
+#: src/uuencode.c:277
+#, fuzzy, c-format
+msgid "fstat-ing %s"
+msgstr "開始檔案 %s\n"
+
+#~ msgid "[no, yes, all, quit] (no)?"
+#~ msgstr "[no否, yes是, all全部, quit離開] (no)?"
+
+#~ msgid "Please unpack part"
+#~ msgstr "請解開部分"
+
+#~ msgid "next!"
+#~ msgstr "下一個！"
+
+#~ msgid "File"
+#~ msgstr "檔案"
+
+#~ msgid "original size"
+#~ msgstr "原來的大小"
+
+#~ msgid "current size"
+#~ msgstr "目前大小"
+
+#~ msgid "Must unpack archives in sequence!"
+#~ msgstr "必須依照順序解開資料檔！"
+
+#~ msgid "lock directory"
+#~ msgstr "鎖上目錄"
+
+#, fuzzy
+#~ msgid "created lock directory"
+#~ msgstr "鎖上目錄"
+
+#, fuzzy
+#~ msgid "created %s"
+#~ msgstr "已建立"
+
+#, fuzzy
+#~ msgid "could not create %s"
+#~ msgstr "無法建立"
+
+#~ msgid "restore of"
+#~ msgstr "恢復的"
+
+#~ msgid "failed"
+#~ msgstr "失敗"
+
+#~ msgid "removed"
+#~ msgstr "移除"
+
+#~ msgid "failed to remove"
+#~ msgstr "移除失敗"
+
+#~ msgid "continue with part"
+#~ msgstr "以部分接續"
+
+#~ msgid "End of"
+#~ msgstr "結束"
+
+#~ msgid "part"
+#~ msgstr "部分"
+
+#~ msgid ""
+#~ "Selecting files:\n"
+#~ "  -p, --intermix-type     allow -[BTz] in file lists to change mode\n"
+#~ "  -S, --stdin-file-list   read file list from standard input\n"
+#~ msgstr ""
+#~ "選擇檔案:\n"
+#~ "  -p, --intermix-type     在檔案清單中允許使用 -[BTzZ] 來改便模式\n"
+#~ "  -S, --stdin-file-list   由標準輸入讀取檔案清單\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Giving feedback:\n"
+#~ "      --help              display this help and exit\n"
+#~ "      --version           output version information and exit\n"
+#~ "  -q, --quiet, --silent   do not output verbose messages locally\n"
+#~ "\n"
+#~ "Selecting files:\n"
+#~ "  -p, --intermix-type     allow -[BTzZ] in file lists to change mode\n"
+#~ "  -S, --stdin-file-list   read file list from standard input\n"
+#~ "\n"
+#~ "Splitting output:\n"
+#~ "  -o, --output-prefix=PREFIX    output to file PREFIX.01 through PREFIX."
+#~ "NN\n"
+#~ "  -l, --whole-size-limit=SIZE   split archive, not files, to SIZE "
+#~ "kilobytes\n"
+#~ "  -L, --split-size-limit=SIZE   split archive, or files, to SIZE "
+#~ "kilobytes\n"
+#~ msgstr ""
+#~ "\n"
+#~ "給予回饋:\n"
+#~ "      --help              顯示本頁資訊後離開\n"
+#~ "      --version           輸出版本資訊後離開\n"
+#~ "  -q, --quiet, --silent   輸出較精簡的資訊\n"
+#~ "\n"
+#~ "選擇檔案:\n"
+#~ "  -p, --intermix-type     允許檔案中的 -[BTzZ] 以切會模式\n"
+#~ "  -S, --stdin-file-list   從標準輸入讀取檔案\n"
+#~ "\n"
+#~ "將輸出檔案切開:\n"
+#~ "  -o, --output-prefix=PREFIX    輸出檔案從 PREFIX.01 到 PREFIX.NN\n"
+#~ "  -l, --whole-size-limit=SIZE   切開檔案櫃檔, 非檔案, 到大小 SIZE KBytes\n"
+#~ "  -L, --split-size-limit=SIZE   切開檔案櫃檔, 或檔案, 到大小 SIZE KBytes\n"
+
+#~ msgid "creating directory"
+#~ msgstr "建立目錄"

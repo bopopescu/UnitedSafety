@@ -1,0 +1,8 @@
+debian/tmp/usr/bin/gpsctl
+debian/tmp/usr/bin/gpspipe
+debian/tmp/usr/bin/gpsmon
+debian/tmp/usr/bin/gpsdecode
+debian/tmp/usr/bin/xgps
+debian/tmp/usr/bin/gpxlogger
+debian/tmp/usr/bin/lcdgps
+debian/tmp/usr/bin/cgps

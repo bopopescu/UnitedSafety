@@ -1,0 +1,10 @@
+#!/bin/sh
+db-config set feature packetizer 1
+db-config set feature packetizer_dash 0
+db-config set feature packetizer-calamps 0
+db-config set packetizer host redstone.atsplace.com
+db-config set packetizer port 38023
+killall packetizer-calamps
+echo "Unit is ready for test - Please drive a test loop."
+echo "Log into Trackopolis and look for test loop upon completion."
+

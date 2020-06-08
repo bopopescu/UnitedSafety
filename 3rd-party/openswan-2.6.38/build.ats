@@ -1,0 +1,31 @@
+#!/bin/bash
+		DESTDIR=/tmp/$(whoami)/openswan.arm
+		sudo rm -rf $DESTDIR
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	LDFLAGS='-s' CFLAGS='-Os -Xlinker -s' C_INCLUDE_PATH=`pwd`/../gmp-5.0.5/  LIBRARY_PATH=`pwd`/../gmp-5.0.5/.libs/  LD_LIBRARY_PATH=`pwd`/../gmp-5.0.5/.libs/  CC="${CROSS_COMPILE}gcc" CXX="${CROSS_COMPILE}g++"  DESTDIR=/tmp/$(whoami)/openswan.arm  make programs install
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo rm -rf "$DESTDIR/usr/local/man" "$DESTDIR/usr/local/share"
+		sudo cp _updown.my "$DESTDIR/usr/local/lib/ipsec"
+		sudo cp -prv "$DESTDIR/usr/" "$ROOTFS_DEF_DIR/"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install openswan"
+			exit 1
+		fi
+
+	fi
+
+exit 0

@@ -1,0 +1,79 @@
+#!/bin/sh
+if [ "$#" -ne 0 ]; then
+	echo -e " \033[32m"  # Green
+	echo "Usage: loghist"
+	echo -e "\033[39m"  #default
+	echo "        This will show the boot history of the device"
+	exit 1
+fi
+# Function to write out the data relating to a specific logdir.$1 directory
+write_log_line ()
+{
+	theDir=/mnt/nvram/log/logdir.$1
+	if [ -e $theDir ]; then
+		wake="/mnt/nvram/log/logdir.$1/wakeup.txt"
+		reboot="/mnt/nvram/log/logdir.$1/reboot.txt"
+		rebootw="/mnt/nvram/log/logdir.$1/rebootw.txt"
+		brownout="/mnt/nvram/log/logdir.$1/brouwnout.txt"
+		factory="/mnt/nvram/log/logdir.$1/starting-factory-restore"
+		rstr=""
+		wstr=""
+		fstr=""
+	
+		if [ -e $wake ]; then
+			wtime=`ls -l $wake | awk 'BEGIN {FS=" "}{print $6 " " $7 " " $8}'`
+			why=`cat $wake`
+			wstr="Wakeup (\033[34m$why\033[39m) at \033[32m $wtime \033[39m"
+		else
+			wstr="\033[31mNO wakeup \033[39m"
+		fi	
+
+		if [ -e $reboot ]; then
+			rtime=`ls -l $reboot | awk 'BEGIN {FS=" "}{print $6 " " $7 " " $8}'`
+			rstr="Shutdown at \033[32m $rtime \033[39m"
+		elif [ -e $rebootw ]; then
+			rtime=`ls -l $rebootw | awk 'BEGIN {FS=" "}{print $6 " " $7 " " $8}'`
+			rstr="Watchdog shutdown at \033[32m $rtime \033[39m"
+		elif [ -e $brownout ]; then
+			rtime=`ls -l $brownout | awk 'BEGIN {FS=" "}{print $6 " " $7 " " $8}'`
+			rstr="Brownout at \033[32m $rtime \033[39m"
+		elif [ -e /mnt/nvram/log/logdir.$1/inet.txt ]; then
+			rtime=`ls -l  /mnt/nvram/log/logdir.$1/inet.txt | awk 'BEGIN {FS=" "}{print $6 " " $7 " " $8}'`
+			rstr="iNet Reset at \033[32m $rtime \033[39m"
+		else
+			rstr="\033[31m NO shutdown \033[39m"
+		fi	
+
+		if [ -e $factory ]; then
+			fstr="\033[7m\033[34mFactory Restore\033[39m\033[27m"
+		fi	
+
+		echo -e $theDir:: $fstr $wstr $rstr
+	else
+			echo -e "$theDir\033[31m does not exist.  \033[39m"
+	fi
+}
+
+
+curDir=`ls -la /tmp/logdir | awk  'BEGIN {FS="."}{print $2}'`
+i=`expr $curDir + 1 `
+
+if [ "$i" -gt "24" ]; then
+	i=1
+fi
+
+
+while [ $curDir != $i ]
+do
+	write_log_line $i
+	i=`expr $i + 1 `
+
+	if [ "$i" -gt "24" ]; then
+		i=1
+	fi
+done
+
+#now show the current login
+write_log_line $i
+
+

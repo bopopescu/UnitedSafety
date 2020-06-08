@@ -1,0 +1,13 @@
+=======================================================================
+= Building openssl 1.0.1c 
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 11 Katya \n \l
+
+Build Commands:
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./configure --host=arm-linux-gnu CC=${CROSS_COMPILE}gcc LD=${CROSS_COMPILE}ld AR=${CROSS_COMPILE}ar LZO_CFLAGS="-I/tmp/$(whoami)/lzo/include/" LZO_LIBS="-L/tmp/$(whoami)/lzo/lib/ -llzo2"  OPENSSL_SSL_LIBS="-L/tmp/$(whoami)/openssl/lib -lssl" OPENSSL_SSL_CFLAGS="-I/tmp/$(whoami)/openssl/include/" OPENSSL_CRYPTO_LIBS="-L/tmp/$(whoami)/openssl/lib/ -lcrypto" OPENSSL_CRYPTO_CFLAGS="-I/tmp/$(whoami)/openssl/include/" --disable-plugin-auth-pam
+make -j 4
+

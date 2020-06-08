@@ -1,0 +1,12 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	CC=${CROSS_COMPILE}gcc AR=${CROSS_COMPILE}ar ./configure --host=arm-linux-gnu --with-pcap=linux CFLAGS='-Os'
+	make -j$TRULINK_JOBS
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+exit 0

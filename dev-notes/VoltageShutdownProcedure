@@ -1,0 +1,48 @@
+VoltageShutdown Procedure
+
+JIRA: TRUL-27
+
+In relation to how the system shuts down and wakes up.  Documents the interrelations between the micro firmware and the TruLink software.
+
+The only db-config items involved are:
+wakeup WakeupVoltage	13200
+wakeup LockoutVoltage	11900
+
+There are only 3 zones of voltage on the TruLink now.  
+
+Below LockoutVoltage
+	Critical voltage level.  The system should only ever come on once to send a critical battery message and then not come on until the WakeupVoltage is exceeded.
+	If the system is running and moves into this zone the system should send a crit_batt message then shut down.
+	If the system is off and moves into this zone the system will wake up and send a crit_batt message then shut down.
+Between LockoutVoltage and WakeupVoltage
+	System should clear its high priority messages, shut down and not come back up until it receives a wakeup trigger from the micro.
+Above WakeupVoltage
+	System should come up and stay up.
+
+Latching
+Latching is the signal sent to the micro to cause a change in the 3V and 5V rails.  This is done by pulling the 'L' gpio line high, then low.
+If the L line is pulled high and left high it will power off the imx28 processor as well.
+The L line is attached to gpio(3,12).
+
+The 'poweroff' command triggers the L line high as the last thing it does so it does not need to be done by any other shutdown or go-to-sleep command.
+Any changes to the 3V (P, gpio(3,6)) or the 5V (Q, gpio(3,7)) must be followed by a latching (Ll to set-gpio) to make them take effect.
+
+On shutdown after a critt_batt message is sent the imx28 must send a 1 to register 26 of the micro so that the micro knows not to reboot to send a critt-batt message.
+
+On any shutdown the power-monitor needs to send 0xD1 to register 29 to force the processor into deep sleep which shuts almost everything off.  This is done 
+on any shutdown right now since there is no capacity for having some components on while still asleep (e.g. - watching the Iridium for a ring wakeup, etc).  Maybe 
+added later.
+
+Files:
+
+apps/power-monitor - all
+apps/crit-batt-check - all
+mx28/linux-2.6.35.3/drivers/redstone/set-gpio.c
+mx28/linux-2.6.35.3/arch/arm/mach-mx28/mx28evk_pins.c
+mx28/linux-2.6.35.3/arch/arm/mach-mx28/pm.c
+rfs - /sbin/reboot
+rfs - /sbin/go-to-sleep
+
+
+
+

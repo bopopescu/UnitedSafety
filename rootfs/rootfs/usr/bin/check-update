@@ -1,0 +1,38 @@
+#!/bin/sh
+	lock='/tmp/.check-update'
+
+# if we can create a lock file we can run the check.  If it already exists a check is currently running so wait
+# for it to complete before trying again.
+	while true
+	do
+		mkdir "$lock" &> /dev/null
+
+		if [ 0 = $? ];then
+			break
+		fi
+
+		sleep 1
+	done
+
+	echo $$ > "$lock/pid"
+	mkfifo "$lock/finished"
+
+	if [ "$1" = "--force" ]; then
+    mkdir '/tmp/.force-update'
+	fi
+
+	pid=`ps|grep '[0-9]\+ [SR] \+/bin/sh /usr/bin/run-autoupdate'|sed 's/^ *\([0-9]\+\) .*/\1/'`
+
+	# signal the running 'run-autoupdate' to do a check for new update
+
+	if [ '' != "$pid" ];then
+		kill -SIGUSR1 $pid
+		cat "$lock/finished"
+	fi
+
+	rm -rf "$lock"
+
+	if [ "$1" = "--force" ]; then
+	  rm -rf '/tmp/.force-update'
+	fi
+exit 0

@@ -1,0 +1,52 @@
+#!/bin/sh
+echo > /dev/watchdog
+logger -s "===== m2m-init-logging ====="
+
+mkdir -p /mnt/nvram/log
+if [ 0 != "$?" ];then
+	logger -s "Failed to create logging directory in NVRAM"
+	exit 1
+fi
+
+cd /mnt/nvram/log
+if [ 0 != "$?" ];then
+	logger -s "Failed to CD to logging directory in NVRAM"
+	exit 1
+fi
+
+max_log=25
+i=1
+while true
+do
+	if [ -e "logdir.$i" ]; then
+		i=`expr $i + 1`
+		if [ "$max_log" = "$i" ];then
+			i=1;
+			rm -rf "/mnt/nvram/log/logdir.$i"
+		fi
+	else
+		i2=`expr $i + 1`
+		rm -rf "/mnt/nvram/log/logdir.$i2"
+
+		mkdir "/mnt/nvram/log/logdir.$i"
+		ln -s "/mnt/nvram/log/logdir.$i" "/tmp/logdir"
+		if [ "$i" -gt "1" ];then
+			j=`expr $i - 1`
+		else
+			j=`expr $max_log - 1`
+		fi
+		if [ -e "/mnt/nvram/log/logdir.$j" ];then
+			ln -s "/mnt/nvram/log/logdir.$j" "/tmp/logprev"
+		fi
+		break
+	fi
+done
+
+fail_cnt=`print_env|grep '^fail_cnt='|sed 's/.*=//'`
+
+if [ "$fail_cnt" != '0x0' ];then
+	echo "fail_cnt=$fail_cnt" >> /tmp/logdir/boot.txt
+	sync
+fi
+
+exit 0

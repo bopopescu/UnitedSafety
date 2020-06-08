@@ -1,0 +1,22 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 25_it.po_fixes.dpatch by Daniel Leidert (dale) <daniel.leidert@wgdd.de>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Italian typo fix (closes: #298699).
+## DP:
+## DP: <URL:http://bugs.debian.org/298699>
+## DP: <URL:https://bugs.g10code.com/gnupg/issue920>
+
+@DPATCH@
+diff -urNad experimental~/po/it.po experimental/po/it.po
+--- experimental~/po/it.po	2008-03-25 09:53:09.000000000 +0100
++++ experimental/po/it.po	2008-05-22 03:24:54.000000000 +0200
+@@ -6102,7 +6102,7 @@
+ #: g10/trustdb.c:581 g10/trustdb.c:2425
+ #, c-format
+ msgid "next trustdb check due at %s\n"
+-msgstr "il prossimoi controllo del trustdb sarà fatto il %s\n"
++msgstr "il prossimo controllo del trustdb sarà fatto il %s\n"
+ 
+ #: g10/trustdb.c:590
+ #, fuzzy, c-format

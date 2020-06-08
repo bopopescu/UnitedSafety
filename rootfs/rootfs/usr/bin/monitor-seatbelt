@@ -1,0 +1,27 @@
+#!/bin/sh
+	type=$1
+
+	if [ '' = "$type" ];then
+		logger "$0: No seatbelt type specified"
+		exit 1
+	fi
+
+	monitor="can-$type-seatbelt-monitor"
+	run_path='/etc/redstone/early-start'
+
+	if [ 'OFF' = "$FEATURE" ];then
+		logger "$0: Unsetting seatbelt monitor for $type"
+		rm -f "$run_path/$monitor"
+		exit 0
+	fi
+
+	if [ ! -e "$run_path/$monitor" ];then
+	
+		if [ -e "/usr/bin/$monitor" ];then
+			logger "$0: Setting seatbelt monitor for $type"
+			ln -s "/usr/bin/$monitor" /etc/redstone/early-start/
+		fi
+
+	fi
+
+exit 0

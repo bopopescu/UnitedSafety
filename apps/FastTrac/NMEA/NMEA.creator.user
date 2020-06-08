@@ -1,0 +1,105 @@
+<!DOCTYPE QtCreatorProject>
+<qtcreator>
+ <data>
+  <variable>activeRunConfiguration</variable>
+  <value type="int">0</value>
+ </data>
+ <data>
+  <variable>activebuildconfiguration</variable>
+  <value type="QString">all</value>
+ </data>
+ <data>
+  <variable>buildConfiguration-all</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">all</value>
+   <value key="buildDirectory" type="QString">/home/dhuff/dev/FASTTrac/NMEA</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfiguration-all-buildstep0</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString">all</value>
+   <valuelist key="abstractProcess.Environment" type="QVariantList">
+    <value type="QString">DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-USszRgHRVM,guid=ab4fd458fa7f7ab0113afcd74fec7927</value>
+    <value type="QString">DEFAULTS_PATH=/usr/share/gconf/gnome.default.path</value>
+    <value type="QString">DESKTOP_SESSION=gnome</value>
+    <value type="QString">DISPLAY=:0.0</value>
+    <value type="QString">GDMSESSION=gnome</value>
+    <value type="QString">GDM_KEYBOARD_LAYOUT=us</value>
+    <value type="QString">GDM_LANG=en_CA.UTF-8</value>
+    <value type="QString">GNOME_DESKTOP_SESSION_ID=this-is-deprecated</value>
+    <value type="QString">GNOME_KEYRING_CONTROL=/tmp/keyring-XRNbEF</value>
+    <value type="QString">GNOME_KEYRING_PID=2059</value>
+    <value type="QString">GTK_MODULES=canberra-gtk-module</value>
+    <value type="QString">HOME=/home/dhuff</value>
+    <value type="QString">LANG=en_CA.UTF-8</value>
+    <value type="QString">LD_LIBRARY_PATH=/usr/lib/qtcreator</value>
+    <value type="QString">LIBGL_DRIVERS_PATH=/usr/lib/fglrx/dri</value>
+    <value type="QString">LOGNAME=dhuff</value>
+    <value type="QString">MANDATORY_PATH=/usr/share/gconf/gnome.mandatory.path</value>
+    <value type="QString">ORBIT_SOCKETDIR=/tmp/orbit-dhuff</value>
+    <value type="QString">PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/git-core</value>
+    <value type="QString">PWD=/home/dhuff</value>
+    <value type="QString">SESSION_MANAGER=local/john-desktop:@/tmp/.ICE-unix/2077,unix/john-desktop:/tmp/.ICE-unix/2077</value>
+    <value type="QString">SHELL=/bin/bash</value>
+    <value type="QString">SHLVL=0</value>
+    <value type="QString">SPEECHD_PORT=7562</value>
+    <value type="QString">SSH_AGENT_PID=2117</value>
+    <value type="QString">SSH_AUTH_SOCK=/tmp/keyring-XRNbEF/ssh</value>
+    <value type="QString">USER=dhuff</value>
+    <value type="QString">USERNAME=dhuff</value>
+    <value type="QString">XAUTHORITY=/var/run/gdm/auth-for-dhuff-NyoXcN/database</value>
+    <value type="QString">XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome:/etc/xdg</value>
+    <value type="QString">XDG_DATA_DIRS=/usr/share/gnome:/usr/local/share/:/usr/share/</value>
+    <value type="QString">XDG_SESSION_COOKIE=41be2a17a119c29560f7370d4c86856b-1340897574.530457-813167978</value>
+   </valuelist>
+   <valuelist key="abstractProcess.arguments" type="QVariantList">
+    <value type="QString">all</value>
+   </valuelist>
+   <value key="abstractProcess.command" type="QString">make</value>
+   <value key="abstractProcess.enabled" type="bool">true</value>
+   <value key="abstractProcess.workingDirectory" type="QString">/home/dhuff/dev/FASTTrac/NMEA</value>
+   <valuelist key="buildTargets" type="QVariantList">
+    <value type="QString">all</value>
+   </valuelist>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildconfigurations</variable>
+  <valuelist type="QVariantList">
+   <value type="QString">all</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>buildstep0</variable>
+  <valuemap type="QVariantMap">
+   <value key="ProjectExplorer.BuildConfiguration.DisplayName" type="QString"></value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>buildsteps</variable>
+  <valuelist type="QVariantList">
+   <value type="QString">GenericProjectManager.MakeStep</value>
+  </valuelist>
+ </data>
+ <data>
+  <variable>cleansteps</variable>
+  <valuelist type="QVariantList"/>
+ </data>
+ <data>
+  <variable>defaultFileEncoding</variable>
+  <value type="QByteArray">System</value>
+ </data>
+ <data>
+  <variable>includePaths</variable>
+  <valuelist type="QVariantList"/>
+ </data>
+ <data>
+  <variable>project</variable>
+  <valuemap type="QVariantMap"/>
+ </data>
+ <data>
+  <variable>toolChain</variable>
+  <value type="int">0</value>
+ </data>
+</qtcreator>

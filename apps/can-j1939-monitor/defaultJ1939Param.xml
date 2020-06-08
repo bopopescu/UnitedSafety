@@ -1,0 +1,395 @@
+<data name="template" type="J1939">
+	<normaldelay>0</normaldelay>
+
+	<pgn name="65104">
+		<desc>"Battery Temperature"</desc>
+		<spn name="1800">
+			<definition>
+				<desc>"Battery 1 Temperature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>0</bitoffset>
+				<size>8</size>
+				<scale>1</scale>
+				<offset>-40</offset>
+				<units>"deg C"</units>
+				<lrange>-40</lrange>
+				<hrange>210</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+		<spn name="1801">
+			<definition>
+				<desc>"Battery 2 Temperature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>8</bitoffset>
+				<size>8</size>
+				<scale>1</scale>
+				<offset>-40</offset>
+				<units>"deg C"</units>
+				<lrange>-40</lrange>
+				<hrange>210</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65128">
+		<desc>"Vehicle Fluids"</desc>
+		<spn name="1638">
+			<definition>
+				<desc>"Hydraulic Temperature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>0</bitoffset>
+				<size>8</size>
+				<scale>1</scale>
+				<offset>-40</offset>
+				<units>"deg C"</units>
+				<lrange>-40</lrange>
+				<hrange>210</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65207">
+		<desc>"Engine Speed/Load Factor Information"</desc>
+		<request>1</request>
+		<spn name="1015">
+			<definition>
+				<desc>"Trip Drive Average Load Factor"</desc>
+				<periodic>1</periodic>
+				<bitoffset>32</bitoffset>
+				<size>8</size>
+				<scale>0.4</scale>
+				<offset>0</offset>
+				<units>"%"</units>
+				<lrange>0</lrange>
+				<hrange>100</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+		<spn name="1016">
+			<definition>
+				<desc>"Total Drive Average Load Factor"</desc>
+				<periodic>1</periodic>
+				<bitoffset>40</bitoffset>
+				<size>8</size>
+				<scale>0.4</scale>
+				<offset>0</offset>
+				<units>"%"</units>
+				<lrange>0</lrange>
+				<hrange>100</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65244">
+		<desc>"Idle Operation"</desc>
+		<request>1</request>
+		<spn name="236">
+			<definition>
+				<desc>"Engine Total Idle Fuel Used"</desc>
+				<periodic>1</periodic>
+				<bitoffset>0</bitoffset>
+				<size>32</size>
+				<scale>0.5</scale>
+				<offset>0</offset>
+				<units>"L"</units>
+				<lrange>0</lrange>
+				<hrange>2105540607.5</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+		<spn name="235">
+			<definition>
+				<desc>"Engine Total Idle Hours"</desc>
+				<periodic>1</periodic>
+				<bitoffset>32</bitoffset>
+				<size>32</size>
+				<scale>0.05</scale>
+				<offset>0</offset>
+				<units>"hr"</units>
+				<lrange>0</lrange>
+				<hrange>210554060.75</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65248">
+		<desc>"Vehicle Distance"</desc>
+		<spn name="245">
+			<definition>
+				<desc>"Total Vehicle Distance"</desc>
+				<periodic>1</periodic>
+				<bitoffset>32</bitoffset>
+				<size>32</size>
+				<scale>0.125</scale>
+				<offset>0</offset>
+				<units>"km"</units>
+				<lrange>0</lrange>
+				<hrange>526385151.9</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65253">
+		<desc>"Engine Hours"</desc>
+		<request>1</request>
+		<spn name="247">
+			<definition>
+				<desc>"Engine Total Hours of Operation"</desc>
+				<periodic>1</periodic>
+				<bitoffset>0</bitoffset>
+				<size>32</size>
+				<scale>0.05</scale>
+				<offset>0</offset>
+				<units>"hr"</units>
+				<lrange>0</lrange>
+				<hrange>210554060.75</hrange>
+			</definition>
+		</spn>
+	</pgn>
+
+	<pgn name="65257">
+		<desc>"Fuel Consumption"</desc>
+		<request>1</request>
+		<spn name="250">
+			<definition>
+				<desc>"Engine Total Fuel Used"</desc>
+				<periodic>1</periodic>
+				<bitoffset>32</bitoffset>
+				<size>32</size>
+				<scale>0.5</scale>
+				<offset>0</offset>
+				<units>"L"</units>
+				<lrange>0</lrange>
+				<hrange>2105540607.5</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65262">
+		<desc>"Engine Temperature 1"</desc>
+		<spn name="110">
+			<definition>
+				<desc>"Engine Coolant Temperature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>0</bitoffset>
+				<size>8</size>
+				<scale>1</scale>
+				<offset>-40</offset>
+				<units>"deg C"</units>
+				<lrange>-40</lrange>
+				<hrange>210</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65264">
+		<desc>"Power Takeoff Information"</desc>
+		<spn name="90">
+			<definition>
+				<desc>"Power Takeoff Oil Temperature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>0</bitoffset>
+				<size>8</size>
+				<scale>1</scale>
+				<offset>-40</offset>
+				<units>"deg C"</units>
+				<lrange>-40</lrange>
+				<hrange>210</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65265">
+		<desc>"Cruise Control/Vehicle Speed 1"</desc>
+		<spn name="70">
+			<definition>
+				<desc>"Parking Brake Switch"</desc>
+				<periodic>1</periodic>
+				<bitoffset>2</bitoffset>
+				<size>2</size>
+				<scale>1</scale>
+				<offset>0</offset>
+				<lrange>0</lrange>
+				<hrange>3</hrange>
+			</definition>
+		</spn>
+	</pgn>
+
+	<pgn name="65269">
+		<desc>"Ambient Conditions"</desc>
+		<spn name="171">
+			<definition>
+				<desc>"Ambient Air Temperature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>24</bitoffset>
+				<size>16</size>
+				<scale>0.03125</scale>
+				<offset>-273</offset>
+				<units>"deg C"</units>
+				<lrange>-273</lrange>
+				<hrange>1734.96875</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65272">
+		<desc>"Transmission Fluids 1"</desc>
+		<spn name="177">
+			<definition>
+				<desc>"Transmission Oil Temperature 1"</desc>
+				<periodic>1</periodic>
+				<bitoffset>32</bitoffset>
+				<size>16</size>
+				<scale>0.03125</scale>
+				<offset>-273</offset>
+				<units>"deg C"</units>
+				<lrange>-273</lrange>
+				<hrange>1734.96875</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+
+	<pgn name="65276">
+		<desc>"Dash Display"</desc>
+		<spn name="96">
+			<definition>
+				<desc>"Fuel level 1"</desc>
+				<periodic>1</periodic>
+				<bitoffset>8</bitoffset>
+				<size>8</size>
+				<scale>0.4</scale>
+				<offset>0</offset>
+				<units>"%"</units>
+				<lrange>0</lrange>
+				<hrange>100</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+		<spn name="169">
+			<definition>
+				<desc>"Cargo Ambient Temerature"</desc>
+				<periodic>1</periodic>
+				<bitoffset>32</bitoffset>
+				<size>16</size>
+				<scale>0.03125</scale>
+				<offset>-273</offset>
+				<units>"deg C"</units>
+				<lrange>-273</lrange>
+				<hrange>1734.96875</hrange>
+			</definition>
+			<exceed>
+				<hlimit>0</hlimit>
+				<llimit>0</llimit>
+			</exceed>
+		</spn>
+	</pgn>
+	<pgn name="61444">
+		<desc>"Electronic Engine Controller 1"</desc>
+		<spn name="190">
+			<definition>
+				<desc>"Engine Speed"</desc>
+				<periodic>1</periodic>
+				<bitoffset>24</bitoffset>
+				<size>16</size>
+				<scale>0.125</scale>
+				<offset>0</offset>
+				<units>"rpm"</units>
+				<lrange>0</lrange>
+				<hrange>8031.875</hrange>
+			</definition>
+		</spn>
+	</pgn>
+	<pgn name="65265">
+		<desc>"Cruise Control/vehicle speed 1"</desc>
+		<spn name="84">
+			<definition>
+				<desc>"Wheel-Based Vehicle Speed"</desc>
+				<periodic>1</periodic>
+				<bitoffset>8</bitoffset>
+				<size>16</size>
+				<scale>0.0039</scale>
+				<offset>0</offset>
+				<units>"km/h"</units>
+				<lrange>0</lrange>
+				<hrange>250.996</hrange>
+			</definition>
+		</spn>
+	</pgn>
+	<pgn name="65259">
+		<desc>"Component Identification"</desc>
+		<request>1</request>
+		<spn name="586">
+			<definition>
+				<desc>"Make"</desc>
+			</definition>
+		</spn>
+		<spn name="587">
+			<definition>
+				<desc>"Model"</desc>
+			</definition>
+		</spn>
+		<spn name="588">
+			<definition>
+				<desc>"Serial Number"</desc>
+			</definition>
+		</spn>
+		<spn name="233">
+			<definition>
+				<desc>"Unit NUmber"</desc>
+			</definition>
+		</spn>
+	</pgn>
+</data>

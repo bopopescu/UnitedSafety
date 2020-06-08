@@ -1,0 +1,28 @@
+#!/bin/sh
+
+mount|grep "/dev/root on / type nfs" 2>/dev/null
+if [ 0 = "$?" ];then
+	exit 0
+fi
+export LD_LIBRARY_PATH=/usr/local/lib
+export XTABLES_LIBDIR=/lib/xtables
+
+iptables -I INPUT -i ra0 -p tcp --dport 22 -j ACCEPT
+iptables -I INPUT -i eth0 -p tcp --dport 443 -j ACCEPT
+iptables -I INPUT -i ra0 -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -i eth0 -p icmp -m icmp --icmp-type any -j ACCEPT
+iptables -A INPUT -i ra0 -p icmp -m icmp --icmp-type any -j ACCEPT
+iptables -I INPUT -i apcli0 -p tcp --dport 22 -j ACCEPT
+iptables -I INPUT -i apcli0 -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -i apcli0 -p icmp -m icmp --icmp-type any -j ACCEPT
+
+#Precision Centrifuge Firewall Settings
+iptables -t nat -I POSTROUTING -o apcli0 -j MASQUERADE
+iptables -A FORWARD -i eth0 -o ra0 -j ACCEPT
+iptables -A FORWARD -i ra0 -o eth0 -j ACCEPT
+iptables -A FORWARD -i ra0 -o apcli0 -j ACCEPT
+iptables -A FORWARD -i eth0 -o apcli0 -j ACCEPT
+iptables -A FORWARD -i apcli0 -o ra0 -j ACCEPT
+iptables -A FORWARD -i apcli0 -o eth0 -j ACCEPT
+
+exit 0

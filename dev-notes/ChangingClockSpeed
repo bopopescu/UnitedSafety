@@ -1,0 +1,20 @@
+To change the imx28 clock speed
+Note:  when the following change was tried the Modem does not come up with the ttyACMx ports at lower speeds.  
+Might need to change order (or remove the highest speed) in bus_freq.h and rebuild the kernel to test if this is caused by the speed changing from the
+(default) highest value, or it is just the speed itself that causes the problem.
+
+Changing the speed results in the immediate disappearance of the /dev/ttyACMx ports.
+
+What was added:
+
+echo 360000> /sys/devices/system/cpu/cpu0/cpufreq/scaling_setspeed
+to
+/etc/rc.d/start-redstone
+
+See the directory:
+mx28/linux-2.6.35.3/arch/arm/mach-mx28/
+
+for implementation.
+
+
+Dave Huff - March 29,2017

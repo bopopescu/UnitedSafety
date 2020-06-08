@@ -1,0 +1,92 @@
+Description: Upstream changes introduced in version 1.4.12-1ubuntu4
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ iptables (1.4.12-1ubuntu4) precise; urgency=low
+ .
+   * Update to use reap patch which was accepted upstream in slightly different form.
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Tim Gardner <tim.gardner@canonical.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- iptables-1.4.12.orig/extensions/libxt_recent.c
++++ iptables-1.4.12/extensions/libxt_recent.c
+@@ -20,7 +20,6 @@ enum {
+ 	F_RCHECK = 1 << O_RCHECK,
+ 	F_UPDATE = 1 << O_UPDATE,
+ 	F_REMOVE = 1 << O_REMOVE,
+-	F_SECONDS = 1 << O_SECONDS,
+ 	F_ANY_OP = F_SET | F_RCHECK | F_UPDATE | F_REMOVE,
+ };
+ 
+@@ -35,9 +34,8 @@ static const struct xt_option_entry rece
+ 	{.name = "remove", .id = O_REMOVE, .type = XTTYPE_NONE,
+ 	 .excl = F_ANY_OP, .flags = XTOPT_INVERT},
+ 	{.name = "seconds", .id = O_SECONDS, .type = XTTYPE_UINT32,
+-	 .flags = XTOPT_PUT, XTOPT_POINTER(s, seconds), .min = 1},
+-	{.name = "reap", .id = O_REAP, .type = XTTYPE_NONE,
+-	 .also = F_SECONDS },
++	 .flags = XTOPT_PUT, XTOPT_POINTER(s, seconds)},
++	{.name = "reap", .id = O_REAP, .type = XTTYPE_NONE},
+ 	{.name = "hitcount", .id = O_HITCOUNT, .type = XTTYPE_UINT32,
+ 	 .flags = XTOPT_PUT, XTOPT_POINTER(s, hit_count)},
+ 	{.name = "rttl", .id = O_RTTL, .type = XTTYPE_NONE,
+@@ -137,6 +135,10 @@ static void recent_check(struct xt_fchec
+ 		xtables_error(PARAMETER_PROBLEM,
+ 			"recent: you must specify one of `--set', `--rcheck' "
+ 			"`--update' or `--remove'");
++
++	if ((info->check_set & XT_RECENT_REAP) && !info->seconds)
++		xtables_error(PARAMETER_PROBLEM,
++			"recent: you must specify `--seconds' with `--reap'");
+ }
+ 
+ static void recent_print(const void *ip, const struct xt_entry_match *match,
+@@ -157,8 +159,7 @@ static void recent_print(const void *ip,
+ 	if (info->check_set & XT_RECENT_REMOVE)
+ 		printf(" REMOVE");
+ 	if(info->seconds) printf(" seconds: %d", info->seconds);
+-	if (info->check_set & XT_RECENT_REAP)
+-		printf(" reap");
++	if(info->check_set & XT_RECENT_REAP) printf(" reap");
+ 	if(info->hit_count) printf(" hit_count: %d", info->hit_count);
+ 	if (info->check_set & XT_RECENT_TTL)
+ 		printf(" TTL-Match");
+@@ -185,8 +186,7 @@ static void recent_save(const void *ip, 
+ 	if (info->check_set & XT_RECENT_REMOVE)
+ 		printf(" --remove");
+ 	if(info->seconds) printf(" --seconds %d", info->seconds);
+-	if (info->check_set & XT_RECENT_REAP)
+-		printf(" --reap");
++	if(info->check_set & XT_RECENT_REAP) printf(" --reap");
+ 	if(info->hit_count) printf(" --hitcount %d", info->hit_count);
+ 	if (info->check_set & XT_RECENT_TTL)
+ 		printf(" --rttl");
+--- iptables-1.4.12.orig/extensions/libxt_recent.man
++++ iptables-1.4.12/extensions/libxt_recent.man
+@@ -41,10 +41,9 @@ This option must be used in conjunction 
+ \fB\-\-update\fP. When used, this will narrow the match to only happen when the
+ address is in the list and was seen within the last given number of seconds.
+ .TP
+-\fB\-\-reap\fP
++\fB\-\-reap\fP \fIreap\fP
+ This option can only be used in conjunction with \fB\-\-seconds\fP.
+-When used, this will cause entries older than the last given number of seconds
+-to be purged.
++When used, this will cause entries older then 'seconds' to be purged.
+ .TP
+ \fB\-\-hitcount\fP \fIhits\fP
+ This option must be used in conjunction with one of \fB\-\-rcheck\fP or

@@ -1,0 +1,15 @@
+*.swp
+*.a
+*.o
+Makefile
+config.h
+config.log
+config.status
+libtomcrypt/Makefile
+libtommath/Makefile
+dbclient
+dropbear
+dropbearconvert
+dropbearkey
+scp
+dropbearmulti

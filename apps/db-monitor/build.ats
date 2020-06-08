@@ -1,0 +1,42 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+#	export REDSTONE_SQLITE3_INCLUDE_DIR="$REDSTONE_BUILD_DIR/include/sqlite3-3.6.22"
+#	export REDSTONE_SQLITE3_LIB_DIR="$REDSTONE_BUILD_DIR/usr/lib"
+
+	make -e
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo cp -av "./bin/$ARCH/db-monitor" "./bin/$ARCH/db-config" "$ROOTFS_DEF_DIR/usr/bin"
+		sudo ln -f -s /usr/bin/db-config "$ROOTFS_DEF_DIR/usr/bin/db-export"
+		sudo ln -f -s /usr/bin/db-config "$ROOTFS_DEF_DIR/usr/bin/db-import"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install db-monitor applications"
+			exit 1
+		fi
+
+		SO='./bin/arm/libdb-monitor.so'
+		${CROSS_COMPILE}strip --strip-unneeded "$SO"
+		sudo cp -av "$SO" "$ROOTFS_DEF_DIR/lib/"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$SO\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

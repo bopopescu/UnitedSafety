@@ -1,0 +1,50 @@
+this fixes a problem with new mail detection on MH folder, for a 
+more detailed history see mutt bugs #3308 and #3312 and debian
+bug 538128
+
+--- a/mh.c
++++ b/mh.c
+@@ -146,7 +146,7 @@
+   if ((p = strchr (t, '-')))
+   {
+     *p++ = '\0';
+-    if (mutt_atoi (t, first) < 0 || mutt_atoi (t, last) < 0)
++    if (mutt_atoi (t, first) < 0 || mutt_atoi (p, last) < 0)
+       return -1;
+   }
+   else
+@@ -167,7 +167,7 @@
+   size_t sz = 0;
+ 
+   short f;
+-  int first, last, rc;
++  int first, last, rc = 0;
+ 
+   char pathname[_POSIX_PATH_MAX];
+   snprintf (pathname, sizeof (pathname), "%s/.mh_sequences", path);
+@@ -207,7 +207,7 @@
+ out:
+   FREE (&buff);
+   safe_fclose (&fp);
+-  return 0;
++  return rc;
+ }
+ 
+ static inline mode_t mh_umask (CONTEXT* ctx)
+@@ -238,6 +238,7 @@
+   for (i = 0; !r && i <= mhs.max; i++)
+     if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
+       r = 1;
++  mhs_free_sequences (&mhs);
+   return r;
+ }
+ 
+@@ -1155,7 +1156,7 @@
+ 
+   if (ctx->magic == M_MH)
+   {
+-    if (mh_read_sequences (&mhs, ctx->path) >= 0)
++    if (mh_read_sequences (&mhs, ctx->path) < 0)
+       return -1;
+     mh_update_maildir (md, &mhs);
+     mhs_free_sequences (&mhs);

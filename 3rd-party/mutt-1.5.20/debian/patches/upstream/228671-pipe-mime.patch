@@ -1,0 +1,18 @@
+Don't draw imap fetch progress if we aren't in visual mode.
+Drawing progress leaves terminal in confusing state when piping a message
+from pager to less(1). See http://bugs.mutt.org/1771
+
+--- a/imap/message.c
++++ b/imap/message.c
+@@ -489,8 +489,9 @@
+ 	    imap_error ("imap_fetch_message()", buf);
+ 	    goto bail;
+ 	  }
+-	  mutt_progress_init (&progressbar, _("Fetching message..."),
+-			      M_PROGRESS_SIZE, NetInc, bytes);
++          if (!isendwin())
++	    mutt_progress_init (&progressbar, _("Fetching message..."),
++	   		      M_PROGRESS_SIZE, NetInc, bytes);
+ 	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
+ 	    goto bail;
+ 	  /* pick up trailing line */

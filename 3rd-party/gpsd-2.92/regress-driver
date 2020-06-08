@@ -1,0 +1,110 @@
+#!/bin/sh
+#
+# The regression-test driver script.  This used to be explicit in the
+# makefile before we regrouped the regression tests by stable and unstable 
+# drivers.
+#
+PATH=.:$PATH
+export PATH
+
+mode=regress
+testing=daemon
+opts=""
+while getopts cstrbvo opt
+do
+    case $opt in
+        c) testing=clientlib ;;	# Can be 'daemon'  
+	s) mode=regress ;;	# Run regression tests
+	t) opts="-b $opts" mode=regress ;;	# Run regression tests w/baton
+	r) mode=superraw ;;	# Run superraw regressions (r=2 mode)
+	b) mode=build ;;	# Rebuild regression check files
+	v) mode=view ;;		# View result of generating a check file
+	o) opts="$opts $OPTARG" ;;	# Pass options to gpsfake
+    esac
+done
+shift $(($OPTIND - 1))
+
+# Enables us to turn debugging up high without screwing up the diff checks
+# First expression filters out device notifications on old protocol.
+# Second and third filter out gpsd log messages.
+# Fourth filters out gps.py verbose loggging
+# Fifth filters out new-style WATCH responses
+# Sixth filters out new-style DEVICE responses
+# Seventh filters out new-style VERSION responses
+# Eighth filters out device fields in new-style responses.
+GPSFILTER="sed -e /^GPSD,X/d -e /^gpsd:/d -e /^gpsfake/d -e /GPS-DATA/d -e /WATCH/d -e /DEVICE/d -e /VERSION/d -e s/,\"device\":[^,}]*//"
+
+# Use ALTFILTER to set up custom filtering when a regression test fails
+# This example filters out altitude and some fields computed by gpsd's error 
+# modeling - these are fragile in the prsence of changes to the fix-buffering 
+# logic. Note that as the last attribute mode needs to be handled differently.
+#ALTFILTER="-e s/\"alt\":[^,]*,// -e s/\"ep[vhs]\":[-+0-9.]*// -e s/,\"mode\":[^}]*//"
+
+case $mode in
+    regress)
+        echo "Testing the $testing..." >&2
+        errors=0; total=0; notfound=0;
+        for f in $*; do
+            dir=`dirname $f`
+	    trap 'rm -f $dir/test.chk $dir/test-whole.chk $dir/test-trunc.chk $dir/log-copy.chk $dir/diff $dir/diff-trunc; exit $errors' 0 1 2 15
+	    if [ -r $f.chk ]
+	    then
+		case $testing in
+		daemon) gpsfake -s 38400 -1 -p $opts ${f} | ${GPSFILTER} ${ALTFILTER} >$dir/test.chk ;;
+		clientlib) libgps -b <${f} >$dir/test.chk ;;
+		esac
+		sed -n <${f}.chk >$dir/log-copy.chk ${ALTFILTER} -e 'p';
+		sed -n <$dir/test.chk >$dir/test-whole.chk ${ALTFILTER} -e 'p';
+		sed -n <$dir/test.chk >$dir/test-trunc.chk -e '$d' ${ALTFILTER} -e 'p';
+		diff -ub $dir/log-copy.chk $dir/test-whole.chk >$dir/diff;
+		diff -ub $dir/log-copy.chk $dir/test-trunc.chk >$dir/diff-trunc;
+		if test \( -s $dir/diff \) -a \( -s $dir/diff-trunc \) ; then
+		    errors=`expr $errors + 1`;
+		    cat $dir/diff
+		fi;
+		rm -f $dir/test.chk $dir/test-whole.chk $dir/test-trunc.chk $dir/log-copy.chk $dir/diff $dir/diff-trunc
+	    else
+		echo "*** No check log $f.chk exists"
+		notfound=`expr $notfound + 1`;
+	    fi
+	    total=`expr $total + 1`;
+        done; 
+        if test $errors -gt 0; then
+            echo "Regression test FAILED: $errors errors in $total tests total  ($notfound not found).";
+            exit 1;
+        else
+            echo "Regression test successful: no errors in $total tests ($notfound not found).";
+            exit 0;
+        fi
+        ;;
+    superraw)
+        echo "Testing super-raw mode..." >&2
+        for f in $*; do
+            dir=`dirname $f`
+            gpsfake -s 38400 -1 -b -p -r '{"class":"WATCH","enable":False,"raw":2}' $opts ${f} \
+            | ./devtools/striplog -1 >$dir/test1.chk;
+            ./devtools/striplog <${f} >$dir/test2.chk;
+            cmp $dir/test[12].chk;
+        done; rm $dir/test[12].chk
+        ;;
+    build)
+	echo "Rebuilding $testing regressions..." >&2
+        for f in $*; do
+	    case $testing in 
+            daemon) gpsfake -s 38400 -1 -b -p $opts ${f} | ${GPSFILTER} >${f}.chk;;
+	    clientlib) libgps -b <${f} >${f}.chk ;;
+            esac
+        done
+        exit 0
+        ;;
+    view)
+        echo "Viewing..." >&2
+        for f in $*; do
+	    case $testing in 
+            daemon) gpsfake -s 38400 -1 -b -p $opts ${f} | ${GPSFILTER} ;;
+            clientlib) libgps -b <${f} ;;
+            esac
+        done
+        exit 0
+        ;;
+esac

@@ -1,0 +1,17 @@
+#!/bin/sh
+echo > /dev/watchdog
+logger -s "===== m2m-init ====="
+stty -F /dev/ttyAM0 cols 150
+
+if [ -s /mnt/nvram/rom/sn.txt ];then
+	sn=`head -n1 /mnt/nvram/rom/sn.txt|tr -d '\r'|tr -d '\n'`
+else
+	sn='NO-SERIAL'
+	mkdir -p /mnt/nvram/config
+fi
+
+echo > /tmp/config/issue
+cp /etc/dhcpd/dhcpd.conf /tmp/config
+
+printf "\x1b[1;31mRedStone\x1b[0m(\x1b[1;34m$sn\x1b[0m, `head -n3 /version|tail -n1`, `head -n2 /version|tail -n1`)\n" >> /tmp/config/issue
+exit 0

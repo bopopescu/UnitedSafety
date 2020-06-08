@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# prince - build the prince project release in a temp directory
+#
+
+./BuildNum  # increment build number and push it back to git.
+
+
+if [ ! -d "~/tmp/TL5000" ]; then	
+	mkdir ~/tmp
+	cd ~/tmp
+	git clone git@github.com:Aware360/TL5000.git
+else
+	cd ~/tmp/TL5000
+	git pull
+	git checkout prince_project
+fi
+
+
+cd ~/tmp/TL5000/build
+./build
+

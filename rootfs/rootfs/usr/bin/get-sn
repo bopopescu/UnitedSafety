@@ -1,0 +1,8 @@
+#!/bin/sh
+cat /mnt/nvram/rom/sn.txt | grep "^M3G1104" 2>&1 > /dev/null
+if [ 0 = "$?" ];then
+        sn=`cat /mnt/nvram/rom/sn.txt | sed 's/M3G11040*\([0-9]\+\)$/\1/'`
+        echo -n "$sn"
+else
+        echo -n "0"
+fi

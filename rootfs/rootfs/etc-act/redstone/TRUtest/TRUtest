@@ -1,0 +1,140 @@
+#!/bin/sh
+
+#
+# TRUtest
+#
+# Usage: TRUtest <options> <test>
+#
+#  If <test> is not specified the system will try to initiate the test in the TRUtest.txt file.  If there is no
+#  TRUtest.txt file all of the tests (files ending .tst) in the scripts directory will be run.
+#
+#  OPTIONS:
+#
+# --email  - set to the email(s) that the test results will be sent to
+# --nouser - only run non interactive scripts
+# --scp    - the scp login path
+# --scp_port - the port to use for scp
+# --scp_pass - the password to use for scp
+# --debug - will echo the script execution while running (sh '-x' option)
+
+cd /etc/redstone/TRUtest
+# TTlog will log to the screen and the TTresult.txt file
+source TTlog.sh
+
+#TThelper.sh include the get_val, set_val, clear_val functions.
+source TThelper.sh
+#must be running from the debug port.  You cannot run TRUtest from
+
+myTTY=`tty`
+if [ "$myTTY" != "/dev/ttyAM0" ] && [ "$myTTY" != "/dev/console" ]; then
+    write_log  "TRUtest must be run from the debug port! - Exiting TRUtest."
+    exit
+fi
+#need to have this directory
+if [ -z /mnt/update/TRUtest ]; then
+  mkdir -p /mnt/update/TRUtest
+fi
+####
+# if there are arguments we are starting fresh
+
+if [ "$#" -gt 0 ]; then
+  rm $TTfile > /dev/null 2>&1
+  rm $TTRESULTS > /dev/null 2>&1
+  rm $TTDebug > /dev/null 2>&1
+  
+  set_val  state all   #run all tests by default
+  cp /mnt/nvram/config/config.db /mnt/nvram/config/config.TT
+  
+  while [ "$#" -gt 0 ]; do
+    if [ "$1" == "--email" -o \
+       "$1" == "--scp"   -o \
+       "$1" == "--scp_port" -o \
+       "$1" == "--sc-pass" ]; then
+      set_val `echo $1 | sed 's/^--//' )` $2
+      `eval $( echo $1 | sed 's/^--//' )=$2`
+      shift
+    elif [ "$1" == "--nouser" ]; then
+      nouser=1
+      set_val  nouser 1
+    elif [ "$1" == "--debug" ]; then
+      useDebug="-x"
+    elif [ "$1" == "--all" ]; then  # called to run all tests
+      RUNALL=1
+      echo "Argument --all detected - running all tests. "
+    else
+      tscript=`echo $1 | awk 'BEGIN {FS="."}{print $1}'`
+      set_val  "test" $tscript                                          
+      set_val  "state" one                                              
+    fi                                                                                        
+                                                              
+    shift                     
+  done                                       
+fi       
+
+####
+
+curtest=`get_val "test"`
+TESTS=`get_val "state"`  # will be 'all' or 'one'
+                                                                                                               
+if [ -z $curtest ]; then  # no test specified - run all the tests                               
+  if [ "1" == "$RUNALL" ]; then
+    write_log  "TRUtest starting: No test specified - running all tests"
+           
+    set_val  state all   #run all tests by default
+    curtest=`ls -1 /etc/redstone/TRUtest | grep .tst | head -n 1 | awk 'BEGIN {FS="."}{print $1}'`
+    write_log  "First test identified as $curtest"     
+                               
+    if [ -z $curtest ]; then              
+      write_log  "No tests to run"            
+      exit
+    fi
+   
+    set_val "test" $curtest
+  else
+    stty -F /dev/ttyAM0 115200
+    /sbin/getty -L ttyAM0 115200 vt100
+    exit  # called at startup with no existing TRUtest file 
+  fi
+else
+    write_log  "TRUtest starting: running test $curtest"
+fi                                      
+
+still_working=1
+
+while [ "1" == "$still_working" ]; do
+  cd /etc/redstone/TRUtest   
+  sh $useDebug $curtest.tst                                                         
+  clear_val stage   #remove 'stage' for clean run of next file
+  
+  if [ "all" == "$TESTS" ]; then
+    next_test=`ls -1 | grep .tst | grep -A 1 $curtest | tail -n 1 | awk 'BEGIN {FS="."}{print $1}'`
+    write_log  "Current test is $curtest next test is $next_test"  
+                                                                                                 
+    if [ "$next_test" == "$curtest" ]; then         
+      still_working=0                                             
+    else                                    
+      curtest=$next_test
+      set_val "test" $curtest
+    fi                               
+  else                    
+    still_working=0                          
+  fi               
+done               
+                                                    
+                                                
+#clean up the system
+                    
+rm /mnt/update/TRUtest/TRUtest.txt                                      
+write_log  "TRUtest tests completed.  Thank you for playing.  Come back soon."
+write_log  "Now restoring configuration - rebooting..."
+sleep 2
+
+email=`get_val email`
+
+if [ -e $email ]; then
+  cat $TTRESULTS | mutt -a $TTDebug -s TRUtest -- $email
+fi
+         
+cp /mnt/nvram/config/config.TT /mnt/nvram/config/config.db
+rm /mnt/nvram/config/config.TT
+reboot

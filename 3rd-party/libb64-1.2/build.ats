@@ -1,0 +1,12 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	export AR=${CROSS_COMPILE}ar
+	export CC=${CROSS_COMPILE}gcc
+	export CXX=${CROSS_COMPILE}g++
+	make -e
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+exit 0

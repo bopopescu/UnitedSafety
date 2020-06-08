@@ -1,0 +1,25 @@
+
+This is based on the demo implementation of a Linux command line tool to access
+the U-Boot's environment variables.  Almost all functions are re-written because
+of NAND flash and new environment flags index.  Also, it only deals with the 
+case when two environment partitions are on NAND.  And the environment size
+and the NAND erase block are both assumed to be 0x20000.
+
+The environment locations can be specified in a system file "/etc/fw_env.config".
+If this file does not exist, the following default values will be used
+#define DEVICE1_NAME	"/dev/mtd1"
+#define DEVICE2_NAME	"/dev/mtd2"
+#define DEVICE1_OFFSET    0x0000
+#define DEVICE2_OFFSET    0x0000
+
+This sys_monitor application can be multiple-used.  If called normally, sys_monitor
+will update the environment setting "fail_start" to "no" and then shall move on
+to other monitoring tasks.  But it can be used to print and set environment settings.
+
+To print, create a link to it by "ln -s sys_monitor print_env".
+Then, ./print_env will print all environment settings, 
+while ./print_env setting_name will print individual setting_name.
+
+To set, create a link to it by "ln -s sys_monitor set_env".
+Then, ./set_env setting name will remove individual seeting_name,
+while ./set_env setting_name new_setting will set setting_name to new_setting.

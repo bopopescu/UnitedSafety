@@ -1,0 +1,39 @@
+
+ _______         _      _       _    
+|__   __|       | |    (_)     | |   
+   | |_ __ _   _| |     _ _ __ | | __
+   | | '__| | | | |    | | '_ \| |/ /
+   | | |  | |_| | |____| | | | |   < 
+   |_|_|   \__,_|______|_|_| |_|_|\_\
+   
+   
+ TruLink Build Process
+ 
+ This file describes the TruLink build process for generating the prince project version of the full system install and patches.
+ If you are here you are trying to generate a build from the TL5000 git repository at github.
+ 
+ The process has been simplified to a single call './prince' running from within the TL5000/build directory.
+ 
+ Requirements:
+ 1) The current git tree must be fully committed as the build number will be incremented and saved before the build runs.
+ 
+ What it does:
+ 1)	Increments the build number and saves a commit to github.
+ 2) Creates or uses ~/tmp directory.
+ 3) Pulls the TL5000 project from git (just updated with the build number increment).
+ 4) Switches to the prince_project branch.
+ 5) Moves to the TL5000/build directory.
+ 6) Runs the ./build script.  
+ 				This script will build the linux kernel image, the entire set of applications and the root file system for the build.  It then packages up the
+ 				the complete set into a single .bin file and moves it to the TruLink Manufacturing site where it will become available in the TruLink 5000 Version Control page.
+ 				The script will then create branches that will provide an update from the core install branch of 3.0.0.1201???.  This will allow the units to download smaller patches
+ 				that install faster.
+ 				
+
+Original Documentation
+December 7, 2018
+Dave Huff
+KH Akira Consulting for
+Aware 360 Limited.
+ 			
+ 			

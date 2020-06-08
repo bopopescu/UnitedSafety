@@ -1,0 +1,30 @@
+=======================================================================
+= Building RALink WiFi driver
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 3.2.0-23-generic #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 13 Maya \n \l
+
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 11 Katya \n \l
+
+Required Kernel Configuration (in Kernel directory):
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	make redstone_defconfig
+	make -j 4 uImage		// <-- RaLink driver can be compiled after this step
+	make -j 4 modules
+
+Build Commands:
+	// NOTE: Kernel source must have been built/configured to allow for this driver/module to
+	//	build without errors. At least "make modules" or "make" should have been ran on
+	//	the Kernel source.
+	// ATTN: run 'cp ./MODULE/RT2870AP.dat /etc/Wireless/RT2870AP/.' on the target board.
+	//
+	// Misc:
+	//    REDSTONE_CFLAGS          - CFLAGS specific to the RedStone.
+
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	make -j 4 PLATFORM=ARM
+

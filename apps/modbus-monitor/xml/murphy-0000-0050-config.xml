@@ -1,0 +1,61 @@
+<data>
+	<reg>40003</reg>
+	<value>
+		<type>63</type>
+		<tlimit>99</tlimit>
+	</value>
+
+	<reg>40004</reg>
+	<value>
+		<type>63</type>
+		<llimit>1620</llimit>
+		<tlimit>1980</tlimit>
+		<hrepeat>1</hrepeat>
+		<hduration>300</hduration>
+		<lrepeat>1</lrepeat>
+		<lduration>300</lduration>
+	</value>
+
+	<reg>40015</reg>
+	<value>
+		<type>63</type>
+		<llimit>170</llimit>
+		<tlimit>200</tlimit>
+	</value>
+
+	<reg>40021</reg>
+	<value>
+		<type>63</type>
+		<llimit>65</llimit>
+		<tlimit>125</tlimit>
+	</value>
+
+	<reg>40028</reg>
+	<value>
+		<type>63</type>
+		<llimit>11</llimit>
+		<tlimit>14.7</tlimit>
+	</value>
+
+	<reg>40030</reg>
+	<value>
+		<type>63</type>
+		<llimit>11</llimit>
+		<tlimit>40</tlimit>
+	</value>
+
+	<reg>40031</reg>
+	<value>
+		<type>63</type>
+		<tlimit>45</tlimit>
+	</value>
+	<reg>40036</reg>
+	<value>
+		<type>63</type>
+		<llimit>28.5</llimit>
+		<tlimit>29.1</tlimit>
+	</value>
+
+	<reg>40029</reg>
+	<reg>40049</reg>
+</data>

@@ -1,0 +1,281 @@
+/*
+
+ This file defines the shell script strings in normal shell script format.
+ The template will reformat them so that after they pass through the C
+ compiler, they will be restored to the form you see here (with leading
+ tabs stripped, per shell "heredoc" conventions).
+
+ */
+
+AutoGen Definitions scripts.tpl;
+
+#ifdef EMIT_TEMPLATE
+text = {
+  name = ;
+  body = <<- _EOBody_
+	
+	_EOBody_;
+};
+#endif
+
+
+text = {
+  name = contents;
+  body = <<- _EOBody_
+	#
+	# This shar contains:
+	# length mode       name
+	# ------ ---------- ------------------------------------------
+	_EOBody_;
+};
+
+
+text = {
+  name = noisy_mkdir;
+  body = <<- _EOBody_
+	${echo} $echo_n 'x - %s: '$echo_c
+	mkdir '%s'
+	_EOBody_;
+};
+
+
+text = {
+  name = continue_archive;
+  body = <<- _EOBody_
+	#!/bin/sh
+	# This is `%s' (part %d of %s).
+	# Do not concatenate these parts, unpack them in order with `/bin/sh'.
+	# File `%s' is being continued...
+	#
+	lock_dir=_sh%05d
+	_EOBody_;
+};
+
+
+text = {
+  name = dev_tty_check;
+  body = <<- _EOBody_
+	if test -n "`ls /dev/tty 2>/dev/null`"
+	then shar_tty=/dev/tty
+	else shar_tty= ; fi
+	_EOBody_;
+};
+
+
+text = {
+  name = echo_checks;
+  body = <<- _EOBody_
+	if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null
+	then if (echo -n test; echo 1,2,3) | grep n >/dev/null
+	     then shar_n= shar_c='
+	'
+	     else shar_n=-n shar_c= ; fi
+	else shar_n= shar_c='\c' ; fi
+	_EOBody_;
+};
+
+
+text = {
+  name = echo_string;
+  body = <<- _EOBody_
+	${echo} '%s'
+	_EOBody_;
+};
+
+
+text = {
+  name = file_leader;
+  body = <<- _EOBody_
+	#!/bin/sh
+	# This is %s%s archive (produced by GNU %s %s).
+	# To extract the files from this archive, save it to some FILE, remove
+	# everything before the `#!/bin/sh' line above, then type `sh FILE'.
+	#
+	lock_dir=_sh%05d
+	_EOBody_;
+};
+
+
+text = {
+  name = i18n;
+  body = <<- _EOBody_
+	save_IFS="${IFS}"
+	IFS="${IFS}:"
+	gettext_dir=FAILED
+	locale_dir=FAILED
+	first_param="$1"
+	for dir in $PATH
+	do
+	  if test "$gettext_dir" = FAILED && test -f $dir/gettext \
+	     && ($dir/gettext --version >/dev/null 2>&1)
+	  then
+	    case `$dir/gettext --version 2>&1 | sed 1q` in
+	      *GNU*) gettext_dir=$dir ;;
+	    esac
+	  fi
+	  if test "$locale_dir" = FAILED && test -f $dir/shar \
+	     && ($dir/shar --print-text-domain-dir >/dev/null 2>&1)
+	  then
+	    locale_dir=`$dir/shar --print-text-domain-dir`
+	  fi
+	done
+	IFS="$save_IFS"
+	if test "$locale_dir" = FAILED || test "$gettext_dir" = FAILED
+	then
+	  echo=echo
+	else
+	  TEXTDOMAINDIR=$locale_dir
+	  export TEXTDOMAINDIR
+	  TEXTDOMAIN=sharutils
+	  export TEXTDOMAIN
+	  echo="$gettext_dir/gettext -s"
+	fi
+	_EOBody_;
+};
+
+
+text = {
+  name = lock_dir;
+  body = <<- _EOBody_
+	${echo} $shar_n 'x - %s' "\`${lock_dir}': "$shar_c
+	_EOBody_;
+};
+
+
+text = {
+  name = md5check;
+  body = <<- _EOBody_
+	MD5SUM=${MD5SUM-md5sum}
+	f=`${MD5SUM} --version | egrep '^md5sum .*(core|text)utils'`
+	test -n "${f}" && md5check=true || md5check=false
+	${md5check} || \
+	  echo '%s'
+	_EOBody_;
+};
+
+
+text = {
+  name = md5test;
+  body = <<- _EOBody_
+	  if ${md5check}
+	  then (
+	       ${MD5SUM} -c >/dev/null 2>&1 || ${echo} '%s: %s'
+	       ) << %s
+	_EOBody_;
+};
+
+
+text = {
+  name = query_answers;
+  body = <<- _EOBody_
+	ans_yes='%s'    yes_means='%s'
+	ans_no='%s'     no_means='%s'
+	ans_all='%s'    all_means='%s'
+	ans_none='%s'   none_means='%s'
+	ans_help='%s'   help_means='%s'
+	ans_quit='%s'   quit_means='%s'
+	user_answers='no yes all none help quit'
+	shar_wish='no'
+	ans_list="
+[<${ans_no}>, ${ans_yes}, ${ans_all}, ${ans_none}, ${ans_help}, ${ans_quit}] ? "
+
+	eval_ans='
+	if test -z "${shar_wish}" ; then answer=no ; else
+	  answer='help'
+	  case "${ans_yes}"  in "${shar_wish}"* ) answer=yes  ; break ;; esac
+	  case "${ans_no}"   in "${shar_wish}"* ) answer=no   ; break ;; esac
+	  case "${ans_all}"  in "${shar_wish}"* ) answer=all  ; break ;; esac
+	  case "${ans_none}" in "${shar_wish}"* ) answer=none ; break ;; esac
+	  case "${ans_quit}" in "${shar_wish}"* ) answer=quit ; break ;; esac
+	fi'
+	_EOBody_;
+};
+
+text = {
+  name = query_check;
+  body = <<- _EOBody_
+	  case "${shar_wish}" in
+	    quit) ${echo} '%s'; exit 1 ;;
+	    none) ${echo} 'x - %s' ; shar_skip=yes ;;
+	    no)   shar_skip=yes ;;
+	    yes | all)  shar_skip=no  ;;
+	  esac
+	else
+	  shar_skip=no
+	fi
+	if test $shar_skip = yes; then
+	  ${echo} 'x - %s'
+	_EOBody_;
+};
+
+
+text = {
+  name = query_user;
+  body = <<- _EOBody_
+	  while : ; do
+	    answer=${shar_wish}
+	    case $shar_wish in
+	      all) ${echo} 'x - %s' ; break ;;
+	      none) break ;;
+	      *) ${echo} $shar_n "? - %s${ans_list}"$shar_c
+	         if test -n "$shar_tty"
+	         then read shar_wish < $shar_tty
+	         else read shar_wish
+	         fi
+	         eval "${eval_ans}" ;;
+	    esac
+	    shar_wish=help
+	    for f in ${user_answers}
+	    do eval printf "'%%-9s %%s\n'" \"\${ans_${f}}\" \"\${${f}_means}\"
+	    done
+	  done
+	  shar_wish=${answer}
+	_EOBody_;
+};
+
+
+text = {
+  name = seq_check;
+  body = <<- _EOBody_
+	if test ! -r ${lock_dir}/seq; then
+	 ${echo} '%s'
+	  exit 1
+	fi
+	shar_sequence=`cat ${lock_dir}/seq`
+	test "$shar_sequence" = %d
+	_EOBody_;
+};
+
+
+text = {
+  name = timestamp;
+  body = <<- _EOBody_
+	f=shar-touch.$$
+	st1=200112312359.59
+	st2=123123592001.59
+	st2tr=123123592001.5 # old SysV 14-char limit
+	st3=1231235901
+
+	if touch -am -t ${st1} ${f} >/dev/null 2>&1 && \
+	   test ! -f ${st1} && test -f ${f}; then
+	  shar_touch='touch -am -t $1$2$3$4$5$6.$7 "$8"'
+
+	elif touch -am ${st2} ${f} >/dev/null 2>&1 && \
+	   test ! -f ${st2} && test ! -f ${st2tr} && test -f ${f}; then
+	  shar_touch='touch -am $3$4$5$6$1$2.$7 "$8"'
+
+	elif touch -am ${st3} ${f} >/dev/null 2>&1 && \
+	   test ! -f ${st3} && test -f ${f}; then
+	  shar_touch='touch -am $3$4$5$6$2 "$8"'
+
+	else
+	  shar_touch=:
+	  echo
+	  ${echo} '%s'
+	  ${echo} '%s'
+	  echo
+	fi
+	rm -f ${st1} ${st2} ${st2tr} ${st3} ${f}
+	#
+	_EOBody_;
+};

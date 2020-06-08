@@ -1,0 +1,119 @@
+<data>
+	<pgn>61443</pgn>
+	<spn>558</spn>
+	<value>
+		<name>"Accelerator Pedal 1 Low Idle Switch"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>559</spn>
+	<value>
+		<name>"Accelerator Pedal Kickdown Switch"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>1437</spn>
+	<value>
+		<name>"Road Speed Limit Status"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>2970</spn>
+	<value>
+		<name>"Accelerator Pedal 2 Low Idle Switch"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+
+	<spn>91</spn>
+	<value>
+		<name>"Accelerator Pedal Position 1"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+	<spn>92</spn>
+	<value>
+		<name>"Engine Percent Load At Current Speed"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+	<spn>974</spn>
+	<value>
+		<name>"Remote Accelerator Pedal Position"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+	<spn>29</spn>
+	<value>
+		<name>"Accelerator Pedal Position 2"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+
+	<spn>2979</spn>
+	<value>
+		<name>"Vehicle Acceleration Rate Limit Status"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>5021</spn>
+	<value>
+		<name>"Momentary Engine Maximum Power Enable Feedback"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>5399</spn>
+	<value>
+		<name>"DPF Thermal Management Active"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+	<spn>5400</spn>
+	<value>
+		<name>"SCR Thermal Management Active"</name>
+		<size>2</size>
+		<scale>1</scale>
+		<offset>0</offset>
+		<units>""</units>
+	</value>
+
+	<spn>3357</spn>
+	<value>
+		<name>"Actual Maximum Available Engine - Percent Torque"</name>
+		<size>8</size>
+		<scale>0.4</scale>
+		<offset>0</offset>
+		<units>"%"</units>
+	</value>
+
+	<spn>5398</spn>
+	<value>
+		<name>"Estimated Pumping - Percent Torque"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-125</offset>
+		<units>"%"</units>
+	</value>
+</data>

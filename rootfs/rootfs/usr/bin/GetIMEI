@@ -1,0 +1,114 @@
+#!/bin/sh
+
+# this will get the IMEI from the Gemalto - it can fail up to 10 times.  If it fails - no IMEI will be set
+# The IMEI is set in both 'db-config RedStone IMEI' and in /mnt/nvram/rom/imei
+#
+# This is usually called by check-for-IMEI on first boot and shouldn't need to be called directly.
+#
+
+#=========================================================================================
+WaitForModemPorts ()
+{
+ready=0
+count=0
+#wait for ttyGPSAT to appear
+while [ "$ready" == "0"	]
+do
+	if [ -e /dev/ttyGPSAT ]; then
+		ready=1
+		echo -e "ate0\r" > /dev/ttyGPSAT
+	else
+		sleep 1
+		count=`expr $count + 1`
+
+		if [ "$#" -eq "1"  ]; then
+			if [ "$count" -ge "$1" ]; then
+				exit
+			fi
+		fi
+	fi
+done
+
+ready=0
+count=0
+
+#wait for ttyGPS to appear
+while [ "$ready" == "0"	]
+do
+	if [ -e /dev/ttyGPS ]; then
+		ready=1
+		echo -e "ate0\r" > /dev/ttyGPS
+	else
+		sleep 1
+		count=`expr $count + 1`
+
+		if [ "$#" -eq "1"  ]; then
+			if [ "$count" -ge "$1" ]; then
+				exit
+			fi
+		fi
+	fi
+done
+
+
+}
+
+#=========================================================================================
+#main
+
+
+#test for existing IMEI
+imei=`cat /mnt/nvram/rom/imei`
+
+if [ "14" -lt  "${#imei}" ]; then
+	exit
+fi
+
+imei=""
+
+WaitForModemPorts 30
+
+if [ -e ~/imei.raw ]; then
+	rm ~/imei.raw
+fi
+
+done=0
+count=0
+mport="/dev/ttyGPSAT"
+
+
+while [ "$done" -eq "0" ]
+do
+	cat $mport >> ~/imei.raw &
+	thePID=$!
+	sleep 1
+	echo -e "at+CGSN\r" > $mport
+	sleep 2
+
+	kill $thePID
+
+	imei=$(grep 35 ~/imei.raw)
+
+	if [ "14" -lt  "${#imei}" ]; then
+		done=1
+		echo $imei > /mnt/nvram/rom/imei
+		db-config set RedStone IMEI $imei
+		echo "IMEI set to $imei"
+	fi
+	
+	count=`expr $count + 1`
+	
+	if [ "$count" -ge "5" ]; then
+		done=1
+		if [ "$mport" == "/dev/ttyGPSAT" ]; then
+			count=0
+			done=0
+			mport="/dev/ttyGPS"
+		fi
+	fi
+done
+
+if [ -e ~/imei.raw ]; then 
+	rm ~/imei.raw
+fi 
+

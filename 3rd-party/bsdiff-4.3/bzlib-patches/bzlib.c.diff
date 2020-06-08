@@ -1,0 +1,86 @@
+Index: bzip2-1.0.5/bzlib.c
+===================================================================
+--- bzip2-1.0.5/bzlib.c	(revision 7199)
++++ bzip2-1.0.5/bzlib.c	(working copy)
+@@ -40,6 +40,7 @@
+ #ifndef BZ_NO_STDIO
+ void BZ2_bz__AssertH__fail ( int errcode )
+ {
++#if 0
+    fprintf(stderr, 
+       "\n\nbzip2/libbzip2: internal error number %d.\n"
+       "This is a bug in bzip2/libbzip2, %s.\n"
+@@ -52,7 +53,9 @@
+       errcode,
+       BZ2_bzlibVersion()
+    );
++#endif
+ 
++#if 0
+    if (errcode == 1007) {
+    fprintf(stderr,
+       "\n*** A special note about internal error number 1007 ***\n"
+@@ -80,6 +83,7 @@
+       "\n"
+    );
+    }
++#endif
+ 
+    exit(3);
+ }
+@@ -823,10 +827,10 @@
+          if (corrupt) return BZ_DATA_ERROR;
+          if (s->nblock_used == s->save_nblock+1 && s->state_out_len == 0) {
+             BZ_FINALISE_CRC ( s->calculatedBlockCRC );
+-            if (s->verbosity >= 3) 
+-               VPrintf2 ( " {0x%08x, 0x%08x}", s->storedBlockCRC, 
+-                          s->calculatedBlockCRC );
+-            if (s->verbosity >= 2) VPrintf0 ( "]" );
++//            if (s->verbosity >= 3) 
++  //             VPrintf2 ( " {0x%08x, 0x%08x}", s->storedBlockCRC, 
++    //                      s->calculatedBlockCRC );
++//            if (s->verbosity >= 2) VPrintf0 ( "]" );
+             if (s->calculatedBlockCRC != s->storedBlockCRC)
+                return BZ_DATA_ERROR;
+             s->calculatedCombinedCRC 
+@@ -841,9 +845,9 @@
+       if (s->state >= BZ_X_MAGIC_1) {
+          Int32 r = BZ2_decompress ( s );
+          if (r == BZ_STREAM_END) {
+-            if (s->verbosity >= 3)
+-               VPrintf2 ( "\n    combined CRCs: stored = 0x%08x, computed = 0x%08x", 
+-                          s->storedCombinedCRC, s->calculatedCombinedCRC );
++//            if (s->verbosity >= 3)
++  //             VPrintf2 ( "\n    combined CRCs: stored = 0x%08x, computed = 0x%08x", 
++    //                      s->storedCombinedCRC, s->calculatedCombinedCRC );
+             if (s->calculatedCombinedCRC != s->storedCombinedCRC)
+                return BZ_DATA_ERROR;
+             return r;
+@@ -1536,6 +1540,7 @@
+ /*--
+    return last error code 
+ --*/
++#if 0
+ static const char *bzerrorstrings[] = {
+        "OK"
+       ,"SEQUENCE_ERROR"
+@@ -1554,15 +1559,18 @@
+       ,"???"   /* for future */
+       ,"???"   /* for future */
+ };
++#endif
+ 
+-
+ const char * BZ_API(BZ2_bzerror) (BZFILE *b, int *errnum)
+ {
++	return "";
++#if 0 
+    int err = ((bzFile *)b)->lastErr;
+ 
+    if(err>0) err = 0;
+    *errnum = err;
+    return bzerrorstrings[err*-1];
++#endif
+ }
+ #endif
+ 

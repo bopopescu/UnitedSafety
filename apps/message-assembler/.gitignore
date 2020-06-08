@@ -1,0 +1,5 @@
+*.swp
+*.o
+moc_*.cpp
+Makefile
+message-assembler

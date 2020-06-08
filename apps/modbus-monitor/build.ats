@@ -1,0 +1,28 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	if [ '' != "$REDSTONE_BUILD_DIR" ]; then
+		export KERNEL_SRC_DIR="${BUILD_DIR}/kernel"
+		export REDSTONE_EXPAT_INCLUDE_DIR="$REDSTONE_BUILD_DIR/expat-2.0.1/lib"
+		export REDSTONE_EXPAT_LIB_DIR="$REDSTONE_BUILD_DIR/expat-2.0.1/.libs"
+		export REDSTONE_LIBMODBUS_INCLUDE_DIR="$REDSTONE_BUILD_DIR/libmodbus-3.0.4/src/"
+		export REDSTONE_LIBMODBUS_LIB_DIR="$REDSTONE_BUILD_DIR/libmodbus-3.0.4/src/.libs/"
+	fi
+	make -e
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+		APP="./bin/$ARCH/modbus-monitor"
+		sudo cp -av "$APP" "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+	fi
+exit 0

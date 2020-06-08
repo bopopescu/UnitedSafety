@@ -1,0 +1,4 @@
+#!/bin/sh
+hw='/dev/trulink-hwctl'
+ifconfig eth0 up
+echo pm=eth_powerdown > "$hw"

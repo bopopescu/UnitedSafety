@@ -1,0 +1,9 @@
+
+===================================================================
+This email was generated automatically by the TRULink build script.
+
+If you no longer wish to receive this email remove your email
+address from the file '.../svn/tl5000/build/email.lst'
+
+Originally created by Dave Huff, May 2017
+

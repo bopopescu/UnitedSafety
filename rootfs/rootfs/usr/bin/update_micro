@@ -1,0 +1,40 @@
+#!/bin/sh
+
+val=`/usr/bin/get_micro_version`
+val25=`/usr/bin/get_micro_version | grep 25`
+if [ "$val" == "0x0252" ]; then
+	echo "Micro version 2.52 found - no update required"
+	exit
+fi
+if [ "$val" == "0x0251" ]; then
+	echo "Micro version 2.51 found - updating to 2.52"
+	/usr/bin/microloader /etc/redstone/Micro_Firmware_APP_V2_5_2.hex
+	exit
+fi
+
+if [ -n  "$val25" ]; then # does it have 25 in the name?
+	echo "Micro version 2.5 found - updating to 2.52"
+	/usr/bin/microloader /etc/redstone/Micro_Firmware_APP_V2_5_2.hex
+	exit
+fi
+
+if [ "$val" == "0x0242" ]; then
+	echo "Micro version 2.42 found - no update required"
+	exit
+fi
+if [ "$val" == "0x0241" ]; then
+	/usr/bin/microloader /etc/redstone/Micro_Firmware_APP_V2_4_2.hex
+	exit
+fi
+
+if [ "$val" == "0xff24" ]; then
+	/usr/bin/microloader /etc/redstone/Micro_Firmware_APP_V2_4_2.hex
+	exit
+fi
+
+
+if [ "$val" != "0xff24" ]; then
+	echo "Updating micro Firmware to Version 2.42"
+	/usr/bin/microloader /etc/redstone/Micro_Firmware_APP_V2_4_2.hex
+fi
+

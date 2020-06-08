@@ -1,0 +1,19 @@
+#!/bin/bash
+	if [ '' = "$BUILD_DIR" ];then
+		echo "BUILD_DIR is not defined"
+		exit 1
+	fi
+	if [ ! -e "$BUILD_DIR" ];then
+		echo "Build directory \"$BUILD_DIR\" does not exist"
+		exit 1
+	fi
+
+	rm -f "${BUILD_DIR}/firmware/rootfs-install.tar.bz2"
+	cp -v ./rootfs-install.tar "${BUILD_DIR}/firmware/"
+	bzip2 "${BUILD_DIR}/firmware/rootfs-install.tar"
+	ret=$?
+	if [ 0 != "$ret" ];then
+		echo "\"bzip2\" compression of install-rootfs failed"
+		exit $ret
+	fi
+exit 0

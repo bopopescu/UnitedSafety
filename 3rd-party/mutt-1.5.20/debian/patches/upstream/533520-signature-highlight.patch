@@ -1,0 +1,14 @@
+before this patch mutt failed to highlight some signatures if text_flowed was
+set to yes (see upstream http://bugs.mutt.org/3275)
+
+--- a/handler.c
++++ b/handler.c
+@@ -1500,7 +1500,7 @@
+     l = mutt_strlen (buf);
+     if (l > 0 && buf[l-1] == '\n')
+       buf[--l] = 0;
+-    if (option (OPTTEXTFLOWED))
++    if (mutt_strcmp (buf, "-- ") != 0 && option (OPTTEXTFLOWED))
+     {
+       while (l > 0 && buf[l-1] == ' ')
+ 	buf[--l] = 0;

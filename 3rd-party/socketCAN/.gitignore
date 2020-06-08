@@ -1,0 +1,15 @@
+*.swp
+*.o
+*.o.cmd
+*.ko
+*.ko.cmd
+*.mod.c
+kernel/2.6/.tmp_versions/
+kernel/2.6/Module.symvers
+kernel/2.6/drivers/net/can/cc770/modules.order
+kernel/2.6/drivers/net/can/modules.order
+kernel/2.6/drivers/net/can/sja1000/modules.order
+kernel/2.6/drivers/net/can/usb/modules.order
+kernel/2.6/modules.order
+kernel/2.6/net/can/modules.order
+patch-2.6.35.3-socketcan

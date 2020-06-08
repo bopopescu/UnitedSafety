@@ -1,0 +1,31 @@
+#!/bin/bash
+    APP=xl2tpd
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	sed -e 's/-DLINUX/-DLINUX -I.\/..\/libpcap-1.3.0\//' -i Makefile
+	sed -e 's/-lpcap/-lpcap -L.\/..\/libpcap-1.3.0\//' -i Makefile
+	make CC=${CROSS_COMPILE}gcc -j4
+
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		sudo cp -av xl2tpd xl2tpd-control "$ROOTFS_DEF_DIR/bin"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

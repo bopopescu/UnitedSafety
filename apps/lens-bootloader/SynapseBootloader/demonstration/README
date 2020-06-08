@@ -1,0 +1,7 @@
+This directory contains the pre-built library for the SNAP API V1.0.0.
+
+This library was built with STATIC_HOOKS defined for the IMX28286 platform running the Aware360 BusyBox build.
+
+In addition are hardware specific files for the demonstration software and the UART interface.
+
+

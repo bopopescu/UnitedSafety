@@ -1,0 +1,24 @@
+#!/bin/sh
+
+touch /tmp/flags/go-to-sleep
+
+GPPID=`cat /proc/$PPID/stat|sed 's/^\([^ ]\+ \)\{3\}//'|sed 's/ .*//'`
+r='/tmp/logdir/reboot.txt'
+
+echo "msg power_off" | socat - unix-connect:/var/run/redstone/message-assembler
+
+echo `date` >> $r
+echo "UP: `uptime`" >> $r
+echo -n -e "\\tcaller: $PPID:" >> $r
+echo `cat /proc/$PPID/cmdline|tr '\\0' ','|sed 's/,\\\$//'` >> $r
+
+echo -n -e "\\tcaller: $GPPID:" >> $r
+echo `cat /proc/$GPPID/cmdline|tr '\\0' ','|sed 's/,\\\$//'` >> $r
+
+if [ -e /tmp/flags/go-to-sleep ];then
+	echo tu > /dev/set-gpio
+        echo 'sleep' >> $r
+        exec /sbin/poweroff
+fi
+
+exec /usr/redstone/reboot

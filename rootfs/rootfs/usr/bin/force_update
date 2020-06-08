@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "Forcing the unit to do an upgrade"
+echo 10 > /version
+tail -f /var/log/messages &
+check-update
+killall tail
+

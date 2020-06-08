@@ -1,0 +1,91 @@
+#!/usr/bin/make -f
+
+#export DH_VERBOSE=1
+export DH_OPTIONS
+
+# TODO: there are a lot of warnings with -Wall on. Fix them.
+DEB_CFLAGS = -g -Wall
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+DEB_CFLAGS += -O0
+else
+DEB_CFLAGS += -O2
+endif
+ifneq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+INSTALL_PROG = install -m 0755
+else
+INSTALL_PROG = install -s -m 0755
+endif
+DEB_VER = $(shell dpkg-parsechangelog | sed -n 's/^Version: //p')
+
+patch: patch-stamp
+patch-stamp:
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
+	touch $@
+
+unpatch:
+	QUILT_PATCHES=debian/patches quilt pop -a -R || test $$? = 2
+	rm -rf .pc patch-stamp
+
+build: build-arch build-indep
+
+build-arch: build-arch-stamp
+build-arch-stamp: patch-stamp
+	dh_testdir
+	$(MAKE) linux \
+	    CFLAGS='$(DEB_CFLAGS)' STATIC='' \
+	    DFLAGS='-DLINUX -DTELNET -DGAPING_SECURITY_HOLE -DIP_TOS -DDEBIAN_VERSION=\"$(DEB_VER)\"'
+	touch $@
+
+build-indep: build-indep-stamp
+build-indep-stamp: patch-stamp
+	touch $@
+
+clean: unpatch
+	dh_testdir
+	dh_clean patch-stamp build-arch-stamp build-indep-stamp
+	$(MAKE) clean
+
+install: install-indep install-arch
+install-indep: build-indep
+	dh_testdir
+	dh_testroot
+	dh_prep -i
+	dh_installdirs -i
+	dh_installdocs -i
+	dh_installchangelogs -i
+	dh_install -i
+
+install-arch: build-arch
+	dh_testdir
+	dh_testroot
+	dh_prep -s
+	dh_installdirs -s
+	dh_installdocs -s README
+	dh_installexamples -s data scripts debian/contrib
+	dh_installchangelogs -s Changelog
+	$(INSTALL_PROG) nc $(CURDIR)/debian/netcat-traditional/bin/nc.traditional
+	cp debian/man/nc.1 $(CURDIR)/debian/netcat-traditional/usr/share/man/man1/nc.traditional.1
+
+binary-common:
+	dh_testdir
+	dh_testroot
+	dh_link
+	dh_strip
+	dh_compress -Xexamples
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture independant packages using the common target.
+binary-indep: build-indep install-indep
+	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+
+# Build architecture dependant packages using the common target.
+binary-arch: build-arch install-arch
+	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch

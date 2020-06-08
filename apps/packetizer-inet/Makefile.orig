@@ -1,0 +1,65 @@
+ARCH=PC
+
+INCLUDE =\
+	-I../ats-common \
+	-I../socket_interface \
+	-I../command_line_parser \
+	-I../state-machine \
+	-I../FastTrac/UtilityLib \
+	-I../FastTrac/FASTLib \
+	-I../FastTrac \
+	-I../db-monitor \
+	-I../include \
+	-I../message-assembler \
+	-I../packetizer-lib \
+	-I../../3rd-party/rapidjson/include 
+
+LD_FLAGS=\
+	-L../db-monitor/bin/$(ARCH) \
+	-ldb-monitor \
+	-L../command_line_parser/bin/$(ARCH) \
+	-lcommand_line_parser \
+	-L../socket_interface/bin/$(ARCH) \
+	-lsocket_interface \
+	-L../ats-common/bin/$(ARCH) \
+	-lats-common \
+	-L../FastTrac/FASTLib/bin/$(ARCH) \
+	-L../state-machine/bin/$(ARCH) \
+	-lstate-machine \
+	-L../packetizer-lib/bin/$(ARCH) \
+	-lpacketizer \
+	-L../FastTrac/UtilityLib/bin/$(ARCH) \
+	-lUtilityLib \
+	-L../lib \
+	-lFASTLib \
+	-L../../3rd-party/curl-7.57.0/lib/.libs  \
+	-L../../3rd-party/openssl-1.0.1g -lssl -lcrypto \
+	-lcurl \
+	-lrt \
+	-lboost_system \
+	-lpthread
+
+EXEC=packetizer-inet
+
+CFLAGS=-g -O0
+
+SRC = \
+	main.cpp \
+	CellSender.cpp \
+	CopySM.cpp \
+	InetDB.cpp \
+	InetIridiumSender.cpp \
+	InetStateMachine.cpp 
+
+all: $(ARCH)
+
+PC:
+	mkdir -p bin/$(ARCH)
+	g++ -o bin/$(ARCH)/$(EXEC) $(SRC) -Wall $(CFLAGS) $(INCLUDE) $(LD_FLAGS)
+
+arm:
+	mkdir -p bin/$(ARCH)
+	${CROSS_COMPILE}g++ -o bin/$(ARCH)/$(EXEC) $(SRC)  -Wall $(CFLAGS) $(INCLUDE) $(LD_FLAGS)
+
+clean:
+	rm -rf bin

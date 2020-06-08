@@ -1,0 +1,69 @@
+Description: filter out invalid config file names in directory includes
+ This patch filters config filenames, and only allows names that fit
+ the following criteria:
+ - Must start with an alphanumeric
+ - Can only contain alnum, _, -, and .
+ - Can not end in .dpkg*
+Author: Adam Conrad <adconrad@ubuntu.com>
+Bug-Ubuntu: https://launchpad.net/bugs/911436
+Forwarded: no
+Reviewed-By: Steve Langasek <steve.langasek@ubuntu.com>
+Last-Update: 2012-03-23
+
+--- p11-kit-0.12.orig/p11-kit/conf.c
++++ p11-kit-0.12/p11-kit/conf.c
+@@ -56,6 +56,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <fnmatch.h>
+ 
+ #ifdef OS_UNIX
+ #include <pwd.h>
+@@ -483,6 +484,34 @@ finished:
+ }
+ 
+ static int
++config_filename_valid (const char *fname)
++{
++	const unsigned char *c = fname;
++	const char bad_dpkg[] = "*.dpkg*";
++
++	/* Make sure the filename starts with an alphanumeric */
++	if (!isalnum(*c)) {
++		return 0;
++	}
++	++c;
++
++	/* Only allow alnum, _, -, and . */
++	while (*c) {
++		if (!isalnum(*c) && *c!='_' && *c!='-' && *c!='.') {
++			return 0;
++		}
++		++c;
++	}
++
++	/* Drop files matching *.dpkg* from dpkg upgrade cruft */
++	if (!fnmatch(bad_dpkg, fname, 0)) {
++		return 0;
++	}
++
++	return 1;
++}
++
++static int
+ load_config_from_file (const char *configfile, const char *name, hashmap *configs)
+ {
+ 	hashmap *config;
+@@ -492,6 +521,11 @@ load_config_from_file (const char *confi
+ 
+ 	assert (configfile);
+ 
++	if (!config_filename_valid(name)) {
++		_p11_debug ("skipping invalid config filename: %s", configfile);
++		return -1;
++	}
++
+ 	config = _p11_conf_parse_file (configfile, 0);
+ 	if (!config)
+ 		return -1;

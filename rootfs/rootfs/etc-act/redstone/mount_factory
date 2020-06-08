@@ -1,0 +1,8 @@
+#!/bin/sh
+
+ubiattach /dev/ubi_ctrl -m 8 -d 8
+mkdir -p "/tmp/factory"
+mount -t ubifs ubi8_0 "$/tmp/factory" -o ro
+
+
+

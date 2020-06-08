@@ -1,0 +1,10 @@
+#!/bin/sh
+feature unset packetizer_dash
+feature unset packetizer-calamps
+feature unset packetizer
+db-config set feature packetizer-iridium 1
+echo "Unit will now reboot."
+echo "Unit must be in view of Iridium network on startup."
+sleep 1
+reboot
+

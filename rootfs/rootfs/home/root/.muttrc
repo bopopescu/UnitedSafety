@@ -1,0 +1,66 @@
+set pager_context=1
+set pager_index_lines=10                #show a mini-index in pager
+set menu_scroll
+set pgp_verify_sig=no                   #dont show pgp in pager
+set status_on_top                       #put status line at top
+set sort=threads                        #sort by message threads in index
+
+set mbox_type=Maildir
+
+set editor="vim -c 'set tw=78 nobackup'" #set vim as my editor wrapped at 78
+
+set status_format=" %r %b %f %n      Del %d      Msgs %m %l %> (%P)"
+set pager_format="%-10.10i %[!%a %b %d %R]"
+set date_format="!%H:%M %a %d %b     "
+set index_format="%4C %Z %[%b%d] %-16.16L %s"
+set folder_format="%2C %t %8s %d %N %f"
+
+set sendmail="/usr/bin/msmtp"
+
+set from="redstonelogger@atsplace.com"         #set to your from address
+set realname="redstone"
+
+set record="/tmp/.maildir/sent"        #sent mail is saved here
+set delete=yes                          #delete without prompting
+set include=yes                         #quote msg in reply     
+set fast_reply=yes                      #no prompting on reply
+set beep=no                             #no noise
+set markers=no                          #no + on wrapped lines
+set confirmappend=no                    #no prompt for save to =keep           
+set to_chars=" +TCF"                    #no L for mail_list
+set spoolfile="/tmp/.maildir"
+set signature="~/.signature"
+
+set folder = /tmp/.maildir
+mailboxes =gentoo-user
+mailboxes =fluxbox-users
+mailboxes =vim-user
+mailboxes =keep
+#<etc.--create your additional mailboxes here>
+
+save-hook .* =keep                      #default mbox to (s)ave mail is =keep
+
+bind pager h display-toggle-weed        #toggle headers with h key
+
+# simulate the old url menu
+macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
+macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
+
+#run fetchmail by hitting key of G
+macro index G "!fetchmail -a -m 'procmail -d %T'\r"
+macro pager G "!fetchmail -a -m 'procmail -d %T'\r"
+macro browser G "!fetchmail -a -m 'procmail -d %T'\r"
+
+#use to edit .muttrc and then source it...no restart necessary
+#macro generic ,sm ":source $HOME/.muttrc\r"
+#macro generic \cj "!aterm -e vim $HOME/.muttrc\r"
+
+# default list of header fields to weed out when displaying mail
+#ignore them all and then unignore what you want to see
+ignore *
+unignore  Date To From: Subject X-Mailer Organization User-Agent
+hdr_order Date From To Subject X-Mailer User-Agent Organization
+
+##your Mutt has to have some colors
+#<color stuff to your liking...>
+##EOF

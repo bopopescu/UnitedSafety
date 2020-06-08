@@ -1,0 +1,58 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## 55_curl_typefix.dpatch by Michael Bienia <geser@ubuntu.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Apply patch from upstream to fix a build error with recent curl
+## DP: and gcc 4.3 (error: 'typeof' applied to a bit-field)
+## DP: Patch taken from http://lists.gnupg.org/pipermail/gnupg-devel/2008-April/024344.html
+
+@DPATCH@
+diff -urNad gnupg-1.4.9~/keyserver/gpgkeys_curl.c gnupg-1.4.9/keyserver/gpgkeys_curl.c
+--- gnupg-1.4.9~/keyserver/gpgkeys_curl.c	2007-10-23 11:59:12.000000000 +0200
++++ gnupg-1.4.9/keyserver/gpgkeys_curl.c	2008-07-21 01:59:06.000000000 +0200
+@@ -286,7 +286,7 @@
+ 
+   if(follow_redirects)
+     {
+-      curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,1);
++      curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,1L);
+       if(follow_redirects>0)
+ 	curl_easy_setopt(curl,CURLOPT_MAXREDIRS,follow_redirects);
+     }
+@@ -298,10 +298,10 @@
+     {
+       fprintf(console,"gpgkeys: curl version = %s\n",curl_version());
+       curl_easy_setopt(curl,CURLOPT_STDERR,console);
+-      curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
++      curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+     }
+ 
+-  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYPEER,opt->flags.check_cert);
++  curl_easy_setopt(curl,CURLOPT_SSL_VERIFYPEER,(long)opt->flags.check_cert);
+   curl_easy_setopt(curl,CURLOPT_CAINFO,opt->ca_cert_file);
+ 
+   if(proxy)
+diff -urNad gnupg-1.4.9~/keyserver/gpgkeys_hkp.c gnupg-1.4.9/keyserver/gpgkeys_hkp.c
+--- gnupg-1.4.9~/keyserver/gpgkeys_hkp.c	2007-10-23 11:59:12.000000000 +0200
++++ gnupg-1.4.9/keyserver/gpgkeys_hkp.c	2008-07-21 01:59:06.000000000 +0200
+@@ -202,9 +202,9 @@
+     fprintf(console,"gpgkeys: HTTP URL is `%s'\n",request);
+ 
+   curl_easy_setopt(curl,CURLOPT_URL,request);
+-  curl_easy_setopt(curl,CURLOPT_POST,1);
++  curl_easy_setopt(curl,CURLOPT_POST,1L);
+   curl_easy_setopt(curl,CURLOPT_POSTFIELDS,key);
+-  curl_easy_setopt(curl,CURLOPT_FAILONERROR,1);
++  curl_easy_setopt(curl,CURLOPT_FAILONERROR,1L);
+ 
+   res=curl_easy_perform(curl);
+   if(res!=0)
+@@ -661,7 +661,7 @@
+     {
+       fprintf(console,"gpgkeys: curl version = %s\n",curl_version());
+       curl_easy_setopt(curl,CURLOPT_STDERR,console);
+-      curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
++      curl_easy_setopt(curl,CURLOPT_VERBOSE,1L);
+     }
+ 
+   if(proxy)

@@ -1,0 +1,22 @@
+=======================================================================
+= Building canutils-4.0.6
+=======================================================================
+Build Machine:
+	Thor
+	Linux thor 2.6.38-8-generic #42-Ubuntu SMP Mon Apr 11 03:31:24 UTC 2011 x86_64 x86_64 x86_64 GNU/Linux
+	Linux Mint 11 Katya \n \l
+
+Build Commands:
+	///////////////////////////////////////////////////////////////////
+	// FIXME:
+	//	The build commands are not complete. "canutils-4.0.6" is not usuable.
+	//	Use "../socketCAN" instead.
+	//
+	//	Reason: Compiler complains about missing "linux/can.h", "linux/can/raw.h", etc.
+	///////////////////////////////////////////////////////////////////
+
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	export KERNEL_DIR=`pwd`/../mx28/linux-2.6.35.3/include/
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc libsocketcan_CFLAGS="-I`pwd`/../libsocketcan-0.0.8/include/" libsocketcan_LIBS="-L`pwd`/../libsocketcan-0.0.8/src/.libs -lsocketcan" CFLAGS="-I${KERNEL_DIR} -I`pwd`/../libsocketcan-0.0.8/include/"
+	make -j 4
+

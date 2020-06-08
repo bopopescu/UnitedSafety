@@ -1,0 +1,132 @@
+#!/bin/sh
+watchdog.sh&
+mkdir -p /tmp/vrun
+mkdir -p /var/run/redstone/
+chmod 777 /var/run/redstone/
+mknod /dev/i2c-gpio-expander-irq c 237 0
+i2c-gpio-monitor&
+
+touch /tmp/logdir/starting-factory-restore
+sync
+. /usr/redstone/do-install-blink.sh
+
+MSG_ON='\x1b[1;44;37m'
+WARN_ON='\x1b[0;43;30m'
+ERR_ON='\x1b[1;41;37m'
+MSG_OFF='\x1b[0m'
+
+name=$0
+
+msg()
+{
+	echo -n -e "$MSG_ON"
+	echo -n "$1"
+	echo -e "$MSG_OFF"
+}
+
+warn()
+{
+	echo -n -e "$WARN_ON"
+	echo -n "$1"
+	echo -e "$MSG_OFF"
+}
+
+err()
+{
+	echo -n -e "$ERR_ON"
+	echo -n "$1"
+	echo -e "$MSG_OFF"
+}
+
+sys_monitor
+echo -n '25000,975000' > /dev/buzzer
+
+if [ -e '/etc/update/start.sh' -a -e '/etc/update/version' -a -e '/etc/update/valid' ];then
+	touch /tmp/logdir/updated-factory-image-available
+	sync
+	if [ ! -e /tmp/logprev/updated-factory-image-available ];then
+		cat /etc/update/version > /tmp/logdir/using-updated-factory-image
+		sync
+
+		ubiattach /dev/ubi_ctrl -m 10 -d 10
+		if [ 0 = "$?" ];then
+			mkdir /tmp/update
+		        mount -t ubifs ubi10_0 /tmp/update/
+			if [ 0 = "$?" ];then
+				mount -r -o remount /
+				cd /etc/update/
+				touch /tmp/logdir/starting-latest-factory-restore
+				sync
+				./start.sh
+				if [ 0 != "$?" ];then
+					echo -n '1000000,0' > /dev/buzzer
+					sleep 3
+				fi
+				echo -n '0,0' > /dev/buzzer
+				reboot
+				while true
+				do
+					sleep 86400
+				done
+			fi
+		fi
+	else
+		err 'Latest factory updated failed, using original factory image'
+		echo "Latest factory updated failed, using original factory image" > /tmp/logdir/using-original-factory-image
+	fi
+fi 
+
+msg 'Erasing active rootfs...'
+	flash_eraseall /dev/mtd9
+
+msg 'Formating active rootfs for UBIFS...'
+	ubiattach /dev/ubi_ctrl -m 9 -d 9
+
+msg 'Creating active rootfs UBIFS volume...'
+	ubimkvol /dev/ubi9 -n 0 -N act_rootfs -m
+
+msg 'Mounting active rootfs...'
+	mkdir -p /tmp/act_rootfs
+	mount -t ubifs ubi9_0 /tmp/act_rootfs
+
+msg 'Copying files to active rootfs...'
+	cp -a /bin /tmp/act_rootfs/
+	mkdir -p /tmp/act_rootfs/dev
+        cp -a /etc-act /tmp/act_rootfs/etc
+	cp -a /home /tmp/act_rootfs/
+	cp -a /lib /tmp/act_rootfs/
+	cp -a /mnt-act /tmp/act_rootfs/mnt
+	mkdir -p /tmp/act_rootfs/proc
+	cp -a /root /tmp/act_rootfs/
+	cp -a /sbin /tmp/act_rootfs/
+	mkdir -p /tmp/act_rootfs/sys
+	mkdir -p /tmp/act_rootfs/tmp
+	cp -a /usr /tmp/act_rootfs/
+	cp -a /var /tmp/act_rootfs
+	cp /version /tmp/act_rootfs/
+
+msg 'Unmounting active rootfs...'
+	umount /tmp/act_rootfs
+
+msg 'Updating U-Boot to use active rootfs...'
+	set_env fs_part 9
+	cmdline='root=ubi0 mtdparts=gpmi-nfc-main:2M(a),384K@3072K(b),384K@3456K(c),384K@3840K(d),16M@5M(e),3M@22M(f),3M@26M(g),8M@30M(h),64M@39M(i),64M@104M(j),64M@169M(k),22M@234M(l) rw rootfstype=ubifs gpmi'
+	print_env 2>&1|grep '^redstone_args=.* ubi\.mtd=' &> /dev/null
+
+	if [ 0 = $? ];then
+		set_env bootargs "console=ttyAM0,115200n8 $cmdline"
+	else
+		warn 'Using legacy U-Boot command line'
+		set_env bootargs "console=ttyAM0,115200n8 ubi.mtd=9 $cmdline"
+	fi
+
+msg 'Update complete, rebooting...'
+touch /tmp/logdir/factory-restore-complete
+sync
+	echo -n '0,0' > /dev/buzzer
+	reboot
+	while true
+	do
+		sleep 86400
+	done
+exit 0

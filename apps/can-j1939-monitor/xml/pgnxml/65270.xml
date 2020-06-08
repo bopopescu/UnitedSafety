@@ -1,0 +1,59 @@
+<data>
+	<pgn>65270</pgn>
+	<spn>81</spn>
+	<value>
+		<name>"Engine Diesel Particulate Filter Intake Pressure"</name>
+		<size>8</size>
+		<scale>0.5</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>102</spn>
+	<value>
+		<name>"Engine Intake Manifold #1 Pressure"</name>
+		<size>8</size>
+		<scale>2</scale>
+		<offset>0</offset>
+		<units>"pKa"</units>
+	</value>
+	<spn>105</spn>
+	<value>
+		<name>"Engine Intake Manifold 1 Temperature"</name>
+		<size>8</size>
+		<scale>1</scale>
+		<offset>-40</offset>
+		<units>"deg C"</units>
+	</value>
+	<spn>106</spn>
+	<value>
+		<name>"Engine Air Intake Pressure"</name>
+		<size>8</size>
+		<scale>2</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>107</spn>
+	<value>
+		<name>"Engine Air Intake Pressure"</name>
+		<size>8</size>
+		<scale>0.05</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+	<spn>173</spn>
+	<value>
+		<name>"Engine Exhaust Gas Temperature"</name>
+		<size>16</size>
+		<scale>0.03125</scale>
+		<offset>-273</offset>
+		<units>"deg C"</units>
+	</value>
+	<spn>112</spn>
+	<value>
+		<name>"Engine Coolant Filter Differential Pressure"</name>
+		<size>8</size>
+		<scale>0.5</scale>
+		<offset>0</offset>
+		<units>"kPa"</units>
+	</value>
+</data>

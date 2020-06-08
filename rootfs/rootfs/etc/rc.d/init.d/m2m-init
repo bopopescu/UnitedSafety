@@ -1,0 +1,10 @@
+#!/bin/sh
+
+/etc/rc.d/init.d/m2m-dirs
+
+/etc/rc.d/init.d/m2m-init-logging
+
+echo > /tmp/config/issue
+echo "M2M("`cat /version|head -n 1`", "`cat /version|tail -n 1`")" >> /tmp/config/issue
+
+exit 0

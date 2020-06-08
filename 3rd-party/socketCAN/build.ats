@@ -1,0 +1,44 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	WORK_DIR=`pwd`
+	cd can-utils
+	export CC=${CROSS_COMPILE}gcc
+	make -e
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	file `find`|grep 'executable.*ARM.*not stripped' > /dev/null
+
+	if [ 0 = $? ];then
+		${CROSS_COMPILE}strip `file \`find\`|grep 'executable.*ARM.*not stripped'|sed 's/:.*//'`
+		ret=$?
+
+		if [ 0 != "$ret" ];then
+			echo 'failed to strip binaries'
+			exit $ret
+		fi
+
+	fi
+
+	cd "$WORK_DIR"
+
+	if [ '' != "$INSTALL" ];then
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		WORK_DIR=`pwd`
+		cd can-utils
+		sudo cp -av `file \`find\`|grep "32-bit LSB executable"|sed 's/:.*//'` "$ROOTFS_DEF_DIR/usr/bin"
+		if [ 0 != "$?" ];then
+			echo "Failed to install CAN utilities"
+			exit 1
+		fi
+		cd "$WORK_DIR"
+	fi
+exit 0

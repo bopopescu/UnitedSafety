@@ -1,0 +1,34 @@
+#!/bin/sh
+
+MESSAGEDB="/mnt/update/database/messages.db"
+
+backupDB()
+{
+  echo ".dump" | sqlite3 $1 > dump.sql
+  sqlite3 $1.back < dump.sql
+
+  rm dump.sql
+  rm $1
+  ret=`sqlite3 $1.back 'PRAGMA integrity_check'`
+  if [ "$ret" == "ok" ]
+  then
+		echo "$1 Restore successful"
+		mv $1.back $1
+  fi
+}
+
+if [ ! -f $MESSAGEDB  ]
+then
+  echo "Database file not found"
+  exit 1
+fi
+
+echo "Check $MESSAGEDB integrity"
+ret=`sqlite3 $MESSAGEDB 'PRAGMA integrity_check'`
+if [ "$ret" != "ok" ]
+then
+  echo "$MESSAGEDB corrupted"
+  backupDB $MESSAGEDB
+fi
+
+

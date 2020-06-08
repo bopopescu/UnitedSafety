@@ -1,0 +1,20 @@
+IMAP: only close socket when not already disconnected.
+closes http://bugs.mutt.org/3161 and
+http://bugs.debian.org/493719
+
+--- a/imap/imap.c
++++ b/imap/imap.c
+@@ -488,8 +488,11 @@
+ 
+ void imap_close_connection(IMAP_DATA* idata)
+ {
+-  mutt_socket_close (idata->conn);
+-  idata->state = IMAP_DISCONNECTED;
++  if (idata->state != IMAP_DISCONNECTED)
++  {
++    mutt_socket_close (idata->conn);
++    idata->state = IMAP_DISCONNECTED;
++  }
+   idata->seqno = idata->nextcmd = idata->lastcmd = idata->status = 0;
+   memset (idata->cmds, 0, sizeof (IMAP_COMMAND) * idata->cmdslots);
+ }

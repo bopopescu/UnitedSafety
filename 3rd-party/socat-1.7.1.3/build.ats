@@ -1,0 +1,25 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc --disable-fips --disable-termios --disable-openssl CFLAGS='-Os -Xlinker -s'
+	ret=$?
+
+	if [ 0 != $ret ];then
+		echo "$ret: Failed to configure socat"
+		exit 1
+	fi
+
+	cat config.h\
+		| sed 's/^#define CRDLY_SHIFT *$/#define CRDLY_SHIFT 9/' \
+		| sed 's/^#define TABDLY_SHIFT *$/#define TABDLY_SHIFT 11/' \
+		| sed 's/^#define CSIZE_SHIFT *$/#define CSIZE_SHIFT 4/' \
+		> config.h.redstone && mv config.h.redstone config.h
+
+	make -j6
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "$ret: \"make\" failed"
+		exit $ret
+	fi
+
+exit 0

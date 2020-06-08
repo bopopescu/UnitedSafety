@@ -1,0 +1,28 @@
+#!/bin/sh
+db-config set feature packetizer-calamps 1
+db-config set packetizer-calamps host tucana.gps1.com
+db-config set packetizer-calamps ack_type standard
+db-config set packetizer-calamps port 51001
+db-config set packetizer-calamps timeout 5
+db-config set low_battery_volt  12
+db-config set PositionUpdate    Distance        0
+db-config set PositionUpdate    Heading 5
+db-config set PositionUpdate    IridiumReportTime       10
+db-config set PositionUpdate    MinSendTime     1
+db-config set PositionUpdate    Pinning On
+db-config set PositionUpdate    ReportStopStart On      
+db-config set PositionUpdate    ReportWhenStopped       On
+db-config set PositionUpdate    StopTime        120
+db-config set PositionUpdate    Time    30
+db-config set RedStone SerialPortPower On
+db-config set RedStone SpeedSource GPS
+db-config set RedStone IgnitionSource GPIO
+db-config set RedStone KeepAwakeMinutes 120
+db-config set feature gps-socket-server 1
+db-config set SER_GPS sendGPS On
+db-config set gps-socket-server listen_server_port 41094
+killall packetizer-calamps
+echo "Unit will now reboot."
+sleep 5
+reboot
+

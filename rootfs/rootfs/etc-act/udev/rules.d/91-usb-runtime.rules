@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEMS=="usb", KERNEL=="sd[a-z]|sd[a-z][0-9]", RUN=="/etc/redstone/usb-runtime"
+ACTION=="remove", RUN=="/etc/redstone/usb-runtime"

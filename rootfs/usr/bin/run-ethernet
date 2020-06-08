@@ -1,0 +1,184 @@
+#!/bin/sh
+# bilal - change for ISCP-245
+runEth=`db-config get -b RedStone Ethernet`         
+
+mount|grep "/dev/root on / type nfs" 2>/dev/null
+if [ 0 = "$?" ];then
+	exit 0
+fi
+
+ra0dhcp=`db-config get system ra0dhcp -v -n`
+eth0dhcp=`db-config get system eth0dhcp -v -n`
+eth0RoutIP=`db-config get system RouteIP -v -n`
+RouteOverride=`db-config get system RouteOverride -v -n`
+
+
+#---------------------------------------
+# Get Ethernet Settings
+#---------------------------------------
+
+if [ "1" = "$runEth" ]; then
+
+	ethaddr=`cat /mnt/nvram/rom/eth0macaddr.txt`
+
+	if [ '' = "$ethaddr" ]; then
+		rnd=`dd if=/dev/urandom bs=1 count=2 2>/dev/null |hexdump -v|head -n1|sed 's/^[^ ]\+ \(..\)\(..\)/\1:\2/'`
+		ethaddr="c4:3a:9f:01:$rnd"
+		echo -n $ethaddr > /mnt/nvram/rom/eth0macaddr.txt
+		logger "$0: No Ethernet MAC address set, generated MAC address $ethaddr"
+	fi
+
+	ifconfig eth0 hw ether $ethaddr
+
+	eth0addr=`db-config get system eth0addr -v -n`
+        
+        
+
+	if [ '' = "$eth0addr" ];then
+		eth0addr=192.168.35.1
+		db-config set system eth0addr "$eth0addr"
+	fi
+
+	eth0addr_nolastoctate=`echo $eth0addr | cut -d"." -f1-3`
+
+	eth0startip=`db-config get system eth0startip -v -n`
+	if [ '' = "$eth0startip" ];then
+		eth0startip=$eth0addr_nolastoctate".20"
+		db-config set system eth0startip "$eth0startip"
+	fi
+
+	eth0endip=`db-config get system eth0endip -v -n`
+	if [ '' = "$eth0endip" ];then
+		eth0endip=$eth0addr_nolastoctate".254"
+		db-config set system eth0endip "$eth0endip"
+	fi
+
+else
+logger "run-ethernet : ethernet is disabled."
+fi
+
+
+#---------------------------------------
+# Get Wifi Settings
+#---------------------------------------
+
+ra0addr=`db-config get system ra0addr -v -n`
+
+if [ '' = "$ra0addr" ];then
+	ra0addr=192.168.36.1
+	db-config set system ra0addr "$ra0addr"
+fi
+
+ra0addr_nolastoctate=`echo $ra0addr | cut -d"." -f1-3`
+
+ra0startip=`db-config get system ra0startip -v -n`
+if [ '' = "$ra0startip" ];then
+	ra0startip=$ra0addr_nolastoctate".20"
+	db-config set system ra0startip "$ra0startip"
+fi
+
+ra0endip=`db-config get system ra0endip -v -n`
+if [ '' = "$ra0endip" ];then
+	ra0endip=$ra0addr_nolastoctate".254"
+	db-config set system ra0endip "$ra0endip"
+fi
+
+if [ "1" = "$runEth" ]; then
+	ifconfig eth0 $eth0addr
+	ifconfig eth0 up
+else
+	ifconfig eth0 down
+fi
+
+#---------------------------------------
+# Start preparing DHCPD.conf file
+#---------------------------------------
+
+rm /tmp/config/dhcpd.conf  > /dev/null
+echo "ddns-update-style interim;
+ignore client-updates;
+
+option SIP code 120 = string;
+option domain-name-servers 8.8.8.8,8.8.4.4;
+" > /tmp/config/dhcpd.conf
+
+resfile='/tmp/config/dhcpd.conf.reservation'
+
+if [ -s $resfile ];then
+	cat $resfile >> /tmp/config/dhcpd.conf
+fi
+
+#---------------------------------------
+#Ethernet DHCP configuration 
+#---------------------------------------
+
+eth0RoutIP=$eth0addr_nolastoctate".$eth0RoutIP"
+#Check etherenet run and dhcp status
+if  [ "On" = "$eth0dhcp" -a "1" = "$runEth" ] || [ "auto" = "$eth0dhcp" -a "1" = "$runEth" ] || [ "client" = "$eth0dhcp" -a "1" = "$runEth" -a "primary" = "$RouteOverride" ]; then
+
+echo "# ETH0 Ethernet
+subnet $eth0addr_nolastoctate.0 netmask 255.255.255.0 {
+	range dynamic-bootp $eth0startip $eth0endip;
+	default-lease-time 21600;
+	max-lease-time 6000;
+	option routers $eth0addr_nolastoctate.1;}" >> /tmp/config/dhcpd.conf
+
+elif [ "client" = "$eth0dhcp" -a "1" = "$runEth" -a "secondary" = "$RouteOverride" ]; then
+
+echo "# ETH0 Ethernet
+subnet $eth0addr_nolastoctate.0 netmask 255.255.255.0 {
+	range dynamic-bootp $eth0startip $eth0endip;
+	default-lease-time 21600;
+	max-lease-time 6000;
+        option subnet-mask 255.255.255.192;
+	option routers $eth0RoutIP;}" >> /tmp/config/dhcpd.conf
+
+fi
+
+export EthernetEntry="# ETH0 Ethernet
+subnet $eth0addr_nolastoctate.0 netmask 255.255.255.0 {
+	range dynamic-bootp $eth0startip $eth0endip;
+	default-lease-time 21600;
+	max-lease-time 6000;
+	option routers $eth0addr_nolastoctate.1;}" 
+
+#---------------------------------------
+# WI-FI DHCP configuration 
+#---------------------------------------
+
+if [ "on" = "$ra0dhcp" ]; then
+echo "# WLAN0 DHCP
+subnet $ra0addr_nolastoctate.0 netmask 255.255.255.0 {
+	range dynamic-bootp $ra0startip $ra0endip;
+	default-lease-time 21600;
+	max-lease-time 6000;
+	option routers $ra0addr;}" >> /tmp/config/dhcpd.conf
+
+export WiFiEntry="# WLAN0 DHCP
+subnet $ra0addr_nolastoctate.0 netmask 255.255.255.0 {
+	range dynamic-bootp $ra0startip $ra0endip;
+	default-lease-time 21600;
+	max-lease-time 6000;
+	option routers $ra0addr;}" >> /tmp/config/dhcpd.conf
+
+fi
+
+#---------------------------------------
+#Run DHCP server
+#---------------------------------------
+ 
+#kill dhcp server 
+killall -q dhcpd > /dev/null
+#Copy the conf file to /etc folder
+cp /tmp/config/dhcpd.conf /etc > /dev/null
+
+
+if [ "1" = "$runEth" ]; then
+	exec network-monitor
+#If ethernet is disabled, just run the dhcp server forcefuly here
+elif [ "on" = "$ra0dhcp" ]; then
+	# In case Ethernet is tunred off, and network app is not run
+	# Run the dhcp server forcefully
+	/usr/sbin/dhcpd  > /dev/null
+fi
+

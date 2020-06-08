@@ -1,0 +1,24 @@
+#!/bin/sh
+
+db-config get -v packetizer-calamps port |grep "51001"
+
+if [ $? == 0 ];then
+	CALAMPS=`db-config get -v feature packetizer-calamps`
+	if [ "$CALAMPS" == 1 ];then
+		db-config set feature packetizer-cams 1
+		db-config set packetizer-cams host `db-config get -v packetizer-calamps host`
+		db-config set packetizer-cams port `db-config get -v packetizer-calamps port`
+		db-config set packetizer-cams ack_type `db-config get -v packetizer-calamps ack_type`
+		db-config set packetizer-cams m_keepalive `db-config get -v packetizer-calamps m_keepalive`
+		db-config set packetizer-cams m_max_backlog `db-config get -v packetizer-calamps m_max_backlog`
+		db-config set packetizer-cams timeout `db-config get -v packetizer-calamps timeout`
+		db-config set packetizer-cams UseCompression `db-config get -v packetizer-calamps UseCompression`
+		IRIDIUM=`db-config get -v feature packetizer-iridium`
+		if [ "$IRIDIUM" == 1 ];then
+			db-config set packetizer-cams IridiumEnable 1
+			db-config set feature iridium-monitor 1
+			feature unset packetizer-iridium
+		fi
+		feature unset packetizer-calamps
+	fi
+fi

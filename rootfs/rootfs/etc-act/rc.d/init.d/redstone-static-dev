@@ -1,0 +1,29 @@
+#!/bin/sh
+echo > /dev/watchdog
+logger -s "===== redstone-static-dev ====="
+
+mknod /dev/ubi_ctrl c 10 61
+mknod /dev/watchdog c 10 130
+mknod /dev/mtdblock4 b 31 4
+mknod /dev/mtdblock10 b 31 10
+
+mknod /dev/rtc c 89 0
+chmod 664 /dev/rtc
+chown root:applet /dev/rtc
+
+mknod /dev/mtd4 c 90 8
+mknod /dev/mtd10 c 90 20
+mknod /dev/reset-button c 235 0
+mknod /dev/wifitraffic c 235 1
+mknod /dev/battery c 236 0
+mknod /dev/hid c 236 1
+mknod /dev/i2c-gpio-expander-irq c 237 0
+mknod /dev/set-gpio c 238 0
+mknod /dev/redstone-hw-config c 238 1
+mknod /dev/trulink-hwctl c 238 2
+mknod /dev/lens-urgent c 240 0
+# mknod /dev/buzzer c 239 0
+chown applet:applet /dev/set-gpio
+
+# set-gpio should now be available.  Power the 3V and 5v lines now so that udev has something to detect
+echo -n PQLlO > /dev/set-gpio

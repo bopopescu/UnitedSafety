@@ -1,0 +1,15 @@
+For %F, display Bcc recipient if no other recipients found. 
+Closes http://bugs.mutt.org/3157
+See also http://bugs.debian.org/350957
+
+--- a/hdrline.c
++++ b/hdrline.c
+@@ -121,6 +121,8 @@
+     snprintf (buf, len, "To %s", mutt_get_name (hdr->to));
+   else if (me && hdr->cc)
+     snprintf (buf, len, "Cc %s", mutt_get_name (hdr->cc));
++  else if (me && hdr->bcc)
++    snprintf (buf, len, "Bcc %s", mutt_get_name (hdr->bcc));
+   else if (hdr->from)
+     strfcpy (buf, mutt_get_name (hdr->from), len);
+   else

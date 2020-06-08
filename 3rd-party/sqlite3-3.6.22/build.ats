@@ -1,0 +1,40 @@
+#!/bin/bash
+APP='sqlite3'
+LIB='libsqlite3.so.0'
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	./configure --host arm-linux-gnu CC=${CROSS_COMPILE}gcc CFLAGS="-O2"
+	make -j 4
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip "./.libs/$APP"
+		sudo cp -av "./.libs/$APP" "$ROOTFS_DEF_DIR/usr/bin"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+
+		${CROSS_COMPILE}strip --strip-unneeded "./.libs/$LIB"
+		sudo rm -f "$ROOTFS_DEF_DIR/lib/$LIB"
+		sudo cp -Lv "./.libs/$LIB" "$ROOTFS_DEF_DIR/lib"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$LIB\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

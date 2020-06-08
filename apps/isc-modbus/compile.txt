@@ -1,0 +1,1 @@
+CC="arm-none-linux-gnueabi-gcc" LDFLAGS="-static" ./configure --host=arm-none-linux-gnueabi --enable-static AM_LDFLAGS=-static

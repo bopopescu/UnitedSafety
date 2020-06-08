@@ -1,0 +1,38 @@
+#!/bin/bash
+	sed -e 's/mx28\/linux-2.6.35.3/kernel/' -i Makefile.inc
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+	make -j$TRULINK_JOBS PLATFORM=ARM CHIPSET=3070
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" RT3070 failed"
+		exit $ret
+	fi
+
+	make -j$TRULINK_JOBS PLATFORM=ARM CHIPSET=5370
+	ret=$?
+
+	if [ 0 != "$ret" ];then
+		echo "\"make\" RT5370 failed"
+		exit $ret
+	fi
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		APP='./UTIL/os/linux/rtutil5370ap.ko ./NETIF/os/linux/rtnet5370ap.ko ./MODULE/os/linux/rt5370ap.ko'
+		APP+=' ./UTIL/os/linux/rtutil3070ap.ko ./NETIF/os/linux/rtnet3070ap.ko ./MODULE/os/linux/rt3070ap.ko'
+		sudo cp -fv $APP "$ROOTFS_DEF_DIR/usr/lib"
+
+		if [ 0 != "$?" ];then
+			echo "Failed to install \"$APP\""
+			exit 1
+		fi
+
+	fi
+
+exit 0

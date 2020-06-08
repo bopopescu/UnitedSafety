@@ -1,0 +1,24 @@
+Source: lockfile-progs
+Section: misc
+Priority: optional
+Maintainer: Rob Browning <rlb@defaultvalue.org>
+Build-Depends: liblockfile-dev
+Standards-Version: 3.6.1
+
+Package: lockfile-progs
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Programs for locking and unlocking files and mailboxes
+ This package includes several programs to safely lock and unlock
+ files and mailboxes from the command line.  These include:
+ .
+   lockfile-create
+   lockfile-remove
+   lockfile-touchlock
+   mail-lock
+   mail-unlock
+   mail-touchlock
+ .
+ These programs use liblockfile to perform the file locking and
+ unlocking, so they are guaranteed compatible with Debian's
+ file locking policies.

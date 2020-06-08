@@ -1,0 +1,5 @@
+#!/bin/sh
+
+db-config get -v -b -n modbus-db |grep ^slave | grep -ri murphy | awk '{print $2}' | while read row; do
+db-config set modbus-db template_$row --file='/etc/redstone/defaultMurphy.xml'
+done

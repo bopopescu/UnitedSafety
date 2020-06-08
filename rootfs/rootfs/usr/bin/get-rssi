@@ -1,0 +1,16 @@
+#!/bin/sh
+
+(echo -e phpcmd getcellrssi;sleep 2) | nc -q 3 -o /home/root/rssi.txt localhost 39000 > /dev/null 2>&1
+
+
+grep fail rssi.txt > /dev/null
+if [ $? != 0 ]; then
+	tail -n 1 /home/root/rssi.txt  > /home/root/x
+	cat /home/root/x | awk 'BEGIN {FS="#"}{print $2}' > /home/root/y
+	pnum=`sed 's/ //' /home/root/y | sed 's/\.//'`
+	echo $pnum
+	rm /home/root/x
+	rm /home/root/y	
+fi
+
+rm /home/root/rssi.txt

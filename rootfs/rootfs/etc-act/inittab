@@ -1,0 +1,7 @@
+# see busybox-1.00rc2/examples/inittab for more examples
+::sysinit:/etc/rc.d/rcS
+~~:S:wait:/sbin/sulogin
+::respawn:/etc/redstone/TRUtest/TRUtest
+::ctrlaltdel:/sbin/reboot
+::shutdown:/etc/rc.d/rcS stop
+::restart:/sbin/init

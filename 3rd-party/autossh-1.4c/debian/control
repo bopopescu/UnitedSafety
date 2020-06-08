@@ -1,0 +1,22 @@
+Source: autossh
+Section: net
+Priority: optional
+Maintainer: Axel Beckert <abe@debian.org>
+Uploaders: Franziska Lichtblau <rhalina@old-forest.org>
+Build-Depends: debhelper (>= 7), autoconf (>= 2.59), autotools-dev, quilt, openssh-client
+Build-Conflicts: autoconf2.13
+Homepage: http://www.harding.motd.ca/autossh/
+Vcs-Git: git://anonscm.debian.org/collab-maint/autossh.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=collab-maint/autossh.git
+Standards-Version: 3.9.2
+
+Package: autossh
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, openssh-client | ssh-client
+Enhances: openssh-client, ssh-client
+Description: Automatically restart SSH sessions and tunnels
+ autossh is a program to start an instance of ssh and monitor it, restarting it
+ as necessary should it die or stop passing traffic. The idea is from rstunnel
+ (Reliable SSH Tunnel), but implemented in C. Connection monitoring is done
+ using a loop of port forwardings. It backs off on the rate of connection
+ attempts when experiencing rapid failures such as connection refused.

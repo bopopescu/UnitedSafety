@@ -1,0 +1,21 @@
+Source: bsdiff
+Section: utils
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Jari Aalto <jari.aalto@cante.net>
+Build-Depends: debhelper (>= 7), libbz2-dev
+Standards-Version: 3.8.3
+Vcs-Browser: http://git.debian.org/?p=collab-maint/bsdiff.git
+Vcs-Git: git://git.debian.org/git/collab-maint/bsdiff.git
+Homepage: http://www.daemonology.net/bsdiff/
+
+Package: bsdiff
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: bspatch
+Description: generate/apply a patch between two binary files
+ bsdiff and bspatch are tools for building and applying patches to binary files.
+ By using suffix sorting (specifically, Larsson and Sadakane's qsufsort) and
+ taking advantage of how executable files change, bsdiff routinely produces
+ binary patches 50-80% smaller than those produced by Xdelta, and 15% smaller
+ than those produced by .RTPatch (a commercial patch tool).

@@ -1,0 +1,47 @@
+<data>
+	<reg>41001</reg>
+	<value>
+		<desc>"Number of sets of active fault codes"</desc>
+		<size>1</size>
+		<decimal>0</decimal>
+		<hrange>255</hrange>
+		<lrange>0</lrange>
+		<nadata>ffff</nadata>
+	</value>
+	<reg>41002</reg>
+	<value>
+		<desc>"Malfunction Indicator Lamp Status"</desc>
+		<size>1</size>
+		<decimal>0</decimal>
+		<hrange>3</hrange>
+		<lrange>0</lrange>
+		<nadata>ffff</nadata>
+	</value>
+	<reg>41003</reg>
+	<value>
+		<desc>"Red Stop Lamp Status"</desc>
+		<size>1</size>
+		<decimal>0</decimal>
+		<hrange>3</hrange>
+		<lrange>0</lrange>
+		<nadata>ffff</nadata>
+	</value>
+	<reg>41004</reg>
+	<value>
+		<desc>"Amber Warning Lamp Status"</desc>
+		<size>1</size>
+		<decimal>0</decimal>
+		<hrange>3</hrange>
+		<lrange>0</lrange>
+		<nadata>ffff</nadata>
+	</value>
+	<reg>41005</reg>
+	<value>
+		<desc>"Protect Lamp Status"</desc>
+		<size>1</size>
+		<decimal>0</decimal>
+		<hrange>3</hrange>
+		<lrange>0</lrange>
+		<nadata>ffff</nadata>
+	</value>
+</data>

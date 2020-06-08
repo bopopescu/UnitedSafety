@@ -1,0 +1,13 @@
+#!/bin/bash
+	. /usr/share/cross-compile/arm-sourcery-glibc/SOURCE_ME
+
+	QT_DIR="/usr/local/Trolltech/QtEmbedded-4.8.2-arm/"
+	${QT_DIR}/bin/qmake ./PositionUpdate.pro -r -spec qws/linux-redstone-g++
+	make -e
+
+	if [ 0 != "$?" ];then
+		echo "Failed to build PositionUpdate"
+		exit 1
+	fi
+
+exit 0

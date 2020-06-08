@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ '1' = "$DONT_TOUCH_RESOLV_CONF" ];then
+	exec /etc/udhcp/udhcpc $@ -s /etc/udhcp/skipDNS
+else
+	staticDNS=`db-config get RedStone StaticDNS -v -n`
+
+	if [ '1' = "$staticDNS" ];then
+		exec /etc/udhcp/udhcpc $@ -s /etc/udhcp/skipDNS
+	fi
+
+fi
+
+exec /etc/udhcp/udhcpc $@

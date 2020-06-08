@@ -1,0 +1,3 @@
+#!/bin/sh
+date 201501011843
+exec /usr/bin/rtc-monitor

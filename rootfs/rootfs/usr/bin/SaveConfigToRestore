@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# SaveConfigToRestore - if the APN is different this will copy the 
+
+
+#======
+# copy_config
+copy_config() 
+{
+  cp -r /mnt/nvram /mnt/logs/nvram
+	apn=`db-config get -v Cellular carrier`
+  echo $apn > /mnt/logs/nvram/carrier.txt
+}
+
+# if the nvram directory isn't there we do the backup
+if [ ! -e /mnt/logs/nvram ]; then
+	copy_config
+	exit 0
+fi
+
+# if carrier.txt isn't there we do the backup
+if [ ! -e /mnt/logs/nvram/carrier.txt ]; then
+	copy_config
+	exit 0
+fi
+
+# if carrier.txt has a different apn than the db-config AND the db-config has a valid string we do the backup
+apn=`db-config get -v Cellular carrier`
+apn_bak=`cat /mnt/logs/nvram/carrier.txt`
+#if the db-config value for apn is blank we copy the backup copy to the /mnt/nvram/config directory and restart
+# also check that the apn_bak is not empty (don't copy if it is also empty since we have no apn)
+if [ -z "$apn" ] && [ ! -z $apn_bak ]; then
+  cp -r /mnt/logs/nvram /mnt
+  exit 0
+fi
+
+#if db-config value is different from backup apn - we do the backup
+
+if [ "$apn" != "$apn_bak" ]; then
+	copy_config
+	exit 0
+fi
+
+
+

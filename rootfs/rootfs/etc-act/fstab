@@ -1,0 +1,5 @@
+# file system	mount		type	options		dump	pass
+proc		/proc		proc	defaults	0	0
+devpts		/dev/pts	devpts	gid=5,mode=620	0	0
+sysfs		/sys		sysfs	defaults	0	0
+usbfs		/proc/bus/usb	usbfs	defaults	0	0

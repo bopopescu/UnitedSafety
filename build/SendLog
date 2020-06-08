@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# SendLog - script to print out the git log changes since the last tagged build and send it to all the
+# recipients in the email.lst file
+
+git log  --date=local `git describe --abbrev=0 --tags \`git describe --abbrev=0 \`^`...`git describe --abbrev=0` > x
+
+grep -A4 Date x | grep -v git-svn > the.email 
+rm x
+
+cat email.txt >> the.email
+
+
+while read p; do
+	mutt -s "TruLink 5000 Build Complete" $p < the.email
+done <email.lst
+
+#rm the.email

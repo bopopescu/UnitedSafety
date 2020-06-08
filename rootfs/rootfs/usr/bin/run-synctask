@@ -1,0 +1,16 @@
+#!/bin/sh
+if [ 'OFF' = "$FEATURE" ];then
+	exit 0
+fi
+
+if [ root = `whoami` ];then
+	exec su applet -c 'exec run-synctask'
+fi
+
+while true
+do
+	sync
+	sleep 300 for-synctask
+done
+
+exit 0

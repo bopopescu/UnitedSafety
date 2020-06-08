@@ -1,0 +1,389 @@
+msmtp.o msmtp.o: msmtp.c ../config.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdio.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/features.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/predefs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/cdefs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wordsize.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gnu/stubs.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stddef.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/types.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/typesizes.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/libio.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/_G_config.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/wchar.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wchar.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gconv.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stdarg.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/stdio_lim.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sys_errlist.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdlib.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitflags.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitstatus.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/endian.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/endian.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/xlocale.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/types.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/time.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/select.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/select.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sigset.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/time.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/sysmacros.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/pthreadtypes.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/alloca.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/string.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/ctype.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/errno.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/errno.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/linux/errno.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm/errno.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm-generic/errno.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm-generic/errno-base.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/getopt.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/unistd.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/posix_opt.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/environments.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/confname.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/fcntl.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/fcntl.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/uio.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/stat.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/stat.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/arpa/inet.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/netinet/in.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdint.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/socket.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/uio.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/socket.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include-fixed/limits.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include-fixed/syslimits.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/limits.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/posix1_lim.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/local_lim.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/linux/limits.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/posix2_lim.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/xopen_lim.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sockaddr.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm/socket.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm/sockios.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/in.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/byteswap.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/netdb.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/rpc/netdb.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/siginfo.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/netdb.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/locale.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/locale.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/syslog.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/syslog.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/syslog-path.h \
+  gettext.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/libintl.h \
+  xalloc.h conf.h list.h net.h readbuf.h netrc.h smtp.h tls.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/e_os2.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/opensslconf.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/comp.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/crypto.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/stack.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/safestack.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/opensslv.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ossl_typ.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/symhacks.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/bio.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/x509.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/buffer.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/evp.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/objects.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/obj_mac.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/asn1.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/bn.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ec.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ecdsa.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ecdh.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/rsa.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/dsa.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/dh.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/sha.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/x509_vfy.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/lhash.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pkcs7.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pem.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pem2.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/hmac.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/kssl.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl2.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl3.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/tls1.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/dtls1.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pqueue.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/time.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl23.h \
+  /home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/srtp.h \
+  tools.h \
+  /usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sysexits.h \
+  aliases.h
+
+../config.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdio.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/features.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/predefs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/cdefs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wordsize.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gnu/stubs.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stddef.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/types.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/typesizes.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/libio.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/_G_config.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/wchar.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/wchar.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/gconv.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include/stdarg.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/stdio_lim.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sys_errlist.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdlib.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitflags.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/waitstatus.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/endian.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/endian.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/xlocale.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/types.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/time.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/select.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/select.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sigset.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/time.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/sysmacros.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/pthreadtypes.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/alloca.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/string.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/ctype.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/errno.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/errno.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/linux/errno.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm/errno.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm-generic/errno.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm-generic/errno-base.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/getopt.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/unistd.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/posix_opt.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/environments.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/confname.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/fcntl.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/fcntl.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/uio.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/stat.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/stat.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/arpa/inet.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/netinet/in.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/stdint.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/socket.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/uio.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/socket.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include-fixed/limits.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../lib/gcc/arm-none-linux-gnueabi/4.2.3/include-fixed/syslimits.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/limits.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/posix1_lim.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/local_lim.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/linux/limits.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/posix2_lim.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/xopen_lim.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/sockaddr.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm/socket.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/asm/sockios.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/in.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/byteswap.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/netdb.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/rpc/netdb.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/siginfo.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/netdb.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/locale.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/locale.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/syslog.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/syslog.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/bits/syslog-path.h:
+
+gettext.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/libintl.h:
+
+xalloc.h:
+
+conf.h:
+
+list.h:
+
+net.h:
+
+readbuf.h:
+
+netrc.h:
+
+smtp.h:
+
+tls.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/e_os2.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/opensslconf.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/comp.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/crypto.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/stack.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/safestack.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/opensslv.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ossl_typ.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/symhacks.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/bio.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/x509.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/buffer.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/evp.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/objects.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/obj_mac.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/asn1.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/bn.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ec.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ecdsa.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ecdh.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/rsa.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/dsa.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/dh.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/sha.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/x509_vfy.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/lhash.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pkcs7.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pem.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pem2.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/hmac.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/kssl.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl2.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl3.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/tls1.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/dtls1.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/pqueue.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sys/time.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/ssl23.h:
+
+/home/dave/svn/trunk/3rd-party/msmtp-1.4.32/../openssl-1.0.1g/include/openssl/srtp.h:
+
+tools.h:
+
+/usr/share/cross-compile/arm-sourcery-glibc/bin/../arm-none-linux-gnueabi/libc/usr/include/sysexits.h:
+
+aliases.h:

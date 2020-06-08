@@ -1,0 +1,29 @@
+#!/bin/bash
+
+TMPDIR="/srv/tl5000-rootfs"
+CWD=`pwd`
+
+#make the temporary directory
+sudo rm -rf $TMPDIR
+sudo mkdir -p $TMPDIR
+
+#unpack the file system
+tar -C $TMPDIR -xf ../mx28/rootfs/rootfs-def.tar
+
+# copy the rootfs directory to the unpacked root file system
+echo "repack:  Copying the root file system"
+
+#first need to remove and lens radio scripts in the packed system
+sudo rm -rf $TMPDIR/usr/local/libexec/ipsec
+sudo rm $TMPDIR/etc-act/redstone/first-boot/lens/*
+
+# now copy the file system
+sudo cp -r rootfs/* $TMPDIR
+
+# pack the root file system
+echo "repack:  Packing the updated root file system"
+cd $TMPDIR
+sudo tar -cf rootfs-def.tar *
+sudo cp rootfs-def.tar $CWD/../mx28/rootfs/rootfs-def.tar
+
+
