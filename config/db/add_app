@@ -1,0 +1,8 @@
+#!/bin/bash
+
+max=`sqlite3 feature.db "select MAX(CAST(v_appid as int)) from t_feature;"`
+max=`expr $max + 1`
+
+`sqlite3 feature.db "INSERT INTO t_feature VALUES(\"$1\",$max);"`
+`sqlite3 feature.db "INSERT INTO t_app VALUES(\"$1\"	,$max,'',\"run-app $1 $1\",NULL,NULL);"`
+

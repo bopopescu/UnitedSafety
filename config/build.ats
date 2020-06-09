@@ -1,0 +1,21 @@
+#!/bin/bash
+
+	if [ '' != "$INSTALL" ];then
+
+		if [ ! -e "$ROOTFS_DEF_DIR" ];then
+			echo "Default rootfs directory \"$ROOTFS_DEF_DIR\" does not exist"
+			exit 1
+		fi
+
+		SRC='db/feature.db'
+		DES="$ROOTFS_DEF_DIR/etc-act/redstone/"
+		sudo cp -v "$SRC" "$DES"
+
+		if [ 0 != $? ];then
+			echo "Failed to copy \"$SRC\" to \"$DES\""
+			exit 1
+		fi
+
+	fi
+
+exit 0
