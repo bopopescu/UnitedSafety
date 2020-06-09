@@ -78,6 +78,9 @@ public:
 	static void* LostPeer_thread(void* p);
 	static void* Monitor_thread(void* p);
 	
+
+void DecodeForVerboseSend(const char *p, const unsigned int msgLen, const ats::String& s1);
+
 	void DecodeInstrumentStatusData(const char *p, const unsigned int msgLen, const ats::String& s1);
 	void DecodeIdentifyGeneral(const char * p, unsigned int msgLen);
 	void DecodeIdentifySensorConfig(const char * p, const unsigned int msgLen);

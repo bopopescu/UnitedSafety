@@ -427,6 +427,8 @@ int main(int argc, char **argv)
 	
 	g_log.set_global_logger(&g_log);
 	g_log.set_level(dbg_level);
+ats_logf(ATSLOG_ERROR, "---------- NMEA startup  -1 ----------");
+ats::infinite_sleep(); //LensDataRouting
 
 	g_log.open_testdata("NMEA");
 	ATSLogger::set_global_logger(&g_log);

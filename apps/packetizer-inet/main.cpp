@@ -56,6 +56,10 @@ int main(int argc, char* argv[])
 	g_pConfig = &config;
 	ats_logf(ATSLOG_ERROR, "%s,%d: ========= packetizer-inet starting ========", __FILE__, __LINE__);
 
+printf("stoping packetizer-inet %s:%d\n", __FILE__, __LINE__); //LENSDataRouting
+	ats::infinite_sleep();
+
+
 	//InetStateMachine *psm = new InetStateMachine(g_md);
 printf("%s:%d\n", __FILE__, __LINE__);
 	InetStateMachine psm(g_md);

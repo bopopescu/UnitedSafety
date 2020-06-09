@@ -8,11 +8,13 @@
 #include "MyData.h"
 #include "INetConfig.h"
 #include "InstrumentStatus.h"
+#include <sys/wait.h>
 
 extern INetConfig *g_pLensParms;  // read the db-config parameters
 extern ATSLogger g_log;
 extern INET_IPC g_INetIPC;  // common data.
 NMEA_Client g_nmea_client;
+static short lensMsgCount = 0;
 
 //-----------------------------------------------------------------------
 MyData::MyData(Lens *pLens)
@@ -24,7 +26,7 @@ MyData::MyData(Lens *pLens)
 
 	ats_logf(ATSLOG_INFO, "Starting threads\n");
 	m_urgent_fd = open("/dev/lens-urgent", O_RDONLY);
-	pthread_create(&m_INetMonitor_thread, 0, MyData::INetMonitor_thread, this);
+//.	pthread_create(&m_INetMonitor_thread, 0, MyData::INetMonitor_thread, this);
 	pthread_create(&m_DecodeMessages_thread, 0, MyData::DecodeMessages_thread, this);
 	pthread_create(&m_LostPeer_thread, 0, MyData::LostPeer_thread, this);
 	pthread_create(&m_fetchmessage_thread, 0, MyData::fetchmessage_thread, this);
@@ -170,7 +172,7 @@ void *MyData::Monitor_thread(void* p)
 			{
 				ats_logf(&local_log, RED_ON "ERROR! LENS register value has changed! Was %s  Now %s" RESET_COLOR, lensNetName.c_str(), lensNetName1.c_str());
 				lensNetName = lensNetName1;
-			}			
+			}	
 		}
 
 		// test for switch to Iridium.  We need to resend the instruments otherwise they show as lost.
@@ -336,6 +338,46 @@ void MyData::UpdateInstrumentStatus(MyData &md)
 	}		
 }
 
+//---------------------------------------------------------------------------------------------------
+// telnet(const char* str, int len)
+//  Sends LENS packets to a fix IP using NetCat NC command
+
+//===================================================================================================
+static int telnet(const char* str, int len)
+{
+	//;const int pid = fork();
+	char a[50];
+	
+	
+	ats::String s;
+	++lensMsgCount;
+
+
+	//;if(!pid)
+	{
+	
+		ats_logf(ATSLOG_ERROR,  GREEN_ON "NC -1 " RESET_COLOR);
+		sprintf(a,"[%x]",lensMsgCount);
+		s+=a;
+		for (int i=0;i<len;i++)
+		{
+			sprintf(a,"%02x",str[i]);
+			s+=a;
+		}
+		s = "echo " + s + "|nc 184.70.68.86 5999";
+	
+		system(s.c_str());
+		ats_logf(ATSLOG_ERROR, YELLOW_ON "NC -2 [%x] " RESET_COLOR, lensMsgCount);
+	
+		//;exit(1);
+				
+	}
+
+	int status;
+	//;waitpid(pid, &status, 0);
+	ats_logf(ATSLOG_ERROR, MAGENTA_ON "NC -3 " RESET_COLOR);
+	return status;
+}
 
 //---------------------------------------------------------------------------------------------------
 // DecodeMessages_thread
@@ -365,9 +407,9 @@ void *MyData::DecodeMessages_thread(void* p)
 		const ats::String& s1 = m1.msg1;
 		const char *p = s1.c_str();
 		int size = s1.size();
+		telnet(s1.c_str(),s1.size());
 
-		//md.LogHexData("Incoming message", p, size, BCYAN_ON);  //output to log file 
-
+		md.LogHexData("Incoming message", p, size, BCYAN_ON);  //output to log file 
 		// check if buffer has extra corrupt data attached
 		if (size >= 6)
 		{
@@ -388,7 +430,8 @@ void *MyData::DecodeMessages_thread(void* p)
 			ats_logf(ATSLOG_ERROR, "%s, %d: No Framing character found", __FILE__, __LINE__);
 			continue;
 		}
-
+		md.DecodeForVerboseSend(p, s1.size(), s1); //Enable Verbos messages for all LENS peers
+/*
 		switch ((int)p[2])
 		{
 			case (InstrumentStatusData): //  message 0x00 - page 20 - 2.2.2.2 Instrument Status and Data (response to TruLink).
@@ -438,7 +481,7 @@ void *MyData::DecodeMessages_thread(void* p)
 			}
 			default:
 				break;
-		}
+		}*/
 	}
 }
 //-----------------------------------------------------------------------------------
@@ -739,6 +782,37 @@ void MyData::DecodeIdentifySensorConfig(const char * p, unsigned int msgLen)
 		ats_logf(ATSLOG_INFO, YELLOW_ON "%s,%d: DecodeIdentifySensor - Failed to decode incoming message" RESET_COLOR, __FILE__, __LINE__);
 
 }
+
+//-------------------------------------------------------------------------------------------------------------------------------
+// DecodeForVerboseSend
+// This function is used to send 0x30 lens message to peer instruments to enable verbose messages
+// 
+//	LensDataRouting
+//--------------------------------------------------------------------------------------------------------------------------------
+void MyData::DecodeForVerboseSend(const char * p, const unsigned int msgLen, const ats::String& s1)
+{
+    const unsigned char request[] = {0x24, 0x24, 0x30, 0x05, 0x00, 0x00, 0x00, 0xFF, 0x23, 0x23};
+	char t[16];
+	memcpy(t, request, sizeof request);
+
+	InstrumentStatus instStatus(m_pLens);
+    
+    ats_logf(ATSLOG_INFO, CYAN_ON "DecodeForVerboseSend - 1" RESET_COLOR);
+	if (instStatus.Decode((const unsigned char *)p) == 0)
+	{
+		std::string mmac = instStatus.GetMAC();
+		ats_logf(ATSLOG_INFO,  "DecodeForVerboseSend - 2 [%s]",mmac.c_str() );
+		if (!instStatus.IsVerbose())
+		{
+			instStatus.MAC().GetMac(t + 4);  // copy the three byte mac address
+			t[10] = '\0';
+			m_pLens->send_to_outgoing_mailbox(t, 10);
+		//	std::string str = t;
+			ats_logf(ATSLOG_INFO, YELLOW_ON "%s,%d: Sending Request Verbose %s\r" RESET_COLOR, __FILE__, __LINE__, (ats::to_hex(t)).c_str());
+
+		}
+	}
+}
 //-------------------------------------------------------------------------------------------------------------------------------
 // DecodeInstrumentStatusData
 // page 20 - 2.2.2.2 - 0x00 - Instrument Status and Data.
@@ -853,8 +927,8 @@ void MyData::LogHexData(const char *title, const char *data, const int len, cons
 {
 //	if (g_log.get_level() >= LOG_LEVEL_INFO) //ISCP-337
 	{
-		ats::String s;
-		char str[16];
+	ats::String s;
+	char str[16];
 		for(int i = 0; i < len; ++i)
 		{
 			if (i%10 == 0)  // write out the 0,10,20, etc byte as white for easier parsing.

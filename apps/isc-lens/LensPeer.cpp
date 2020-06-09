@@ -352,6 +352,8 @@ int LensPeer::HandlePeerGPS(InstrumentGPSData &iGPS)
 //
 int LensPeer::SendINetCreateInstrumentState()
 {
+	return 0; //LENSDataRoutine
+
 	if ( !m_IDGeneral.IsInetEnabled() )	 // only send if iNet is enabled in General or Frequent message
 	{
 		ats_logf(ATSLOG_DEBUG, RED_ON "SendINetCreateInstrumentState - iNet is not enabled!" RESET_COLOR );	
@@ -459,6 +461,8 @@ int LensPeer::SendINetCreateInstrumentState()
 //------------------------------------------------------------------------------
 int LensPeer::SendINetUpdateInstrumentState()
 {
+	return 0; //LENSDataRoutine
+
 	if (!m_IDGeneral.IsInetEnabled() || (m_IDGeneral.GetInstDeviceType() == 0x15) )	 // only send if iNet is enabled in General or Frequent message
 		return 0;
 
@@ -695,6 +699,8 @@ int LensPeer::CheckLostStatus()
 //------------------------------------------------------------------------------
 int LensPeer::SendINetLostInstrument()
 {
+	return 0; //LENSDataRoutine
+	
 	if (!m_IDGeneral.IsInetEnabled() || (m_IDGeneral.GetInstDeviceType() == 0x15) )	 // only send if iNet is enabled in General or Frequent message
 		return 0;
 	ats::String result;  // hex data for adding to message

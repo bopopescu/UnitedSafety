@@ -586,6 +586,10 @@ int main(int argc, char* argv[])
 		dbg_level = db.GetInt(argv[0], "LogLevel", 0);  // 0:Error 1:Debug 2:Info
 	}
 	
+	ats_logf(ATSLOG_ERROR, "---------- power-monitor  -1 ----------");
+ats::infinite_sleep(); //LensDataRouting
+	ats_logf(ATSLOG_ERROR, "---------- power-monitor   ----------");
+	
 	g_log.set_global_logger(&g_log);
 	g_log.set_level(dbg_level);
 	g_log.open_testdata(g_app_name);

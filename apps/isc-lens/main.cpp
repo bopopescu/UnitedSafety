@@ -7,7 +7,7 @@
 #include "MyData.h"
 #include "SocketData.h"
 
-#define ISC_LENS_FW_VERSION 3
+#define ISC_LENS_FW_VERSION 4
 
 // #include "messageFormatter.h"
 

@@ -594,6 +594,12 @@ int main(int argc, char* argv[])
 
 	g_dbg = config.get_int("debug");
 
+
+ats_logf(ATSLOG_ERROR, "---------- telit-monitor  -1 ----------");
+ats::infinite_sleep(); //LensDataRouting
+	ats_logf(ATSLOG_ERROR, "---------- telit-monitor   ----------");
+
+
 	const ats::String port(config.get("modem_port"));
 
 	{
