@@ -85,7 +85,7 @@ sub build_config(\% $)
 	$context->{'build_packetizer_dash_socket'} = 0;
 	$context->{'build_packetizer_dash'} = 0;
 	$context->{'build_packetizer_calamps'} = 0;
-	$context->{'build_gps_socket_server'} = 0;
+	$context->{'build_gps_socket_server'} = 1;
 	$context->{'build_i2c_gpio_monitor'} = 1;
 	$context->{'build_plc_serial_monitor'} = 1;
 	$context->{'build_wifi_monitor'} = 1;
@@ -101,9 +101,8 @@ sub build_config(\% $)
 	$context->{'build_zigbee_monitor'} = 1;
 	$context->{'build_packetizer_cams'} = 1;
 	$context->{'build_iridium_monitor'} = 1;
-	$context->{'build_packetizer_cams'} = 0;
 	$context->{'build_isc_lens'} = 1;
-	$context->{'build_packetizer_inet'} = 1;
+	$context->{'build_packetizer_inet'} = 0;
 	$context->{'build_isc_modbus'} = 1;
 
 	# Custom RedStone Includes

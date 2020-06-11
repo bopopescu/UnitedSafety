@@ -1,0 +1,17 @@
+apps/Libs/bin
+apps/*/bin
+apps/iridium-monitor/iridium-monitor
+apps/Libs/*.a
+*.o
+*.a
+bin/*
+apps/tools/hid/bin
+apps/tools/LENSUploadMode/bin
+rootfs-def.tar
+last_change
+mx28/rootfs/changes.txt
+Debug
+isc-lens2.txt
+*.mk
+*.project
+comp
