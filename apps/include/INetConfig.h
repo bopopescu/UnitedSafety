@@ -37,6 +37,8 @@ private:
 	int m_EnableTestMode;
 	int m_LogLevel;
 	std::string m_SiteName;  //used in registering the Gateway
+	std::string m_IPAddr;   //used in TGX as RGX app
+	std::string m_IPPort;   //used in TGX as RGX app
 	std::string m_iNetURL;
 	std::string m_INetAccount;
 	int m_INetIndex;
@@ -111,7 +113,10 @@ public:
 //		m_DeviceID = db.GetValue(isc_lens_key, "DeviceID", "0123456789");
 		m_SerialNum = db.GetValue(isc_lens_key, "SerialNumber", "PRINCEDEV1-001");
 		m_NetworkEncryption = db.GetValue(isc_lens_key, "NetworkEncryption", "Aware360DevKey17");
+		m_IPAddr = db.GetValue(isc_lens_key, "IPAddress", "184.70.68.86");
+		m_IPPort = db.GetValue(isc_lens_key, "IPPort", "5999");
 		m_EncryptionType = db.GetInt(isc_lens_key, "Encryption", 2);
+
 		m_NetworkName = db.GetInt(isc_lens_key, "NetworkName", 1);
 		m_INetAccount = db.GetValue(isc_lens_key, "INetAccount", "ISCPDA");
 		m_SettingsVersion = db.GetValue(isc_lens_key, "SettingsVersion", "2019-01-01T00:00:00.000-0400");
@@ -151,6 +156,8 @@ public:
 //	std::string DeviceID()	{return m_DeviceID;};
 	std::string SerialNum()	{return m_SerialNum;};
 	std::string NetworkEncryption()	{return m_NetworkEncryption;}
+	std::string GetIPAddress()	{return m_IPAddr;}
+	std::string GetIPPort()	{return m_IPPort;}
 	std::string SettingsVersion()	{return m_SettingsVersion;}
 	int PrimaryChannel(){ return m_PrimaryChannel;}
 	int SecondaryChannel(){ return m_SecondaryChannel;}

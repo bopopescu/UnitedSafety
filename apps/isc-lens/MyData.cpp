@@ -172,7 +172,7 @@ void *MyData::Monitor_thread(void* p)
 			{
 				ats_logf(&local_log, RED_ON "ERROR! LENS register value has changed! Was %s  Now %s" RESET_COLOR, lensNetName.c_str(), lensNetName1.c_str());
 				lensNetName = lensNetName1;
-			}	
+			}			
 		}
 
 		// test for switch to Iridium.  We need to resend the instruments otherwise they show as lost.
@@ -364,7 +364,8 @@ static int telnet(const char* str, int len)
 			sprintf(a,"%02x",str[i]);
 			s+=a;
 		}
-		s = "echo " + s + "|nc 184.70.68.86 5999";
+		//s = "echo " + s + "|nc 184.70.68.86 5999";
+		s = "echo " + s + "|nc " + g_pLensParms->GetIPAddress() + " " + g_pLensParms->GetIPPort();
 	
 		system(s.c_str());
 		ats_logf(ATSLOG_ERROR, YELLOW_ON "NC -2 [%x] " RESET_COLOR, lensMsgCount);
@@ -927,8 +928,8 @@ void MyData::LogHexData(const char *title, const char *data, const int len, cons
 {
 //	if (g_log.get_level() >= LOG_LEVEL_INFO) //ISCP-337
 	{
-	ats::String s;
-	char str[16];
+		ats::String s;
+		char str[16];
 		for(int i = 0; i < len; ++i)
 		{
 			if (i%10 == 0)  // write out the 0,10,20, etc byte as white for easier parsing.
